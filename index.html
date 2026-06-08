@@ -326,16 +326,6 @@ const SEED_ANSWERS={"q001":[null,null,null,null,null,null,null,null,null,null],
 "q105":[null,null,null,null,null,{v:"生徒に「いつもありがとう」ポスターを書いてもらい、色々な場所に貼ることで、増やしている"},null,null,null,null]};
 const GCOL=['#30496a','#3a9d7e','#e0883b','#7a6ca8','#c75f6b','#4a8db5','#8a9a3c','#b5773a','#5a8a7a','#9a5a8a'];
 const CATCOL={'基本情報':'#30496a','会計':'#3a9d7e','役員・委員':'#e0883b','フェスタ':'#7a6ca8','会議':'#c75f6b','情報・連絡ツール':'#4a8db5','広報・個人情報':'#8a9a3c','加入・行事':'#b5773a','その他・特色':'#5a8a7a'};
-// 学校ビュー用インライン編集
-let _schoolEditSid=null;
-Object.defineProperty(ST,'schoolEditing',{get:()=>_schoolEditSid,set:v=>{_schoolEditSid=v}});
-function startSchoolEdit(qid){ST.schoolEditing=qid;render();setTimeout(()=>{const el=document.getElementById('sch-ed-'+qid);if(el){el.focus();const r=document.getElementById('sce-'+qid);if(r)r.scrollIntoView({block:'center',behavior:'smooth'})}},50)}
-function cancelSchoolEdit(){ST.schoolEditing=null;render()}
-async function saveSchoolEdit(sid,qid){
-  const v=isChoice(qid)?(readSel('sch_'+qid)||''):((document.getElementById('sch-ed-'+qid)||{}).value||'');
-  const n=(document.getElementById('sch-edn-'+qid)||{}).value||'';
-  await setAns(sid,qid,v,n);ST.schoolEditing=null;render();toast(v.trim()?'回答を保存しました':'回答を削除しました');
-}
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
 const TYPELABEL={numeric:'数値',categorical:'選択式',text:'記述',list:'一覧',contact:'連絡先',empty:'未回答'};
 const TYPECOL={numeric:'#4a8db5',categorical:'#3a9d7e',text:'#7a6ca8',list:'#8a9a3c',contact:'#b5773a',empty:'#c0b9aa'};
@@ -352,6 +342,18 @@ async function gasGet(params){const u=API_URL+(API_URL.indexOf('?')>=0?'&':'?')+
 async function sGet(k){if(USE_API){try{const r=await gasGet({action:'getKV',key:k});return (r&&r.ok)?(r.value==null?null:r.value):null}catch(e){return null}}if(HASSTORE){try{const r=await window.storage.get(k,true);return r?JSON.parse(r.value):null}catch(e){return null}}return MEM[k]!==undefined?MEM[k]:null}
 async function sSet(k,v){if(USE_API){try{await gas('setKV',{key:k,value:v});return true}catch(e){return false}}if(HASSTORE){try{const r=await window.storage.set(k,JSON.stringify(v),true);return !!r}catch(e){console.error(e);return false}}MEM[k]=v;return true}
 async function reloadData(){ST.loading=true;render();await loadYear();ST.loading=false;render();toast('最新の回答を取得しました');maybeAnalyze()}
+// GAS疎通チェック（デバッグ用）
+async function checkGasConnection(){
+  try{
+    const d=await gasGet({action:'get',year:ST.year});
+    if(d&&d.ok)return {ok:true,msg:`GAS接続OK・質問${(d.questions||[]).length}件・回答${Object.keys(d.answers||{}).length}件`};
+    return {ok:false,msg:'GAS応答あり・エラー: '+(d&&d.error||JSON.stringify(d))};
+  }catch(e){return {ok:false,msg:'通信エラー: '+e.message};}
+}
+async function showDiag(){
+  const r=await checkGasConnection();
+  alert('【GAS接続診断】\n'+(r.ok?'✅ ':'❌ ')+r.msg+'\n\nGAS URL:\n'+API_URL);
+}
 /* ===== 選択肢（標準語彙）。スプレッドシートに options があればそちらを優先 ===== */
 const OPTIONS={
 q011:['口座引落し','振込','現金徴収','学校徴収'],q012:['ゆうちょ','関西みらい','ＪＡ'],q013:['毎年の総会','会則に記載'],
@@ -404,7 +406,15 @@ function renderChoiceViz(q,an){
   return `<div class="sec-h"><span class="ic">${I.chart}</span>${head}</div>${cards||'<p class="muted tiny">まだ回答がありません。</p>'}${an.un.length?unGroup(an.un):''}`;
 }
 const YEARS=[{id:'R8',label:'令和8年度（現在）'},{id:'R9',label:'令和9年度（新年度）'}];
-const ST={year:'R8',questions:[],answers:{},summaries:{},aigroups:{},homeAnalysis:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,analyzing:false,loading:true,fromSchool:null};
+const ST={year:'R8',questions:[],answers:{},summaries:{},aigroups:{},homeAnalysis:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,analyzing:false,loading:true,fromSchool:null,schoolEditing:null};
+// 学校ビュー用インライン編集関数（ST定義直後に配置）
+function startSchoolEdit(qid){ST.schoolEditing=qid;render();setTimeout(()=>{const el=document.getElementById('sch-ed-'+qid);if(el){el.focus();const r=document.getElementById('sce-'+qid);if(r)r.scrollIntoView({block:'center',behavior:'smooth'})}},50)}
+function cancelSchoolEdit(){ST.schoolEditing=null;render()}
+async function saveSchoolEdit(sid,qid){
+  const v=isChoice(qid)?(readSel('sch_'+qid)||''):((document.getElementById('sch-ed-'+qid)||{}).value||'');
+  const n=(document.getElementById('sch-edn-'+qid)||{}).value||'';
+  await setAns(sid,qid,v,n);ST.schoolEditing=null;render();toast(v.trim()?'回答を保存しました':'回答を削除しました');
+}
 async function seedIfNeeded(){
   if(USE_API)return; // 共有モードはスプレッドシートが正なのでシードしない
   let q=await sGet('questions');
@@ -414,11 +424,34 @@ async function seedIfNeeded(){
 }
 async function loadYear(){
   if(USE_API){
-    try{const d=await gasGet({action:'get',year:ST.year});if(d&&d.ok){ST.questions=d.questions||[];ST.answers=d.answers||{};}else{ST.questions=ST.questions||[];ST.answers=ST.answers||{};toast('データ取得エラー: '+((d&&d.error)||'不明'))}}
-    catch(e){ST.questions=ST.questions||[];ST.answers=ST.answers||{};toast('サーバーに接続できませんでした')}
-    ST.summaries=await sGet('summaries_'+ST.year)||{};ST.aigroups=await sGet('aigroups_'+ST.year)||{};ST.homeAnalysis=await sGet('home_analysis_'+ST.year)||null;return;
+    try{
+      const d=await gasGet({action:'get',year:ST.year});
+      if(d&&d.ok){
+        ST.questions=d.questions||[];
+        ST.answers=d.answers||{};
+      }else{
+        // GASエラー時はシードデータで表示（読み取り専用）
+        if(!ST.questions.length)_loadSeedFallback();
+        toast('GASエラー: '+((d&&d.error)||'不明')+'。シードデータで表示します');
+      }
+    }catch(e){
+      // 通信エラー時もシードデータにフォールバック
+      if(!ST.questions.length)_loadSeedFallback();
+      toast('GASに接続できません。シードデータで表示します');
+    }
+    ST.summaries=await sGet('summaries_'+ST.year)||{};
+    ST.aigroups=await sGet('aigroups_'+ST.year)||{};
+    ST.homeAnalysis=await sGet('home_analysis_'+ST.year)||null;
+    return;
   }
   ST.questions=await sGet('questions')||[];ST.answers=await sGet('answers_'+ST.year)||{};ST.summaries=await sGet('summaries_'+ST.year)||{};ST.aigroups=await sGet('aigroups_'+ST.year)||{};ST.homeAnalysis=await sGet('home_analysis_'+ST.year)||null;
+}
+function _loadSeedFallback(){
+  const base=Date.parse('2026-04-01T09:00:00');
+  ST.questions=SEED_QUESTIONS.map((x,i)=>({id:x.id,category:x.category,text:x.text,type:x.type,unit:x.unit,options:OPTIONS[x.id]?OPTIONS[x.id].join(' / '):'',createdAt:base+i*3600000}));
+  const a={};const t=Date.now();
+  for(const qid in SEED_ANSWERS){SEED_ANSWERS[qid].forEach((o,i)=>{if(o&&o.v!=null&&String(o.v).trim()!=='')a[SCHOOLS[i].id+'__'+qid]={v:String(o.v),note:o.n||'',t};})}
+  ST.answers=a;
 }
 function getAns(sid,qid){return ST.answers[sid+'__'+qid]}
 async function setAns(sid,qid,val,note){
@@ -468,7 +501,7 @@ function viewHome(){
   const recent=[...ST.questions].sort((a,b)=>b.createdAt-a.createdAt).slice(0,3);const NEW=Date.now()-7*864e5;
   const need=ST.questions.map(q=>({q,u:unanswered(q.id).length})).filter(x=>x.u>0&&x.u<SCHOOLS.length).sort((a,b)=>b.u-a.u).slice(0,4);
   const todo=ST.questions.filter(q=>ansCount(q.id)===0).length;const blocks=[...new Set(SCHOOLS.map(s=>s.block))];
-  return `<div class="hero"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="flex:1">${YEARS.find(y=>y.id===ST.year).label} の回答状況</h2><span class="syncpill ${USE_API?'':'syncoff'}"><span class="syncdot"></span>${USE_API?'みんなで共有中':'プレビュー（保存なし）'}</span>${USE_API?`<button class="btn sm" onclick="reloadData()">${I.spark} 最新を取得</button>`:''}</div><p class="muted tiny">学校カードを選ぶと、自校の概要・他校との違い・回答ができます。</p>
+  return `<div class="hero"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="flex:1">${YEARS.find(y=>y.id===ST.year).label} の回答状況</h2><span class="syncpill ${USE_API?'':'syncoff'}"><span class="syncdot"></span>${USE_API?'みんなで共有中':'プレビュー（保存なし）'}</span>${USE_API?`<button class="btn sm" onclick="reloadData()">${I.spark} 最新を取得</button><button class="btn sm" onclick="showDiag()" title="GAS接続診断" style="padding:5px 9px">🔍</button>`:''}</div><p class="muted tiny">学校カードを選ぶと、自校の概要・他校との違い・回答ができます。</p>
     <div class="statgrid"><div class="stat"><b>${SCHOOLS.length}</b><span>参加校</span></div><div class="stat"><b>${tq}</b><span>質問項目</span></div><div class="stat"><b>${CATEGORIES.length}</b><span>カテゴリ</span></div><div class="stat"><b>${rate}%</b><span>全体回答率</span></div><div class="stat"><b>${todo}</b><span>未着手</span></div></div></div>
     ${homeAnalysisHTML()}
     <div class="card"><div class="sec-h"><span class="ic">${I.home}</span>学校を選ぶ（自校の概要・他校との違い）</div>
