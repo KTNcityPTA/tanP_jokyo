@@ -29,7 +29,7 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 input.tx,textarea.tx,select.tx{width:100%;font-family:inherit;font-size:14px;border:1px solid var(--line2);border-radius:9px;padding:9px 11px;background:#fff;color:var(--ink);resize:vertical}
 input.tx:focus,textarea.tx:focus,select.tx:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
 label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0 0 5px}
-.hero{background:linear-gradient(180deg,#fff,#fdfbf6);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}.hero h2{font-size:19px;margin-bottom:3px}
+.hero{background:linear-gradient(180deg,#fff,#fdfbf6);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}.hero h2{font-size:19px;margin-bottom:3px;word-break:keep-all;overflow-wrap:break-word;line-height:1.4}.hero h2{min-width:0}
 .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px;margin-top:14px}
 .stat{background:var(--paper);border-radius:var(--r-s);padding:11px 12px;text-align:center}.stat b{font-family:"Zen Maru Gothic";font-size:23px;font-weight:700;color:var(--navy);display:block;line-height:1.2}.stat span{font-size:11.5px;color:var(--ink2)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:720px){.grid2{grid-template-columns:1fr}}
@@ -84,6 +84,11 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .sc-unit{font-weight:400;opacity:.85}
 .sc-ans{font-size:13px;padding:9px 10px;line-height:1.55;word-break:break-word;min-height:40px}
 .sc-empty{color:var(--ink3);font-style:italic;font-size:12px}
+.sc-card.sc-carried{border-color:#e8d4a8;background:linear-gradient(180deg,#fffdf7,#fff)}
+.sc-carry-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 10px 9px;border-top:1px dashed var(--line)}
+.sc-carry-badge{font-size:10.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:6px;padding:2px 7px}
+.sc-carry-btn{font-family:'Zen Maru Gothic';font-size:11px;font-weight:500;color:#fff;background:var(--teal);border:none;border-radius:7px;padding:4px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
+.sc-carry-btn:hover{background:var(--teal-d)}
 /* flow */
 .flow{max-width:620px;margin:0 auto}
 .flow-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}.flow-top .fs{font-family:"Zen Maru Gothic";font-weight:700;font-size:16px;color:var(--navy)}
@@ -122,208 +127,6 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 <script>
 const SCHOOLS=[{id:"s1",name:"交野みらい学園",short:"みらい学園",block:"１ブロック",type:"小中"},{id:"s2",name:"郡津小学校",short:"郡津小",block:"２ブロック",type:"小"},{id:"s3",name:"倉治小学校",short:"倉治小",block:"２ブロック",type:"小"},{id:"s4",name:"第２中学校",short:"２中",block:"２ブロック",type:"中"},{id:"s5",name:"旭小学校",short:"旭小",block:"３ブロック",type:"小"},{id:"s6",name:"星田小学校",short:"星田小",block:"３ブロック",type:"小"},{id:"s7",name:"第３中学校",short:"３中",block:"３ブロック",type:"中"},{id:"s8",name:"岩船小学校",short:"岩船小",block:"４ブロック",type:"小"},{id:"s9",name:"私市小学校",short:"私市小",block:"４ブロック",type:"小"},{id:"s10",name:"藤が尾小学校",short:"藤が尾小",block:"４ブロック",type:"小"}];
 const CATEGORIES=["基本情報", "会計", "役員・委員", "フェスタ", "会議", "情報・連絡ツール", "広報・個人情報", "加入・行事", "その他・特色"];
-const SEED_QUESTIONS=[{id:"q001",category:"基本情報",text:"ＰＴＡ会長名",type:"未回答",unit:"",order:1},
-{id:"q002",category:"基本情報",text:"メールアドレス",type:"連絡先",unit:"",order:2},
-{id:"q003",category:"基本情報",text:"電話番号",type:"連絡先",unit:"",order:3},
-{id:"q004",category:"基本情報",text:"校長名",type:"一覧",unit:"",order:4},
-{id:"q005",category:"基本情報",text:"教頭名",type:"一覧",unit:"",order:5},
-{id:"q006",category:"基本情報",text:"児童・生徒数",type:"一覧",unit:"",order:6},
-{id:"q007",category:"基本情報",text:"家庭数",type:"一覧",unit:"",order:7},
-{id:"q008",category:"基本情報",text:"ＰＴＡ会員家庭数",type:"数値",unit:"家庭",order:8},
-{id:"q009",category:"会計",text:"会費（協賛金）",type:"記述",unit:"",order:9},
-{id:"q010",category:"会計",text:"会費徴収率",type:"数値",unit:"%",order:10},
-{id:"q011",category:"会計",text:"会費徴収方法",type:"選択式",unit:"",order:11},
-{id:"q012",category:"会計",text:"ＰＴＡ口座の銀行名",type:"選択式",unit:"",order:12},
-{id:"q013",category:"会計",text:"会費の決定方法",type:"選択式",unit:"",order:13},
-{id:"q014",category:"会計",text:"会費納入手数料の負担",type:"選択式",unit:"",order:14},
-{id:"q015",category:"会計",text:"転校時の返金有無",type:"記述",unit:"",order:15},
-{id:"q016",category:"会計",text:"活動費の精算方法",type:"選択式",unit:"",order:16},
-{id:"q017",category:"会計",text:"繰越金",type:"数値",unit:"万円",order:17},
-{id:"q018",category:"会計",text:"収入予算額（繰越金除く）",type:"数値",unit:"万円",order:18},
-{id:"q019",category:"会計",text:"支出予算額（予備費除く）",type:"数値",unit:"万円",order:19},
-{id:"q020",category:"会計",text:"会計監査の回数",type:"数値",unit:"回",order:20},
-{id:"q021",category:"会計",text:"活動保険プラン",type:"選択式",unit:"",order:21},
-{id:"q022",category:"会計",text:"個人情報取扱保険の加入状況",type:"選択式",unit:"",order:22},
-{id:"q023",category:"会計",text:"会長活動費",type:"選択式",unit:"",order:23},
-{id:"q024",category:"会計",text:"周年行事積立金",type:"一覧",unit:"",order:24},
-{id:"q025",category:"会計",text:"決算の内訳等公開状況",type:"記述",unit:"",order:25},
-{id:"q026",category:"会計",text:"会費以外の収入金財源",type:"記述",unit:"",order:26},
-{id:"q027",category:"会計",text:"学校への定例寄贈品",type:"選択式",unit:"",order:27},
-{id:"q028",category:"会計",text:"学校行事への定例支出",type:"記述",unit:"",order:28},
-{id:"q029",category:"会計",text:"児童への定例寄贈品",type:"記述",unit:"",order:29},
-{id:"q030",category:"会計",text:"湯茶代",type:"記述",unit:"",order:30},
-{id:"q031",category:"役員・委員",text:"本部役員数",type:"記述",unit:"",order:31},
-{id:"q032",category:"役員・委員",text:"役員内訳",type:"記述",unit:"",order:32},
-{id:"q033",category:"役員・委員",text:"会長選出方法",type:"選択式",unit:"",order:33},
-{id:"q034",category:"役員・委員",text:"会長選出時期",type:"数値",unit:"",order:34},
-{id:"q035",category:"役員・委員",text:"連続受任制限",type:"選択式",unit:"",order:35},
-{id:"q036",category:"役員・委員",text:"会長のみの役得",type:"記述",unit:"",order:36},
-{id:"q039",category:"役員・委員",text:"役員選出方法",type:"選択式",unit:"",order:39},
-{id:"q040",category:"役員・委員",text:"役員選出時期",type:"数値",unit:"",order:40},
-{id:"q041",category:"役員・委員",text:"役員の主な役得",type:"記述",unit:"",order:41},
-{id:"q044",category:"役員・委員",text:"会計監査選出方法",type:"記述",unit:"",order:44},
-{id:"q045",category:"役員・委員",text:"顧問の選出方法",type:"記述",unit:"",order:45},
-{id:"q046",category:"役員・委員",text:"活動任期",type:"選択式",unit:"",order:46},
-{id:"q047",category:"役員・委員",text:"引継ぎ方法",type:"記述",unit:"",order:47},
-{id:"q048",category:"役員・委員",text:"地区数",type:"記述",unit:"",order:48},
-{id:"q049",category:"役員・委員",text:"地区委員数",type:"記述",unit:"",order:49},
-{id:"q050",category:"役員・委員",text:"地区委員選出方法",type:"記述",unit:"",order:50},
-{id:"q051",category:"役員・委員",text:"地区委員選出時期",type:"一覧",unit:"",order:51},
-{id:"q052",category:"役員・委員",text:"学級委員がなる委員会数",type:"記述",unit:"",order:52},
-{id:"q053",category:"役員・委員",text:"学級委員数",type:"数値",unit:"人",order:53},
-{id:"q054",category:"役員・委員",text:"各種委員会の委員内訳",type:"記述",unit:"",order:54},
-{id:"q055",category:"役員・委員",text:"学級委員選出方法",type:"選択式",unit:"",order:55},
-{id:"q056",category:"役員・委員",text:"学級委員選出時期",type:"記述",unit:"",order:56},
-{id:"q057",category:"フェスタ",text:"フェスタの有無",type:"選択式",unit:"",order:57},
-{id:"q058",category:"フェスタ",text:"フェスタの開催時期",type:"記述",unit:"",order:58},
-{id:"q059",category:"フェスタ",text:"フェスタの主催者",type:"記述",unit:"",order:59},
-{id:"q060",category:"フェスタ",text:"フェスタの予算額",type:"数値",unit:"万円",order:60},
-{id:"q061",category:"フェスタ",text:"地域の方々の招待",type:"記述",unit:"",order:61},
-{id:"q062",category:"フェスタ",text:"フェスタの参加人数",type:"一覧",unit:"",order:62},
-{id:"q063",category:"会議",text:"総会の時期と回数",type:"記述",unit:"",order:63},
-{id:"q064",category:"会議",text:"総会の開催方法",type:"選択式",unit:"",order:64},
-{id:"q065",category:"会議",text:"総会の決議方法",type:"選択式",unit:"",order:65},
-{id:"q066",category:"会議",text:"運営委員会の年間回数",type:"記述",unit:"",order:66},
-{id:"q067",category:"会議",text:"運営委員会の開催方法",type:"選択式",unit:"",order:67},
-{id:"q068",category:"会議",text:"運営委員会の開催日時",type:"一覧",unit:"",order:68},
-{id:"q069",category:"会議",text:"運営委員会の参加人数",type:"数値",unit:"人",order:69},
-{id:"q070",category:"会議",text:"運営委員会の参加者",type:"記述",unit:"",order:70},
-{id:"q071",category:"会議",text:"運営委員会の会議資料の共有方法",type:"記述",unit:"",order:71},
-{id:"q072",category:"会議",text:"運営委員会の議事録の有無",type:"選択式",unit:"",order:72},
-{id:"q073",category:"会議",text:"運営委員会の議事録の公開状況",type:"選択式",unit:"",order:73},
-{id:"q074",category:"会議",text:"運営委員会だより等結果共有方法",type:"記述",unit:"",order:74},
-{id:"q075",category:"会議",text:"役員会の年間回数",type:"数値",unit:"回",order:75},
-{id:"q076",category:"会議",text:"役員会の開催方法",type:"選択式",unit:"",order:76},
-{id:"q077",category:"会議",text:"役員会の開催日時",type:"記述",unit:"",order:77},
-{id:"q078",category:"会議",text:"特筆すべき会議の特色",type:"記述",unit:"",order:78},
-{id:"q079",category:"情報・連絡ツール",text:"データ管理方法",type:"選択式",unit:"",order:79},
-{id:"q080",category:"情報・連絡ツール",text:"データ管理にかかる費用",type:"記述",unit:"",order:80},
-{id:"q081",category:"情報・連絡ツール",text:"保護者等との連絡ツール",type:"選択式",unit:"",order:81},
-{id:"q082",category:"情報・連絡ツール",text:"連絡ツールにかかる費用",type:"選択式",unit:"",order:82},
-{id:"q083",category:"情報・連絡ツール",text:"連絡ツールの学校との共同利用",type:"選択式",unit:"",order:83},
-{id:"q084",category:"情報・連絡ツール",text:"連絡ツールの運用ルール",type:"一覧",unit:"",order:84},
-{id:"q085",category:"情報・連絡ツール",text:"役員と委員の連絡手段方法",type:"選択式",unit:"",order:85},
-{id:"q086",category:"情報・連絡ツール",text:"保護者への連絡方法",type:"記述",unit:"",order:86},
-{id:"q087",category:"広報・個人情報",text:"広報誌の発行",type:"記述",unit:"",order:87},
-{id:"q088",category:"広報・個人情報",text:"ＰＴＡのホームページの有無",type:"選択式",unit:"",order:88},
-{id:"q089",category:"広報・個人情報",text:"ＰＴＡのホームページの管理費用",type:"選択式",unit:"",order:89},
-{id:"q090",category:"広報・個人情報",text:"学校からの個人情報提供同意書取得状況",type:"記述",unit:"",order:90},
-{id:"q091",category:"広報・個人情報",text:"学級名簿の取得状況",type:"選択式",unit:"",order:91},
-{id:"q092",category:"広報・個人情報",text:"広報の顔出し同意の取得状況",type:"記述",unit:"",order:92},
-{id:"q093",category:"加入・行事",text:"加入・継続意思の確認状況",type:"選択式",unit:"",order:93},
-{id:"q094",category:"加入・行事",text:"入学式でのＰＴＡからの話",type:"選択式",unit:"",order:94},
-{id:"q095",category:"加入・行事",text:"入学式の来賓参加",type:"選択式",unit:"",order:95},
-{id:"q096",category:"加入・行事",text:"就学説明会でのＰＴＡからの話",type:"選択式",unit:"",order:96},
-{id:"q097",category:"加入・行事",text:"卒業式でのＰＴＡからの話",type:"選択式",unit:"",order:97},
-{id:"q098",category:"加入・行事",text:"卒業式での来賓参加",type:"選択式",unit:"",order:98},
-{id:"q099",category:"加入・行事",text:"運動会でのＰＴＡからの話",type:"選択式",unit:"",order:99},
-{id:"q100",category:"加入・行事",text:"運動会でのＰＴＡ席の有無",type:"選択式",unit:"",order:100},
-{id:"q101",category:"その他・特色",text:"特筆すべき活動",type:"記述",unit:"",order:101},
-{id:"q102",category:"その他・特色",text:"通学路危険個所への追加シルバーさん派遣",type:"記述",unit:"",order:102},
-{id:"q103",category:"その他・特色",text:"会員協力工夫",type:"記述",unit:"",order:103},
-{id:"q104",category:"その他・特色",text:"放課後デイサービス事業者の出入りと課題",type:"記述",unit:"",order:104},
-{id:"q105",category:"その他・特色",text:"見守り隊さん募集の工夫",type:"記述",unit:"",order:105}];
-const SEED_ANSWERS={"q001":[null,null,null,null,null,null,null,null,null,null],
-"q002":[{v:"katanomiraiPTA.2025@gmail.com"},null,null,null,{v:"asahishogakkoPTA@zenp.jp"},null,null,null,{v:"kisaichi.PTA.2023@gmail.com"},null],
-"q003":[null,null,null,null,null,null,{v:"080-1480-0837"},{v:"090-5055-1214"},{v:"09030349010"},null],
-"q004":[null,{v:"田村 美佐"},null,{v:"西川 幸伸"},null,{v:"佐藤 由香"},{v:"大隅 昌之"},null,{v:"宇野木 邦治"},{v:"北 春城"}],
-"q005":[null,{v:"吉形 俊郎"},{v:"野地岡 裕之"},{v:"伊藤"},null,{v:"木村 裕子"},{v:"中田"},{v:"西口 弘員"},{v:"栗田 康子"},{v:"原 和広"}],
-"q006":[{v:"小学生785人\n中学生340人"},null,{v:"683"},{v:"573"},null,{v:"298"},{v:"481"},{v:"375"},{v:"388"},{v:"313"}],
-"q007":[{v:"小学生在校家庭600家庭\n中学生在校家庭318家庭"},null,{v:"517"},null,null,{v:"232"},{v:"443"},{v:"297"},{v:"295"},{v:"244"}],
-"q008":[null,{v:"372家庭"},null,null,null,null,{v:"435"},{v:"373"},{v:"291"},{v:"203"}],
-"q009":[{v:"年2,500円/家庭"},{v:"年2,640円/家庭"},{v:"年3,000円/家庭"},{v:"年3,000円/家庭"},{v:"年3,600円/家庭"},{v:"年3,000円/家庭"},{v:"年3,600円/家庭"},{v:"年3,600円/家庭"},{v:"年3,600円/家庭"},{v:"年3,600円/家庭"}],
-"q010":[{v:"1"},{v:"0.98"},{v:"7家庭 未納"},null,{v:"2家庭のみ拒否"},null,{v:"1"},{v:"1"},{v:"1"},{v:"非加入の4家庭未納"}],
-"q011":[{v:"振込",n:"会員からの振込み"},{v:"口座引落し"},{v:"口座引落し"},{v:"学校徴収",n:"学校が徴収して振込"},{v:"振込",n:"会員からの振込み"},{v:"現金徴収"},{v:"口座引落し"},{v:"口座引落し"},{v:"口座引落し"},{v:"現金徴収"}],
-"q012":[{v:"関西みらい"},{v:"関西みらい"},{v:"ゆうちょ"},{v:"関西みらい"},{v:"ゆうちょ"},{v:"ＪＡ"},{v:"ゆうちょ"},{v:"ゆうちょ"},{v:"ゆうちょ"},{v:"ＪＡ"}],
-"q013":[{v:"毎年の総会",n:"毎年予算総会"},{v:"会則に記載"},{v:"毎年の総会",n:"毎年予算総会"},{v:"毎年の総会",n:"毎年総会"},{v:"毎年の総会",n:"毎年の予算総会"},{v:"毎年の総会",n:"予算総会"},{v:"毎年の総会",n:"毎年総会"},{v:"毎年の総会",n:"毎年総会"},{v:"会則に記載"},{v:"毎年の総会"}],
-"q014":[{v:"保護者負担",n:"各家庭負担"},{v:"手数料なし",n:"手数料なし(25年度まで)"},null,null,{v:"保護者負担"},{v:"手数料なし",n:"現金回収のため手数料なし"},{v:"手数料なし"},{v:"手数料なし"},{v:"保護者負担"},{v:"手数料なし"}],
-"q015":[{v:"9月30日までの申出は半額返金／それ以降は返金しない"},null,{v:"返金あり"},{v:"返金あり"},{v:"年度による"},null,{v:"返金あり"},{v:"返金しない"},{v:"返金あり"},{v:"返金あり"}],
-"q016":[null,{v:"現金精算"},{v:"現金精算"},{v:"現金精算"},null,null,{v:"現金精算"},{v:"オンライン振込",n:"オンライン振込み"},{v:"現金精算"},{v:"現金精算"}],
-"q017":[{v:"122万円"},{v:"114万円"},{v:"189万円"},{v:"60万"},null,null,{v:"140万円"},{v:"120万円"},{v:"93万円"},{v:"145万円"}],
-"q018":[{v:"247万円"},{v:"110万円"},{v:"224万円"},{v:"174万"},null,null,{v:"150万円"},{v:"140万円"},{v:"111万円"},{v:"102万円"}],
-"q019":[{v:"369万円"},{v:"154万円"},{v:"307万円"},{v:"213万"},null,null,{v:"120万円"},{v:"140万円"},{v:"165万円"},{v:"94万円"}],
-"q020":[{v:"2回"},{v:"2回"},{v:"2回"},{v:"2回"},null,null,{v:"1回"},{v:"1回"},{v:"1回"},{v:"2回"}],
-"q021":[{v:"Aプラン"},null,{v:"Aプラン"},{v:"Aプラン"},null,null,{v:"賠償責任保険（生徒用）"},{v:"Aプラン"},{v:"Aプラン"},{v:"Aプラン"}],
-"q022":[{v:"未加入"},{v:"加入"},null,{v:"未加入"},null,{v:"未加入"},{v:"未加入"},{v:"加入"},{v:"未加入"},{v:"未加入"}],
-"q023":[{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},null,null,{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"}],
-"q024":[{v:"142万円"},{v:"年5万円"},{v:"33万円"},{v:"40万"},null,{v:"年5万円"},{v:"なし"},{v:"年10万円"},{v:"年5万円"},{v:"年10万円"}],
-"q025":[null,null,{v:"総会にて決算報告書として内訳まで公開"},{v:"書面にて各家庭へ配布"},null,{v:"オンライン公開"},{v:"書面にて各家庭へ配布"},{v:"ホームページで明細まで公開"},{v:"総会にて決算報告書として内訳まで公開"},{v:"総会にて決算報告書として内訳まで公開"}],
-"q026":[{v:"アルミ缶、古紙回収、ベルマーク"},{v:"ベルマーク"},{v:"なし"},{v:"なし"},null,null,{v:"なし"},{v:"アルミ缶回収売払い金\n年12万円"},{v:"利息など"},{v:"古紙回収"}],
-"q027":[{v:"年度による"},{v:"図書",n:"図書の本"},null,null,{v:"年度による"},{v:"なし"},{v:"ボール",n:"ボール、他"},{v:"ボール"},{v:"年度による"},{v:"なし"}],
-"q028":[{v:"入学式、終了式舞台生花。花束"},{v:"入学式/卒業式装飾\n離任式花束\n運動会シルバー人材派遣費"},{v:"入学式、卒業式の祝品など"},{v:"入学・卒業式の舞台生花"},{v:"入学式、卒業式の会場生花（R8より造花に変更予定）、年1回の学校PTA合同人権講演会実施費用など"},null,{v:"入学式・卒業式の会場生花"},{v:"入学式、卒業式の会場生花"},{v:"入学式、離任式、卒業式の生花、記念品など"},{v:"入学・卒業式の舞台生花、卒業式の担任への花束"}],
-"q029":[{v:"運動会記念品、茶話会、体育大会記念品、卒業式の花"},{v:"運動会記念品\n卒業式紅白饅頭"},{v:"運動会記念品、卒業式コサージュ、紅白饅頭"},{v:"卒業証書入れ、入卒業式に紅白饅頭と花束"},{v:"6年生お別れ会での記念品（R7はシャーペン）、卒業式でのコサージュ補助など"},null,{v:"卒業式に紅白饅頭と花"},{v:"卒業証書入れ、入卒業式に紅白饅頭と花"},{v:"入学式記念品、卒業式コサージュ、卒業証書筒"},{v:"入学・卒業式の紅白饅頭、卒業式の証書入れとコサージュ、運動会の参加賞(クラスにボール)"}],
-"q030":[{v:"来賓時のお茶"},{v:"2025年度途中で廃止"},{v:"来賓時のお茶、行事時ボランティアへのお茶"},{v:"委員会時の出席者とﾌｪｽﾃｨﾊﾞﾙ時地域の方やお手伝い頂いた方へお茶を配布"},{v:"式典での来賓や、まつりでの校区福祉委員会さん・委員さん・ボランティアさんにペットボトルのお茶を配付"},null,{v:"委員会時の出席者とﾌｪｽﾃｨﾊﾞﾙ時地域の方やお手伝い頂いた方へお茶を配布"},{v:"地域の方用に支出あり"},{v:"なし"},{v:"入学・卒業式の来賓のお茶、行事での校区福祉委員さんへのお菓子とお茶"}],
-"q031":[{v:"10名"},{v:"16名"},{v:"10名"},{v:"7名"},{v:"7名"},{v:"6名"},{v:"7名"},{v:"10"},{v:"7人"},{v:"10名"}],
-"q032":[{v:"会長1名、副会長4名、書記3名、会計2名"},{v:"会長1名、副会長3家庭(実働5名)、書記2名、会計2名(出納、会費)、企画8名(会計監査、選挙管理委員、ふれあい、ベルマーク)"},{v:"会長1名、副会長3名（内副2,外副1） 書記2名、会計2名、会計監査2名"},{v:"会長1名、副会長2名、書記1名、会計1名、会計監査2名"},{v:"会長1名、副会長2名、書記1名、会計1名、会計監査2名"},{v:"会長1名、副会長2名、書記1名、会計1名、会計監査1名"},{v:"会長1名、副会長2名、書記1名、会計1名、会計監査2名"},{v:"会長、副会長2名、会計2名、書記2名、会計監査2名、教職員から1名"},{v:"会長1名、副会長2名、書記1名、会計1名、会計監査2名"},{v:"会長1名、副会長2名、書記2名、会計2名、会計監査1名、地区長1名、選管長1名"}],
-"q033":[{v:"立候補→指名委員",n:"立候補→指名委員による指名活動"},{v:"立候補"},{v:"立候補→指名委員",n:"立候補、指名委員による指名活動"},{v:"立候補→指名委員",n:"立候補→指名委員による指名活動"},{v:"立候補→指名委員",n:"立候補→指名委員による指名活動"},{v:"立候補→再募集"},{v:"立候補→指名委員",n:"立候補→ｸﾗｽ代表及び役員による指名活動"},{v:"立候補→再募集",n:"立候補→再募集→輪番選出区の選出対象者からくじ"},{v:"立候補"},{v:"立候補→指名委員",n:"立候補→指名委員会による指名活動"}],
-"q034":[{v:"10月〜12月頃"},{v:"9～11月"},{v:"11月〜12月頃"},{v:"11・12月"},{v:"11月"},{v:"12月に候補者決定"},{v:"11・12月"},{v:"11月"},{v:"11月"},{v:"11月"}],
-"q035":[{v:"なし"},{v:"2年"},null,{v:"なし"},null,{v:"なし"},{v:"なし"},{v:"なし"},{v:"3年未満"},null],
-"q036":[{v:"全ての委員において永久免除\n運動会での記念品贈呈"},null,null,{v:"全ての委員において永久免除"},null,null,{v:"入学式・卒業式は最前列に着席"},{v:"卒業式での最前列席\n卒業式、入学式で、運動会で、児童に記念品贈呈として、壇上に上がれる\n運動会で児童に向けてPTA会長のお話ができる"},{v:"卒業式、入学式で、児童に記念品贈呈できる"},null],
-"q039":[{v:"立候補→指名委員",n:"立候補→指名委員による指名活動"},{v:"立候補→再募集"},{v:"立候補→指名委員",n:"立候補、指名委員による指名活動"},{v:"立候補→指名委員",n:"立候補→指名委員による指名活動"},{v:"立候補→指名委員",n:"立候補→指名委員による指名活動"},{v:"立候補→再募集"},{v:"立候補→指名委員",n:"立候補→ｸﾗｽ代表及び役員による指名活動"},{v:"立候補",n:"各地区から立候補"},{v:"立候補"},{v:"立候補"}],
-"q040":[{v:"10月〜12月頃"},{v:"9～11月"},{v:"11月〜12月頃"},{v:"11月〜12月頃"},{v:"9月～"},null,{v:"11月〜12月頃"},{v:"1月"},{v:"11月"},{v:"11月"}],
-"q041":[{v:"学年委員の永久免除\n地区委員の1回スキップ\n運動会、体育大会、合唱コンクールをPTA本部テントから観覧。入学式・卒業式来賓として出席。"},null,null,{v:"同一家庭全員が以降の役員・委員免除\n合唱祭で生徒席より観賞\n入学式、卒業式が来賓席で見れる"},{v:"運動会で本部席や来賓席から観覧、撮影が出来る\n旭小まつりに参加できる（一般保護者は基本入れない）\nポイントが高い（会長・副会長は「永久免除」）"},{v:"一度本部役員を経験すると今後PTAの役割りが順番で回ってくることがなくなる"},{v:"本部役員経験者は、本部役員・委員の永久免除"},{v:"学級委員と地区委員を永久免除\n運動会でPTA席あり"},{v:"学年委員、地区委員の免除\n卒業式、前列に座れる"},{v:"学級委員と地区員が免除"}],
-"q044":[{v:"前年度会計"},null,null,{v:"立候補→指名委員による指名活動"},{v:"立候補→指名委員による指名活動"},{v:"立候補→再募集"},{v:"立候補→ｸﾗｽ代表及び役員による指名活動"},{v:"前年度会計"},{v:"学年委員長の中から決定(立候補)"},{v:"立候補"}],
-"q045":[{v:"会長より指名→運営委員会にて可決"},null,null,{v:"なし"},{v:"顧問とはなんですか？"},null,null,{v:"顧問制度なし"},{v:"顧問は基本設けていない"},null],
-"q046":[{v:"4月〜3月"},null,null,{v:"4月〜3月",n:"4月～3月"},{v:"4月〜3月",n:"４月～３月"},null,{v:"4月〜3月",n:"4月～3月"},{v:"4月〜3月",n:"４月～３月"},{v:"4月〜翌4・5月頃",n:"4〜4,5月頃"},{v:"4月〜3月",n:"４月～３月"}],
-"q047":[{v:"2〜3月間で引き継ぎ会、4月からの1学期間はLINE Worksや作業等サポート"},{v:"2月、3月対面引き継ぎ。LINEでのサポート。各役職での個別サポート。"},{v:"2月、3月対面引き継ぎ。LINEでのサポート。各役職での個別サポート。"},{v:"3月の引継ぎ、LINEによるサポート"},{v:"3月の対面引継ぎ会、LINEによる個別サポート、PTA共通情報伝達アプリ「stock」での情報共有、メッセージ機能など"},null,{v:"3月の引継ぎ、LINEによるサポート"},{v:"3月の引継ぎ会\n無期限のグループLINEによるサポート"},{v:"2月頃〜4,5月頃まで、出来るだけ一緒に活動し引き継ぎを行う"},{v:"LINEグループによるサポート"}],
-"q048":[{v:"10地区"},{v:"4地区"},null,{v:"2地区"},{v:"12地区"},{v:"13地区"},null,{v:"5地区"},{v:"2地区"},{v:"7地区"}],
-"q049":[{v:"地区長、副地区長、フェスタ、指名委員、CS。合計約50人"},{v:"地区委員でとりまとめの為、数値として未取得"},null,{v:"地区委員長2人、委員18名"},{v:"12人"},{v:"13人"},null,{v:"32人"},{v:"17名（私市地区14名、私市山手地区3名）"},{v:"地区長1名、副地区長1名、地区委員29名(R8)"}],
-"q050":[{v:"各地区によって異なる"},{v:"指名活動"},null,{v:"くじ"},{v:"前年度地区委員による指名活動"},{v:"5年生の家庭→6年生→4年生→3年生→2年生→1年生の順に優先順位がある。"},null,{v:"高学年児童家庭の輪番"},{v:"年齢の高い児童家庭の順だか、下の兄弟姉妹および未就学児の有無を考慮して候補者リスト作成"},{v:"指名またはクジ"}],
-"q051":[{v:"10月〜2月頃"},null,null,{v:"1～2月"},{v:"11月～"},null,null,{v:"12月"},{v:"11月"},{v:"例年10～11月選出 12月決定"}],
-"q052":[{v:"小学校3委員会\n中学校1委員会"},null,null,{v:"2委員会"},{v:"学級委員とは？学年による選出数が決まっているものという意味でしたら、3です"},{v:"学級活動委員のみ。指名委員、広報委員、保体文化委員、環境委員は廃止。"},{v:"1（クラス代表）"},{v:"3委員会"},null,null],
-"q053":[{v:"48人\n9人"},{v:"学年3名～若干名"},null,{v:"各クラス3名"},{v:"30人"},{v:"学年で2〜3名"},{v:"各クラス2人"},{v:"24人"},{v:"50人"},{v:"13人"}],
-"q054":[{v:"小学\n1学年につき学年委員4名、専門委員4名\n中学\n1学年につき学年委員3名"},{v:"学年委員のみ"},{v:"学年委員、専門委員（広報、企画、環境）"},{v:"広報委員23人、環境委員26人"},{v:"（イベント委員3名、広報委員1名、指名委員1名）×6学年＝30人"},{v:"学級委員会のみ。"},{v:"クラス代表"},{v:"広報委員会12、学年委員会6、地域交流委員会6"},{v:"学年委員長6名、他イベント委員、環境委員、広報委員に分かれて活動"},{v:"学年委員7名、学年委員長6名"}],
-"q055":[{v:"立候補→くじ"},{v:"立候補→くじ"},{v:"立候補",n:"立候補→"},{v:"立候補→くじ"},{v:"立候補→指名",n:"立候補→本部役員による指名活動"},{v:"立候補→くじ",n:"立候補→くじ引き"},{v:"立候補→くじ"},{v:"立候補→くじ"},{v:"立候補→くじ"},{v:"立候補→くじ"}],
-"q056":[{v:"4月の懇談会前後"},{v:"4月懇談時/26年度は25年度中に立候補募集"},{v:"4月"},{v:"4月中"},{v:"4月始業式後すぐ"},{v:"2月"},{v:"4月"},{v:"年度当初の参観後"},{v:"年度当初の参観後"},{v:"学年末の参観後"}],
-"q057":[{v:"あり"},{v:"あり"},{v:"あり",n:"ふれあいまつり"},{v:"あり"},{v:"あり",n:"旭小まつり"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"なし"},{v:"あり"}],
-"q058":[{v:"11月のイベントやテスト期間に被らない土曜日"},{v:"11月のイベントに被らない土曜日"},{v:"11月"},{v:"10月の土曜参観の午後"},{v:"11月（R8は50周年記念行事と合わせて10／31）"},{v:"11月"},{v:"11月"},{v:"11月第2土曜日午後"},null,{v:"7月末"}],
-"q059":[{v:"R7年は本部役員を中心に遊びコーナーはフェスタ委員会"},{v:"PTA(企画担当)"},{v:"PTA、校区福祉委員会、倉治ワークセンター、ボランティアの方の協力"},{v:"PTA"},{v:"PTA（校内の別団体「図書ボラ」さんと、校区福祉委員会さんにブースのいくつかをお手伝いいただく形）"},{v:"PTA"},{v:"三中PTA"},{v:"PTAと校区福祉委員会"},null,{v:"校区福祉委員会"}],
-"q060":[null,{v:"30万円"},null,{v:"40万"},null,null,{v:"20万円"},{v:"6万円"},null,null],
-"q061":[{v:"在校生と家族"},{v:"在校生と家族"},null,{v:"あり"},{v:"スタッフとしてお願いするのみ"},{v:"なし"},null,null,null,null],
-"q062":[{v:"1800人"},{v:"242名(保護者含む)"},null,null,{v:"245名（児童のみ）"},null,{v:"1500人"},{v:"500人"},null,null],
-"q063":[{v:"R7年は6月に予算総会、12月に臨時紙面総会、3月に決算総会"},{v:"1回/5月"},null,{v:"5月に1回"},{v:"年度によるがR6は3月に決算予算総会、R7は3月に決算総会・4月に予算総会"},null,{v:"5月、年度末（2回）"},{v:"5月に1回"},{v:"5月に1回"},{v:"5月に1回"}],
-"q064":[{v:"対面・書面の併用",n:"予算、決算は対面、臨時は書面"},{v:"書面"},null,{v:"書面"},{v:"対面",n:"年度によるがR7は対面"},null,{v:"書面"},{v:"書面"},{v:"書面"},{v:"書面"}],
-"q065":[{v:"書面",n:"欠席者は事前委任状を紙面で提出。紙面総会は書面回収"},{v:"書面"},null,{v:"書面",n:"書面回収"},{v:"書面",n:"欠席者（R７はほぼ100％）は事前に委任状をQRコードで提出"},{v:"書面・WEBの併用",n:"書面またはWEB"},{v:"書面",n:"書面回収"},{v:"書面",n:"書面回収"},{v:"WEB"},{v:"WEB"}],
-"q066":[{v:"8回"},{v:"6回(5,7,9,11,12,2月)"},null,{v:"10回"},{v:"隔月1回、全6回"},{v:"6回"},{v:"5回"},{v:"10回"},{v:"6回"},{v:"7回"}],
-"q067":[{v:"対面＋リモート",n:"対面と希望者はリモート"},{v:"対面",n:"学校にて対面"},{v:"対面"},{v:"対面",n:"対面のみ"},{v:"対面",n:"対面のみ"},{v:"対面",n:"学校にて対面"},{v:"対面",n:"対面のみ"},{v:"対面",n:"対面のみ"},{v:"対面",n:"対面のみ"},{v:"対面",n:"対面のみ"}],
-"q068":[{v:"第3金曜日19時〜"},{v:"土曜10時～"},{v:"第三木曜日9時半〜"},{v:"土曜の午前中"},{v:"第3土曜午後"},{v:"第4水曜"},{v:"土曜午前"},{v:"第3土曜日午前"},{v:"日曜日午前中"},{v:"第3日曜日午前"}],
-"q069":[{v:"34人"},{v:"28名"},{v:"22名"},{v:"17人"},{v:"18名程度"},null,{v:"15人"},{v:"22人"},{v:"14人"},{v:"17名"}],
-"q070":[{v:"役員、各委員長、校長、副校長、教頭"},{v:"校長、本部、地区委員長4名、学年委員長6名"},{v:"校長1、教頭1、 本部10、学年長6、専門委員長3、 ,地区委員長1"},{v:"本部役員、学年委員長、広報/環境委員長、地区委員長2名、校長、教頭"},{v:"役員7、委員長4、副委員長4、校長1、教頭1、その他会計監査などの先生1程度"},{v:"役員、校長、学活委員長、地区委員長"},{v:"役員、ｸﾗｽ代表（各学年2人）、学校長、教頭"},{v:"役員、委員長、校長、教頭"},{v:"役員、学年長、地区委員長、校長"},{v:"役員、学年長、校長、教頭"}],
-"q071":[{v:"基本は紙配布、事前にWorksで共有"},{v:"Worksで共有"},{v:"紙配布"},{v:"紙"},{v:"次第のみ紙配付、事前にStockで共有、必要に応じてプロジェクターなど使用"},{v:"紙配布"},{v:"紙、LINE"},{v:"次第のみ紙配布、\n資料は、プロジェクター投影及び次第QRからGoogleドライブ"},{v:"紙媒体で配布"},{v:"紙媒体で配布"}],
-"q072":[{v:"あり"},{v:"あり"},null,{v:"なし"},{v:"なし"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり",n:"あり"}],
-"q073":[{v:"あり"},{v:"なし"},null,null,{v:"なし"},{v:"なし"},{v:"一部のみ共有",n:"役員・ｸﾗｽ代表で共有"},{v:"あり"},{v:"あり",n:"あり(毎回ではない)"},{v:"あり",n:"あり"}],
-"q074":[{v:"マチコミでPTAだより配信"},{v:"マチコミ"},{v:"紙配布 （運営だより）"},{v:"PTAだより"},{v:"マチコミで運営委員会ニュース配信"},{v:"なし"},{v:"なし"},{v:"マチコミで運営委員会だより配布"},{v:"マチコミで議事録を配信"},{v:"マチコミで配信"}],
-"q075":[{v:"R7年は毎週水曜"},{v:"なし"},{v:"10〜11"},{v:"11回"},{v:"毎月1回、全12回程度"},{v:"10回"},{v:"10回ほど"},{v:"5～10回程度"},{v:"6回"},{v:"7回"}],
-"q076":[{v:"対面",n:"対面のみ"},null,{v:"対面",n:"基本対面"},{v:"対面"},{v:"対面",n:"対面のみ"},{v:"対面＋オンライン",n:"対面およびオンライン"},{v:"対面＋オンライン",n:"対面、オンライン"},{v:"対面＋オンライン",n:"対面orオンライン"},{v:"対面"},{v:"対面",n:"対面のみ"}],
-"q077":[{v:"毎週水曜午前中"},null,{v:"第一土曜日9時〜"},{v:"運営委員会の前の時間"},{v:"毎月第三土曜（運営委員会と同日の午前を含む）"},{v:"運営委員会前および必要に応じて"},{v:"運営委員会前、同日、他必要に応じて"},{v:"運営委員会と同日直前"},{v:"運営委員会の開催前"},{v:"運営委員会と同日、開催前"}],
-"q078":[{v:"グループLINEを活用しつつ対面で話合い。"},{v:"Woksで各グループと共有"},{v:"グループLINE、対面"},null,{v:"必要な相談事項があれば、会議日に限らずLINEやStockで随時共有"},{v:"特記なし"},{v:"ｸﾗｽ代表は各学年2人代表で出席してもらい、各学年で情報を共有してもらった。"},{v:"スマホで読みやすく、文字数の減らした運営委員会だよりで、読み手に寄り添った運営を実施"},{v:"各委員長には、Webアンケートより事前に活動報告・活動予定を入力してもらって効率化を図っている"},{v:"グループLINEを活用し、議題の集約や事前調整を行うことで、会議時間の短縮に努める"}],
-"q079":[{v:"USB"},{v:"USB"},{v:"USB"},{v:"USB"},{v:"アプリ「Stock」"},{v:"USB",n:"USBメモリ"},{v:"Googleドライブ・USB併用",n:"Googleﾄﾞﾗｲﾌﾞ、USB"},{v:"Googleドライブ"},{v:"Googleドライブ"},{v:"USB"}],
-"q080":[null,null,null,null,{v:"9790円"},{v:"なし"},null,{v:"無料"},{v:"無料"},null],
-"q081":[{v:"マチコミ",n:"マチコミ、メール、学級便"},{v:"マチコミ",n:"マチコミ、手紙(個人宛)"},null,{v:"マチコミ",n:"マチコミ、手紙"},{v:"マチコミ",n:"マチコミ・PTAメール"},{v:"マチコミ"},{v:"まなびポケット",n:"まなびポケット、電話"},{v:"マチコミ"},{v:"マチコミ"},{v:"マチコミ"}],
-"q082":[{v:"無料",n:"無料。学級便のみ紙、封筒代"},{v:"印刷費のみ"},null,{v:"無料",n:"なし"},{v:"無料"},{v:"無料"},null,{v:"無料"},{v:"無料"},{v:"無料"}],
-"q083":[{v:"単独",n:"基本的には単独。"},{v:"共同利用",n:"共通利用"},null,{v:"共同利用"},{v:"共同利用",n:"共同利用 R７より一部単独作業許可"},{v:"共同利用"},{v:"共同利用"},{v:"共同利用"},{v:"共同利用"},{v:"単独",n:"共同利用\nR8より単独"}],
-"q084":[{v:"本部内では事前に共有"},{v:"教頭に事前連絡"},null,null,{v:"Stockにて周知"},{v:"教頭による検閲"},{v:"なし"},{v:"特になし"},{v:"基本的には書記より配信"},{v:"書記より配信"}],
-"q085":[{v:"LINE WORKS",n:"LINEWorks、グループLINE"},{v:"LINE WORKS",n:"Works"},{v:"グループLINE"},{v:"グループLINE"},{v:"グループLINE",n:"Stockまたは委員長・副委員長とのグループLINE"},{v:"グループLINE",n:"LINE"},{v:"グループLINE"},{v:"グループLINE"},{v:"グループLINE"},{v:"グループLINE"}],
-"q086":[{v:"マチコミ、メール、学級便"},{v:"マチコミ、手紙(個人宛)"},{v:"マチコミ、手紙、先生→子供便"},{v:"マチコミ、手紙"},{v:"マチコミ、手紙"},{v:"マチコミ、手紙、またはその両方"},{v:"まなびポケット、手紙"},{v:"マチコミ、手紙"},{v:"マチコミ、手紙"},{v:"マチコミ、手紙"}],
-"q087":[{v:"年1回（先生紹介）"},{v:"年1回"},{v:"令和7年2回。新聞1（ふれあいまつりの内容）"},{v:"年2回"},{v:"年度による（R7は学期ごと発行の年3回、PTA活動のPRを主目的とする）"},{v:"なし"},{v:"なし"},{v:"年2回（先生紹介、活動報告）"},{v:"年1回（先生紹介）"},null],
-"q088":[{v:"学校HPにPTA枠あり",n:"学校HPにPTA枠あり"},{v:"学校HPにPTA枠あり",n:"学校HP"},{v:"学校HPにPTA枠あり",n:"学校のホームページ、マチコミ"},{v:"なし"},{v:"学校HP内にあり（運用なし）",n:"学校HPの中にPTAの枠のみあり、現在は運用なし"},{v:"なし"},{v:"なし"},{v:"独自HPあり",n:"あり"},{v:"なし"},{v:"なし"}],
-"q089":[{v:"無料"},{v:"無料"},null,null,{v:"無料"},null,null,{v:"無料"},null,null],
-"q090":[{v:"なし"},{v:"就学説明会時にPTAが直接回収"},null,{v:"取得しない"},{v:"学校からはなし 毎年年度はじめにプリントで（QRコード）でPTAから直接回収"},{v:"入学時のPTA加入時にPTAが取得"},{v:"基本的には学校側から取得していない。ただし、クラス代表選出の際に氏名・電話番号のみ各個人から任意で取得"},{v:"入学時に取得"},{v:"就学説明会時にPTAが直接回収"},null],
-"q091":[{v:"なし"},{v:"あり"},null,{v:"紙媒体で提供あり"},{v:"なし"},{v:"なし",n:"不可"},{v:"なし"},{v:"紙媒体で提供あり",n:"紙媒体で提供有"},{v:"紙媒体で提供あり"},null],
-"q092":[{v:"なし"},{v:"なし"},{v:"なし。顔出しNG 。特定できない写真を使っての広報作り。令和7年度は、広報さんの案で校内での新聞づくり、はりだし。（運営委員会での話し合い、校長先生の許可OKあり）"},{v:"入学時取得"},{v:"許可はとらず、全員一律に「個人が特定できないような写真」のみ広報活動に使う。）その旨は上記プリントで通知）"},{v:"PTA加入時に不可の方のみ申告制"},{v:"なし"},{v:"入学時取得、ホームページなどから変更可能"},{v:"広報誌発行前に、マチコミにて確認。"},null],
-"q093":[{v:"毎年確認",n:"毎年全家庭"},{v:"入学時のみ",n:"入学時のみ加入届\n(途中脱会可)"},{v:"入学時のみ",n:"入学時のみ加入届"},{v:"確認なし",n:"確認していない"},{v:"確認なし（みなし入会）",n:"未実施（１月就学説明会時、登校班作業のための名簿提出をもってみなし入会としている）"},{v:"入学時のみ",n:"入学時のみ加入届"},{v:"確認なし",n:"確認していない"},{v:"入学時のみ",n:"入学時のみ加入届"},{v:"入学時のみ",n:"入学時のみ加入届"},{v:"入学時のみ",n:"入学時のみ加入届"}],
-"q094":[{v:"あり",n:"入学式後に保護者に向けてあり"},{v:"あり"},null,{v:"なし"},{v:"なし"},{v:"なし"},{v:"あり",n:"式終了後に５分程あり"},{v:"あり"},{v:"あり"},{v:"なし"}],
-"q095":[{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり",n:"あり（会長・副会長）"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"}],
-"q096":[{v:"あり"},{v:"あり"},{v:"あり"},{v:"なし"},{v:"あり"},{v:"あり"},{v:"なし"},{v:"あり"},{v:"あり"},{v:"あり"}],
-"q097":[{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"}],
-"q098":[{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり",n:"あり（会長・副会長）"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"},{v:"あり"}],
-"q099":[{v:"なし"},{v:"なし"},{v:"あり",n:"会長挨拶"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"なし"},{v:"あり"},{v:"なし"},{v:"あり"}],
-"q100":[{v:"あり"},{v:"なし"},{v:"あり"},{v:"あり"},{v:"あり",n:"部分的にあり"},{v:"なし",n:"なし。来賓受付業務あり"},{v:"令和８年より設ける予定",n:"令和８年より設ける予定"},{v:"あり"},{v:"なし"},{v:"なし"}],
-"q101":[{v:"・アルミ缶回収や古紙回収、ベルマーク等の収益からの寄付・学園フェスタ・清掃活動。「在校する子どもたちのためにできることをしよう」を心がけて活動。"},{v:"例年学年委員を初回参観・懇談会時に募集していたが、PTA本部役員選挙活動と同時期に実施(クラス毎ではなく学年で固定に変更)"},null,null,{v:"・保護者による授業内読み聞かせ活動をしている「図書ボランティア」と随時連携し、一部予算も補助（R7はパネルシアター・ブラックライト代を環境整備費としてPTAが負担）"},null,{v:"三中校区フェスの開催"},{v:"・アルミ缶回収の売払い金による図書寄贈（年80冊）\n・有志による特別委員会を募り、毎年、特別イベント"},null,{v:"・交野市にぎわいフェスタのPTAブースで使用可能な金券の全児童配布"}],
-"q102":[null,null,null,null,null,null,null,null,{v:"令和4年度まで実施"},null],
-"q103":[null,null,null,null,null,{v:"クオカードを都度配っている"},null,null,null,null],
-"q104":[null,null,null,null,null,null,null,{v:"きているが、学校前公園横に下校時刻にお迎えに来ていて、近隣等からの苦情はない"},null,null],
-"q105":[null,null,null,null,null,{v:"生徒に「いつもありがとう」ポスターを書いてもらい、色々な場所に貼ることで、増やしている"},null,null,null,null]};
 const GCOL=['#30496a','#3a9d7e','#e0883b','#7a6ca8','#c75f6b','#4a8db5','#8a9a3c','#b5773a','#5a8a7a','#9a5a8a'];
 const CATCOL={'基本情報':'#30496a','会計':'#3a9d7e','役員・委員':'#e0883b','フェスタ':'#7a6ca8','会議':'#c75f6b','情報・連絡ツール':'#4a8db5','広報・個人情報':'#8a9a3c','加入・行事':'#b5773a','その他・特色':'#5a8a7a'};
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
@@ -341,7 +144,7 @@ async function gas(action,payload){const r=await fetch(API_URL,{method:'POST',he
 async function gasGet(params){const u=API_URL+(API_URL.indexOf('?')>=0?'&':'?')+new URLSearchParams(params).toString();const r=await fetch(u);return r.json()}
 async function sGet(k){if(USE_API){try{const r=await gasGet({action:'getKV',key:k});return (r&&r.ok)?(r.value==null?null:r.value):null}catch(e){return null}}if(HASSTORE){try{const r=await window.storage.get(k,true);return r?JSON.parse(r.value):null}catch(e){return null}}return MEM[k]!==undefined?MEM[k]:null}
 async function sSet(k,v){if(USE_API){try{await gas('setKV',{key:k,value:v});return true}catch(e){return false}}if(HASSTORE){try{const r=await window.storage.set(k,JSON.stringify(v),true);return !!r}catch(e){console.error(e);return false}}MEM[k]=v;return true}
-async function reloadData(){ST.loading=true;render();await loadYear();ST.loading=false;render();toast('最新の回答を取得しました');maybeAnalyze()}
+async function reloadData(){ST.loading=true;render();await loadYear();ST.loading=false;render();toast('最新の回答を取得しました')}
 // GAS疎通チェック（デバッグ用）
 async function checkGasConnection(){
   try{
@@ -354,22 +157,8 @@ async function showDiag(){
   const r=await checkGasConnection();
   alert('【GAS接続診断】\n'+(r.ok?'✅ ':'❌ ')+r.msg+'\n\nGAS URL:\n'+API_URL);
 }
-/* ===== 選択肢（標準語彙）。スプレッドシートに options があればそちらを優先 ===== */
-const OPTIONS={
-q011:['口座引落し','振込','現金徴収','学校徴収'],q012:['ゆうちょ','関西みらい','ＪＡ'],q013:['毎年の総会','会則に記載'],
-q014:['手数料なし','保護者負担'],q016:['現金精算','オンライン振込'],q021:['Aプラン','賠償責任保険（生徒用）'],
-q022:['未加入','加入'],q023:['なし'],q027:['年度による','なし','ボール','図書'],
-q033:['立候補→指名委員','立候補','立候補→再募集'],q035:['なし','2年','3年未満'],q039:['立候補→指名委員','立候補','立候補→再募集'],
-q046:['4月〜3月','4月〜翌4・5月頃'],q055:['立候補→くじ','立候補','立候補→指名'],
-q057:['あり','なし'],q064:['書面','対面・書面の併用','対面'],q065:['書面','WEB','書面・WEBの併用'],
-q067:['対面','リモート','対面＋リモート'],q072:['あり','なし'],q073:['あり','なし','一部のみ共有'],q076:['対面','対面＋オンライン'],
-q079:['USB','Googleドライブ','アプリ「Stock」','Googleドライブ・USB併用'],q081:['マチコミ','まなびポケット'],
-q082:['無料','印刷費のみ'],q083:['共同利用','単独'],q085:['グループLINE','LINE WORKS'],
-q088:['独自HPあり','学校HPにPTA枠あり','なし'],q089:['無料'],q091:['なし','紙媒体で提供あり','あり'],
-q093:['入学時のみ','確認なし','毎年確認','確認なし（みなし入会）'],
-q094:['あり','なし'],q095:['あり','なし'],q096:['あり','なし'],q097:['あり','なし'],q098:['あり','なし'],q099:['あり','なし'],q100:['あり','なし']};
 function splitOpts(s){return String(s||'').split('/').map(x=>x.trim()).filter(Boolean)}
-function optsOf(qid){const q=ST.questions.find(x=>x.id===qid);if(q&&q.options&&String(q.options).trim())return splitOpts(q.options);return OPTIONS[qid]||[]}
+function optsOf(qid){const q=ST.questions.find(x=>x.id===qid);if(q&&q.options&&String(q.options).trim())return splitOpts(q.options);return []}
 function isBinary(qid){const o=optsOf(qid).map(nrm);return o.length===2&&o.indexOf('あり')>=0&&o.indexOf('なし')>=0}
 function isChoice(qid){const q=ST.questions.find(x=>x.id===qid);return !!(q&&q.type==='選択式'&&optsOf(qid).length)}
 function selVals(v){return String(v==null?'':v).split(/\s*\/\s*/).map(x=>x.trim()).filter(Boolean)}
@@ -406,69 +195,138 @@ function renderChoiceViz(q,an){
   return `<div class="sec-h"><span class="ic">${I.chart}</span>${head}</div>${cards||'<p class="muted tiny">まだ回答がありません。</p>'}${an.un.length?unGroup(an.un):''}`;
 }
 const YEARS=[{id:'R8',label:'令和8年度（現在）'},{id:'R9',label:'令和9年度（新年度）'}];
-const ST={year:'R8',questions:[],answers:{},summaries:{},aigroups:{},homeAnalysis:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,analyzing:false,loading:true,fromSchool:null,schoolEditing:null};
+const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,schoolReturnQid:null};
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
-function startSchoolEdit(qid){ST.schoolEditing=qid;render();setTimeout(()=>{const el=document.getElementById('sch-ed-'+qid);if(el){el.focus();const r=document.getElementById('sce-'+qid);if(r)r.scrollIntoView({block:'center',behavior:'smooth'})}},50)}
-function cancelSchoolEdit(){ST.schoolEditing=null;render()}
+function startSchoolEdit(qid){
+  const y=window.scrollY||window.pageYOffset||0;
+  ST.schoolEditing=qid;
+  render({keepScroll:true});
+  setTimeout(()=>{
+    window.scrollTo(0,y); // 念のため位置を固定
+    const el=document.getElementById('sch-ed-'+qid);
+    if(el)el.focus();
+  },20);
+}
+function cancelSchoolEdit(){const y=window.scrollY||0;ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
+async function confirmCarry(ev,sid,qid){
+  if(ev)ev.stopPropagation();
+  const y=window.scrollY||0;
+  const prev=ST.prevAnswers[sid+'__'+qid];
+  if(!prev){toast('前年度のデータが見つかりません');return}
+  await setAns(sid,qid,prev.v,prev.note||'');
+  render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);
+  toast('今年度の回答として確定しました');
+}
 async function saveSchoolEdit(sid,qid){
+  const y=window.scrollY||0;
   const v=isChoice(qid)?(readSel('sch_'+qid)||''):((document.getElementById('sch-ed-'+qid)||{}).value||'');
   const n=(document.getElementById('sch-edn-'+qid)||{}).value||'';
-  await setAns(sid,qid,v,n);ST.schoolEditing=null;render();toast(v.trim()?'回答を保存しました':'回答を削除しました');
+  await setAns(sid,qid,v,n);ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);toast(v.trim()?'回答を保存しました':'回答を削除しました');
 }
 async function seedIfNeeded(){
-  if(USE_API)return; // 共有モードはスプレッドシートが正なのでシードしない
-  let q=await sGet('questions');
-  if(!q){const base=Date.parse('2026-04-01T09:00:00');q=SEED_QUESTIONS.map((x,i)=>({id:x.id,category:x.category,text:x.text,type:x.type,unit:x.unit,options:OPTIONS[x.id]?OPTIONS[x.id].join(' / '):'',createdAt:base+i*3600000}));await sSet('questions',q);}
-  let a=await sGet('answers_R8');
-  if(!a){a={};const t=Date.now();for(const qid in SEED_ANSWERS){SEED_ANSWERS[qid].forEach((o,i)=>{if(o&&o.v!=null&&String(o.v).trim()!=='')a[SCHOOLS[i].id+'__'+qid]={v:String(o.v),note:o.n||'',t}})}await sSet('answers_R8',a);}
+  // スプレッドシート（GAS）が唯一の正データ。直書きシードは廃止したため何もしない。
+  return;
 }
 async function loadYear(){
   if(USE_API){
+    ST.loadError=null;
     try{
       const d=await gasGet({action:'get',year:ST.year});
       if(d&&d.ok){
         ST.questions=d.questions||[];
         ST.answers=d.answers||{};
+        // 前年度の回答も取得（更新待ち表示・他校比較の引き継ぎ用）
+        ST.prevYear=prevYearOf(ST.year);
+        if(ST.prevYear){try{const pd=await gasGet({action:'get',year:ST.prevYear});ST.prevAnswers=(pd&&pd.ok&&pd.answers)?pd.answers:{};}catch(_){ST.prevAnswers={};}}
+        else ST.prevAnswers={};
       }else{
-        // GASエラー時はシードデータで表示（読み取り専用）
-        if(!ST.questions.length)_loadSeedFallback();
-        toast('GASエラー: '+((d&&d.error)||'不明')+'。シードデータで表示します');
+        ST.questions=[];ST.answers={};
+        ST.loadError='GASエラー: '+((d&&d.error)||'不明');
+        notifyErrorEmail(ST.loadError,'GASは応答しましたがエラーを返しました');
       }
     }catch(e){
-      // 通信エラー時もシードデータにフォールバック
-      if(!ST.questions.length)_loadSeedFallback();
-      toast('GASに接続できません。シードデータで表示します');
+      ST.questions=[];ST.answers={};
+      ST.loadError='GASに接続できませんでした（'+e.message+'）';
+      notifyErrorEmail(ST.loadError,'GASへの通信自体が失敗（fetch例外）');
     }
-    ST.summaries=await sGet('summaries_'+ST.year)||{};
-    ST.aigroups=await sGet('aigroups_'+ST.year)||{};
-    ST.homeAnalysis=await sGet('home_analysis_'+ST.year)||null;
     return;
   }
-  ST.questions=await sGet('questions')||[];ST.answers=await sGet('answers_'+ST.year)||{};ST.summaries=await sGet('summaries_'+ST.year)||{};ST.aigroups=await sGet('aigroups_'+ST.year)||{};ST.homeAnalysis=await sGet('home_analysis_'+ST.year)||null;
+  // 非API（claude.aiプレビュー等）はwindow.storage / メモリを使用
+  ST.questions=await sGet('questions')||[];ST.answers=await sGet('answers_'+ST.year)||{};
+  ST.prevYear=prevYearOf(ST.year);ST.prevAnswers=ST.prevYear?(await sGet('answers_'+ST.prevYear)||{}):{};
 }
-function _loadSeedFallback(){
-  const base=Date.parse('2026-04-01T09:00:00');
-  ST.questions=SEED_QUESTIONS.map((x,i)=>({id:x.id,category:x.category,text:x.text,type:x.type,unit:x.unit,options:OPTIONS[x.id]?OPTIONS[x.id].join(' / '):'',createdAt:base+i*3600000}));
-  const a={};const t=Date.now();
-  for(const qid in SEED_ANSWERS){SEED_ANSWERS[qid].forEach((o,i)=>{if(o&&o.v!=null&&String(o.v).trim()!=='')a[SCHOOLS[i].id+'__'+qid]={v:String(o.v),note:o.n||'',t};})}
-  ST.answers=a;
+// GAS接続エラー時に管理者へメール通知（GASのsendErrorMailアクション経由）
+const ERROR_NOTIFY_EMAIL='27pta-katanoshi1@g.zenp.jp';
+let _lastErrorNotify=0;
+async function notifyErrorEmail(errorMsg,detail){
+  if(!USE_API)return;
+  // 短時間の連続通知を防ぐ（10分に1回まで）
+  const now=Date.now();if(now-_lastErrorNotify<600000)return;_lastErrorNotify=now;
+  const body=[
+    '交野市PTA実態共有ボードで接続エラーが発生しました。',
+    '',
+    '【発生日時】'+new Date().toLocaleString('ja-JP'),
+    '【年度】'+ST.year,
+    '【エラー内容】'+errorMsg,
+    '【状況】'+(detail||''),
+    '【URL】'+(typeof location!=='undefined'?location.href:'(不明)'),
+    '【UserAgent】'+(typeof navigator!=='undefined'?navigator.userAgent:'(不明)')
+  ].join('\n');
+  // 方法1: GETビーコン（CORS不要・GASがGETでsendErrorMailを処理すれば必ず届く。fetch失敗時も有効）
+  try{
+    const u=API_URL+(API_URL.indexOf('?')>=0?'&':'?')+new URLSearchParams({action:'sendErrorMail',to:ERROR_NOTIFY_EMAIL,subject:'【PTAボード】接続エラー通知',body:body}).toString();
+    const img=new Image();img.src=u;
+  }catch(e0){/* noop */}
+  // 方法2: sendBeacon（ページ離脱時でも送れる保険）
+  try{
+    if(navigator&&navigator.sendBeacon){
+      const fd=new Blob([JSON.stringify({action:'sendErrorMail',to:ERROR_NOTIFY_EMAIL,subject:'【PTAボード】接続エラー通知',body:body})],{type:'text/plain;charset=utf-8'});
+      navigator.sendBeacon(API_URL,fd);
+    }
+  }catch(e1){/* noop */}
+  // 方法3: POST fetch（GASが生きていれば本送信）
+  try{
+    await gas('sendErrorMail',{to:ERROR_NOTIFY_EMAIL,subject:'【PTAボード】接続エラー通知',body:body});
+  }catch(e2){/* これ以上は送れない */}
 }
-function getAns(sid,qid){return ST.answers[sid+'__'+qid]}
+function prevYearOf(y){const i=YEARS.findIndex(x=>x.id===y);return (i>0)?YEARS[i-1].id:null}
+// 今年度の確定回答があればそれ(carried:false)。無ければ前年度を引き継ぎ(carried:true)。常に1校1値。
+function getAns(sid,qid){
+  const k=sid+'__'+qid;
+  const cur=ST.answers[k];
+  if(cur&&String(cur.v).trim()!=='')return Object.assign({},cur,{carried:false,year:ST.year});
+  const prev=ST.prevAnswers[k];
+  if(prev&&String(prev.v).trim()!=='')return Object.assign({},prev,{carried:true,year:ST.prevYear});
+  return undefined;
+}
+// 今年度に実際に確定された回答だけ（引き継ぎを除く）。確定状況のカウント用。
+function getConfirmedAns(sid,qid){const c=ST.answers[sid+'__'+qid];return (c&&String(c.v).trim()!=='')?c:undefined}
 async function setAns(sid,qid,val,note){
   const k=sid+'__'+qid,v=(val||'').trim(),n=(note||'').trim();
   if(v)ST.answers[k]={v:v,note:n,t:Date.now()};else delete ST.answers[k];
   if(USE_API){try{await gas('saveAnswer',{year:ST.year,school_id:sid,question_id:qid,value:v,note:n})}catch(e){toast('保存に失敗しました（通信エラー）')}return;}
   await sSet('answers_'+ST.year,ST.answers);
 }
-function ansCount(qid){return SCHOOLS.filter(s=>getAns(s.id,qid)).length}
-function unanswered(qid){return SCHOOLS.filter(s=>!getAns(s.id,qid))}
-function schoolCount(sid){return ST.questions.filter(q=>getAns(sid,q.id)).length}
-function schoolUnanswered(sid){return ST.questions.filter(q=>!getAns(sid,q.id))}
+function ansCount(qid){return SCHOOLS.filter(s=>getConfirmedAns(s.id,qid)).length}
+function unanswered(qid){return SCHOOLS.filter(s=>!getConfirmedAns(s.id,qid))}
+function schoolCount(sid){return ST.questions.filter(q=>getConfirmedAns(sid,q.id)).length}
+function schoolUnanswered(sid){return ST.questions.filter(q=>!getConfirmedAns(sid,q.id))}
 function cats(){return CATEGORIES.filter(c=>ST.questions.some(q=>q.category===c)).concat(ST.questions.map(q=>q.category).filter(c=>!CATEGORIES.includes(c)).filter((v,i,a)=>a.indexOf(v)===i))}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function fmtDate(t){const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
 function pnum(s){s=String(s).replace(/,/g,'');if(s.indexOf('@')>=0)return null;let m=s.match(/([0-9]+(?:\.[0-9]+)?)\s*万/);if(m)return parseFloat(m[1])*1e4;m=s.match(/([0-9]+(?:\.[0-9]+)?)/);return m?parseFloat(m[1]):null}
+// パーセント項目（unit==='%'）専用：割合(0.98)も百分率(98)も%付き(98%)も正規化。テキストはnull
+function isPercentQ(qid){const q=ST.questions.find(x=>x.id===qid);return !!(q&&String(q.unit).indexOf('%')>=0)}
+function pctNum(s){
+  s=String(s).replace(/[,％%\s]/g,'');
+  // 数字以外の文字（不明・未納など）が混じる場合は数値として扱わない
+  if(!/^[0-9]+(?:\.[0-9]+)?$/.test(s))return null;
+  let n=parseFloat(s);if(isNaN(n))return null;
+  if(n<=1)n=n*100;            // 0.98 → 98、1 → 100
+  return Math.round(n*10)/10;  // 小数1位まで
+}
+function fmtPct(n){return (Number.isInteger(n)?n:n.toFixed(1))+'%'}
 function dcount(s){return (String(s).match(/[0-9]/g)||[]).length}
 function nrm(s){return String(s).replace(/\s+/g,'').toLowerCase()}
 function classifyAuto(qid){const vals=SCHOOLS.map(s=>{const a=getAns(s.id,qid);return a?a.v:null}).filter(Boolean);const n=vals.length;if(!n)return 'empty';if(vals.filter(v=>v.indexOf('@')>=0).length/n>=.5||vals.filter(v=>dcount(v)>=9&&(v.indexOf('-')>=0||v.replace(/[0-9\-()\s]/g,'').length<=2)).length/n>=.5)return 'contact';const nr=vals.filter(v=>pnum(v)!=null).length/n,avg=vals.reduce((a,v)=>a+v.length,0)/n,dr=new Set(vals.map(nrm)).size/n;if(nr>=.7&&dr>=.7&&avg<=6)return 'numeric';if(dr>=.9&&avg<=8)return 'list';if(dr<=.7)return 'categorical';return 'text'}
@@ -477,23 +335,42 @@ function otherValues(qid,exceptSid){const seen=[];const out=[];SCHOOLS.forEach(s
 function analyzeQ(qid){
   const ent=SCHOOLS.map(s=>{const a=getAns(s.id,qid);return a?{id:s.id,short:s.short,name:s.name,v:a.v,note:a.note}:null}).filter(Boolean);
   const type=qType(qid);const un=unanswered(qid);let groups=[],numeric=null;
-  if(type==='numeric'){numeric=ent.map(e=>({...e,num:pnum(e.v)})).filter(e=>e.num!=null).sort((a,b)=>b.num-a.num);}
+  if(type==='numeric'){
+    const isPct=isPercentQ(qid);
+    numeric=ent.map(e=>({...e,num:isPct?pctNum(e.v):pnum(e.v)})).filter(e=>e.num!=null).sort((a,b)=>b.num-a.num);
+    // パーセント項目で数値化できなかった回答（不明・未納など）はテキストとして別管理
+    if(isPct){const textOnly=ent.filter(e=>pctNum(e.v)==null);return {type,ent,un,groups,numeric,isPct:true,textOnly};}
+  }
   else if(type==='categorical'){const m={};ent.forEach(e=>{const k=nrm(e.v);(m[k]=m[k]||{label:e.v,members:[]}).members.push(e)});groups=Object.values(m).sort((a,b)=>b.members.length-a.members.length);}
   return {type,ent,un,groups,numeric};
 }
-function noteBadge(a){return a&&a.note?` <span class="notebadge">備考: ${esc(a.note)}</span>`:''}
+function carryTag(a){return (a&&a.carried)?` <span class="notebadge" style="background:#fff3e0;color:var(--amber-d);border:1px solid #f0d9b5">前年度のまま</span>`:''}
+function noteBadge(a){return (a&&a.note?` <span class="notebadge">備考: ${esc(a.note)}</span>`:'')+carryTag(a)}
 function renderShell(){
-  document.getElementById('pvbanner').outerHTML=HASSTORE?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
+  document.getElementById('pvbanner').outerHTML=(USE_API||HASSTORE)?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
   const ys=document.getElementById('yearSel');ys.innerHTML=YEARS.map(y=>`<option value="${y.id}" ${y.id===ST.year?'selected':''}>${y.label}</option>`).join('');
-  ys.onchange=async e=>{ST.year=e.target.value;ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render();maybeAnalyze()};
+  ys.onchange=async e=>{ST.year=e.target.value;ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render()};
   const nav=[['home','ホーム',I.home],['search','質問をさがす',I.search],['table','回答テーブル',I.table],['add','質問を追加',I.plus]];
   document.getElementById('nav').innerHTML=nav.map(([v,l,ic])=>`<button class="navbtn ${ST.view===v||(v==='search'&&ST.view==='detail')?'on':''}" onclick="go('${v}')">${ic}${l}</button>`).join('');
 }
 function go(v){ST.view=v;ST.editing=null;ST.flow=null;render()}
-function openQ(qid,fromSchool){ST.q=qid;ST.view='detail';ST.editing=null;ST.showEdit=false;ST.fromSchool=fromSchool||null;render()}
-function render(){
+function openQ(qid,fromSchool){ST.q=qid;ST.view='detail';ST.editing=null;ST.showEdit=false;ST.fromSchool=fromSchool||null;if(fromSchool)ST.schoolReturnQid=qid;render()}
+function render(opt){
+  opt=opt||{};
   if(ST.loading){renderShell();document.getElementById('page').innerHTML=viewLoading();return;}
-  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,school:viewSchool}[ST.view]||viewHome)();if(ST.view==='search')setTimeout(rerenderSearch,0);if(ST.view==='flow')setTimeout(()=>{const el=document.getElementById('flowInput');if(el)el.focus()},40);window.scrollTo(0,0);
+  if(USE_API&&(ST.loadError||!ST.questions.length)){renderShell();document.getElementById('page').innerHTML=viewError();return;}
+  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,school:viewSchool}[ST.view]||viewHome)();
+  if(ST.view==='search')setTimeout(rerenderSearch,0);
+  if(ST.view==='flow')setTimeout(()=>{const el=document.getElementById('flowInput');if(el)el.focus()},40);
+  // スクロール制御：keepScroll指定時は現在位置を維持、restoreScroll指定時は指定位置へ、それ以外は最上部
+  if(opt.keepScroll){/* 何もしない（現在のスクロール位置を維持） */}
+  else if(opt.restoreScroll!=null){const y=opt.restoreScroll;setTimeout(()=>window.scrollTo(0,y),30);}
+  else if(opt.scrollToEl){setTimeout(()=>{const el=document.getElementById(opt.scrollToEl);if(el)el.scrollIntoView({block:'center',behavior:'auto'})},40);}
+  else{window.scrollTo(0,0);}
+}
+function viewError(){
+  const msg=ST.loadError||'スプレッドシートから質問データを取得できませんでした。';
+  return '<div style="max-width:520px;margin:40px auto;text-align:center;padding:0 16px"><div style="font-size:44px;margin-bottom:14px">📡</div><h2 style="font-family:\'Zen Maru Gothic\';font-size:20px;color:var(--ink);margin-bottom:10px">データを読み込めませんでした</h2><p class="muted" style="margin-bottom:6px">'+esc(msg)+'</p><p class="tiny muted" style="margin-bottom:14px">スプレッドシート（GAS）との通信に問題がある可能性があります。少し待ってから再読み込みしてください。</p><div style="background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:12.5px;color:var(--amber-d)">⚠️ 管理者（'+esc(ERROR_NOTIFY_EMAIL)+'）へ自動でエラー通知を送信しました。<br>解消しない場合は管理者へご連絡ください。</div><button class="btn pri" onclick="reloadData()">'+I.spark+' 再読み込み</button> <button class="btn" onclick="showDiag()">🔍 接続診断</button></div>';
 }
 function viewLoading(){return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:20px"><div style="position:relative;width:56px;height:56px"><div style="position:absolute;inset:0;border-radius:50%;border:4px solid var(--amber-soft)"></div><div style="position:absolute;inset:0;border-radius:50%;border:4px solid transparent;border-top-color:var(--amber);animation:sp .8s linear infinite"></div></div><div style="font-family:\'Zen Maru Gothic\';font-size:16px;color:var(--ink2);font-weight:500">最新情報を取得しています...</div><div style="font-size:13px;color:var(--ink3)">スプレッドシートからデータを読み込み中</div></div>';}
 function viewHome(){
@@ -501,9 +378,8 @@ function viewHome(){
   const recent=[...ST.questions].sort((a,b)=>b.createdAt-a.createdAt).slice(0,3);const NEW=Date.now()-7*864e5;
   const need=ST.questions.map(q=>({q,u:unanswered(q.id).length})).filter(x=>x.u>0&&x.u<SCHOOLS.length).sort((a,b)=>b.u-a.u).slice(0,4);
   const todo=ST.questions.filter(q=>ansCount(q.id)===0).length;const blocks=[...new Set(SCHOOLS.map(s=>s.block))];
-  return `<div class="hero"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="flex:1">${YEARS.find(y=>y.id===ST.year).label} の回答状況</h2><span class="syncpill ${USE_API?'':'syncoff'}"><span class="syncdot"></span>${USE_API?'みんなで共有中':'プレビュー（保存なし）'}</span>${USE_API?`<button class="btn sm" onclick="reloadData()">${I.spark} 最新を取得</button><button class="btn sm" onclick="showDiag()" title="GAS接続診断" style="padding:5px 9px">🔍</button>`:''}</div><p class="muted tiny">学校カードを選ぶと、自校の概要・他校との違い・回答ができます。</p>
+  return `<div class="hero"><h2 style="margin-bottom:8px">${YEARS.find(y=>y.id===ST.year).label} の回答状況</h2><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><span class="syncpill ${USE_API?'':'syncoff'}"><span class="syncdot"></span>${USE_API?'みんなで共有中':'プレビュー（保存なし）'}</span>${USE_API?`<button class="btn sm" onclick="reloadData()">${I.spark} 最新を取得</button><button class="btn sm" onclick="showDiag()" title="GAS接続診断" style="padding:5px 9px">🔍</button>`:''}</div><p class="muted tiny">学校カードを選ぶと、自校の概要・他校との違い・回答ができます。</p>
     <div class="statgrid"><div class="stat"><b>${SCHOOLS.length}</b><span>参加校</span></div><div class="stat"><b>${tq}</b><span>質問項目</span></div><div class="stat"><b>${CATEGORIES.length}</b><span>カテゴリ</span></div><div class="stat"><b>${rate}%</b><span>全体回答率</span></div><div class="stat"><b>${todo}</b><span>未着手</span></div></div></div>
-    ${homeAnalysisHTML()}
     <div class="card"><div class="sec-h"><span class="ic">${I.home}</span>学校を選ぶ（自校の概要・他校との違い）</div>
     ${blocks.map(b=>`<div class="blockh">${esc(b)}</div><div class="schoolgrid">${SCHOOLS.filter(s=>s.block===b).map(s=>{const f=schoolCount(s.id);const pc=tq?Math.round(f*100/tq):0;const un=tq-f;return `<div class="scard" onclick="openSchool('${s.id}')"><span class="goarrow">${I.back}</span><div class="nm">${esc(s.name)}</div><div class="pc">${pc}%</div><div class="pbar" style="margin-top:6px"><i style="width:${pc}%"></i></div><div class="ct">${un>0?`未回答 ${un}項目 →`:'全項目回答済み ✓'}</div></div>`}).join('')}</div>`).join('')}</div>
     <div style="height:16px"></div>
@@ -513,16 +389,13 @@ function viewHome(){
     <div class="card"><div class="sec-h"><span class="ic">${I.bell}</span>回答をお願いします</div>
       ${need.length?need.map(({q,u})=>`<div class="qmini" onclick="openQ('${q.id}')"><span class="qm-cat">${esc(q.category)}</span><span class="qm-t">${esc(q.text)}</span><span class="ans-pill some">未回答 ${u}校</span></div>`).join(''):'<p class="empty-note">未回答の項目はありません 🎉</p>'}</div></div>`;
 }
-function homeAnalysisHTML(){
-  const a=ST.homeAnalysis;
-  let body;
-  if(ST.analyzing&&!a)body='<p class="muted tiny"><span class="spin"></span> 各校の回答を分析しています...</p>';
-  else if(a&&a.items&&a.items.length)body='<ul>'+a.items.map(t=>`<li>${esc(t)}</li>`).join('')+'</ul>';
-  else body='<p class="muted tiny">回答が集まると、各校の傾向や「ここだけ違う」点を自動で分析します。</p>';
-  return `<div class="aibox"><div class="aih">${I.spark} AIによる気づき<div style="flex:1"></div><button class="btn sm" onclick="genHomeAnalysis(true)" ${ST.analyzing?'disabled':''}>${ST.analyzing?'<span class="spin"></span>':''} 分析を更新</button></div>${body}${a?`<div class="aimeta">分析: ${fmtDate(a.t)}・${ST.year}年度</div>`:''}</div>`;
-}
 /* ---- SCHOOL (自校ビュー) ---- */
-function openSchool(sid){ST.school=sid;ST.view='school';ST.editing=null;ST.flow=null;render()}
+function openSchool(sid){
+  ST.school=sid;ST.view='school';ST.editing=null;ST.flow=null;
+  const rq=ST.schoolReturnQid;ST.schoolReturnQid=null;
+  if(rq){render({scrollToEl:'sc-card-'+rq});}
+  else{render();}
+}
 function sortedSel(v){return selVals(v).map(nrm).sort().join(' / ')}
 function fmtMan(n){return n>=10000?(n/10000).toLocaleString(undefined,{maximumFractionDigits:1})+'万':n.toLocaleString()}
 function schoolDiffs(sid){
@@ -542,9 +415,10 @@ function schoolDiffs(sid){
         out.push({q:q,kind:mineN<=1?'only':'minor',mine:a.v,topLabel:top.label,topN:top.n,answered:ent.length,mineN:mineN});
       }
     }else if(t==='numeric'){
-      const nums=ent.map(x=>({n:pnum(x.a.v)})).filter(x=>x.n!=null);
+      const isPct=isPercentQ(q.id);const pf=isPct?pctNum:pnum;
+      const nums=ent.map(x=>({n:pf(x.a.v)})).filter(x=>x.n!=null);
       if(nums.length<4)return;
-      const mineNum=pnum(a.v);if(mineNum==null)return;
+      const mineNum=pf(a.v);if(mineNum==null)return;
       const sorted=nums.map(x=>x.n).sort((p,r)=>r-p);
       const avg=sorted.reduce((p,r)=>p+r,0)/sorted.length;
       const isMax=sorted[0]===mineNum&&sorted.filter(n=>n===mineNum).length===1;
@@ -552,7 +426,7 @@ function schoolDiffs(sid){
       const ratio=avg?mineNum/avg:1;
       if(isMax||isMin||ratio>=1.6||ratio<=0.6){
         const rank=sorted.indexOf(mineNum)+1;
-        out.push({q:q,kind:'num',mine:a.v,avg:avg,rank:rank,answered:nums.length,label:isMax?'最も高い':isMin?'最も低い':(ratio>=1.6?'平均より高め':'平均より低め')});
+        out.push({q:q,kind:'num',mine:isPct?fmtPct(mineNum):a.v,avg:avg,rank:rank,answered:nums.length,isPct:isPct,label:isMax?'最も高い':isMin?'最も低い':(ratio>=1.6?'平均より高め':'平均より低め')});
       }
     }
   });
@@ -564,7 +438,7 @@ function diffCardHTML(d){
   const q=d.q;const sid=ST.school;
   if(d.kind==='num'){
     const high=d.label.indexOf('高')>=0,col=high?'#c75f6b':'#4a8db5';
-    return `<div class="gcard" style="border-left-color:${col};cursor:pointer" onclick="openQ('${q.id}','${sid}')"><div class="gcard-h"><span class="diff-badge" style="background:${col}">${esc(d.label)}</span><span class="glabel">${esc(q.text)}</span></div><div class="vsbox"><span class="vschip mine">自校：${esc(d.mine)}</span><span class="vschip maj">平均：約${esc(fmtMan(Math.round(d.avg)))}${esc(q.unit||'')}</span><span class="vschip maj">${d.answered}校中 ${d.rank}位</span></div></div>`;
+    return `<div class="gcard" style="border-left-color:${col};cursor:pointer" onclick="openQ('${q.id}','${sid}')"><div class="gcard-h"><span class="diff-badge" style="background:${col}">${esc(d.label)}</span><span class="glabel">${esc(q.text)}</span></div><div class="vsbox"><span class="vschip mine">自校：${esc(d.mine)}</span><span class="vschip maj">平均：${d.isPct?esc(fmtPct(Math.round(d.avg*10)/10)):'約'+esc(fmtMan(Math.round(d.avg)))+esc(q.unit||'')}</span><span class="vschip maj">${d.answered}校中 ${d.rank}位</span></div></div>`;
   }
   const col=d.kind==='only'?'#cf6a4a':'#e0883b',badge=d.kind==='only'?'自校だけ':'少数派';
   return `<div class="gcard" style="border-left-color:${col};cursor:pointer" onclick="openQ('${q.id}','${sid}')"><div class="gcard-h"><span class="diff-badge" style="background:${col}">${badge}</span><span class="glabel">${esc(q.text)}</span></div><div class="vsbox"><span class="vschip mine">自校：${esc(d.mine)}</span><span class="vschip maj">多数派：${esc(d.topLabel)}（${d.topN}/${d.answered}校）</span></div></div>`;
@@ -585,7 +459,7 @@ function viewSchool(){
       const a=getAns(sid,q.id);
       const isEditing=ST.schoolEditing===q.id;
       if(isEditing){
-        return `<div class="sc-card sc-editing" id="sce-${q.id}">
+        return `<div class="sc-card sc-editing" id="sc-card-${q.id}">
           <div class="sc-qlabel" style="background:var(--navy)">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}</div>
           <div style="padding:10px">
             ${isChoice(q.id)?renderSel('sch_'+q.id,q.id,a?a.v:''):`<textarea class="tx" id="sch-ed-${q.id}" rows="2" style="font-size:13px">${esc(a?a.v:'')}</textarea>`}
@@ -598,9 +472,11 @@ function viewSchool(){
         </div>`;
       }
       const catCol=CATCOL[c]||'var(--navy2)';
-      return `<div class="sc-card" onclick="startSchoolEdit('${q.id}')">
-        <div class="sc-qlabel" style="background:${catCol}">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}</div>
-        <div class="sc-ans ${a?'':'sc-empty'}">${a?esc(a.v)+(a.note?`<span class="notebadge">備考: ${esc(a.note)}</span>`:''):'— 未回答　タップして入力'}</div>
+      const carried=a&&a.carried;
+      return `<div class="sc-card${carried?' sc-carried':''}" id="sc-card-${q.id}">
+        <div class="sc-qlabel" style="background:${catCol}" onclick="startSchoolEdit('${q.id}')">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}</div>
+        <div class="sc-ans ${a?'':'sc-empty'}" onclick="startSchoolEdit('${q.id}')">${a?esc(a.v)+(a.note?`<span class="notebadge">備考: ${esc(a.note)}</span>`:''):'— 未回答　タップして入力'}</div>
+        ${carried?`<div class="sc-carry-bar"><span class="sc-carry-badge">前年度のまま・更新待ち</span><button class="sc-carry-btn" onclick="confirmCarry(event,'${sid}','${q.id}')">${I.check} 今年度も同じ</button></div>`:''}
       </div>`;
     }).join('');
     return `<div class="blockh">${esc(c)}</div><div class="sc-grid">${cards}</div>`;
@@ -622,7 +498,9 @@ function startFlow(sid){
   ST.flow={sid,queue:un.map(q=>q.id),idx:0};ST.view='flow';render();
 }
 function viewFlow(){
-  const fl=ST.flow;const sc=SCHOOLS.find(s=>s.id===fl.sid);
+  const fl=ST.flow;
+  if(!fl){ST.view='home';return viewHome();}
+  const sc=SCHOOLS.find(s=>s.id===fl.sid);
   if(fl.idx>=fl.queue.length)return flowDoneHTML(sc);
   const qid=fl.queue[fl.idx];const q=ST.questions.find(x=>x.id===qid);
   const cur=getAns(fl.sid,qid);const cands=otherValues(qid,fl.sid);
@@ -654,16 +532,17 @@ async function flowSave(){const {v,n}=readFlowInputs();const qid=ST.flow.queue[S
 function flowSkip(){const {v,n}=readFlowInputs();if(v.trim()){flowSave();return}ST.flow.idx++;render()}
 function flowPrev(){const {v,n}=readFlowInputs();if(v.trim()){const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n)}ST.flow.idx=Math.max(0,ST.flow.idx-1);render()}
 function flowDoneHTML(sc){return `<div class="flow"><div class="flow-card flow-done"><div class="em">🎉</div><h2 style="font-size:19px;margin-bottom:6px">${esc(sc.name)} の回答が完了しました</h2><p class="muted" style="margin-bottom:18px">ご協力ありがとうございます。AIが全校の傾向を分析します。</p><button class="btn pri lg" onclick="flowExit()">ホームへ戻る</button></div></div>`}
-function flowExit(){ST.flow=null;ST.view='home';render();genHomeAnalysis(true)}
+function flowExit(){ST.flow=null;ST.view='home';render()}
 /* ---- SEARCH ---- */
 function viewSearch(){
   const cs=cats();const STATUS=[['all','すべて'],['todo','未回答あり'],['done','全校回答済'],['empty','未着手']];const SORT=[['cat','カテゴリ順'],['todo','未回答が多い順'],['new','新着順']];
   return `<div class="searchbox"><span class="si">${I.search}</span><input class="tx" placeholder="キーワードで検索（例：会費、引継ぎ、LINE）" value="${esc(ST.s_text)}" oninput="ST.s_text=this.value;rerenderSearch()"></div>
-  <div class="filtersec"><div class="frow"><span class="flabel">カテゴリ</span><button class="catpill ${ST.s_cat==='all'?'on':''}" onclick="ST.s_cat='all';render()">すべて</button>${cs.map(c=>`<button class="catpill ${ST.s_cat===c?'on':''}" onclick="ST.s_cat='${esc(c)}';render()">${esc(c)} <span style="opacity:.6">${ST.questions.filter(q=>q.category===c).length}</span></button>`).join('')}</div>
-    <div class="frow"><span class="flabel">回答状況</span><div class="seg">${STATUS.map(([v,l])=>`<button class="${ST.s_status===v?'on':''}" onclick="ST.s_status='${v}';render()">${l}</button>`).join('')}</div></div>
-    <div class="frow"><span class="flabel">並び替え</span><div class="seg">${SORT.map(([v,l])=>`<button class="${ST.s_sort===v?'on':''}" onclick="ST.s_sort='${v}';render()">${l}</button>`).join('')}</div></div></div>
+  <div class="filtersec"><div class="frow"><span class="flabel">カテゴリ</span><button class="catpill ${ST.s_cat==='all'?'on':''}" onclick="setFilter('cat','all')">すべて</button>${cs.map(c=>`<button class="catpill ${ST.s_cat===c?'on':''}" onclick="setFilter('cat','${esc(c)}')">${esc(c)} <span style="opacity:.6">${ST.questions.filter(q=>q.category===c).length}</span></button>`).join('')}</div>
+    <div class="frow"><span class="flabel">回答状況</span><div class="seg">${STATUS.map(([v,l])=>`<button class="${ST.s_status===v?'on':''}" onclick="setFilter('status','${v}')">${l}</button>`).join('')}</div></div>
+    <div class="frow"><span class="flabel">並び替え</span><div class="seg">${SORT.map(([v,l])=>`<button class="${ST.s_sort===v?'on':''}" onclick="setFilter('sort','${v}')">${l}</button>`).join('')}</div></div></div>
   <p class="muted tiny" style="margin-bottom:11px" id="scount"></p><div id="searchList"></div>`;
 }
+function setFilter(kind,val){const y=window.scrollY||0;if(kind==='cat')ST.s_cat=val;else if(kind==='status')ST.s_status=val;else if(kind==='sort')ST.s_sort=val;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 function searchList(){
   let list=ST.questions.map(q=>{const a=ansCount(q.id);return {q,a,u:SCHOOLS.length-a}});const kw=ST.s_text.trim().toLowerCase();
   if(kw)list=list.filter(x=>x.q.text.toLowerCase().includes(kw)||x.q.category.toLowerCase().includes(kw));
@@ -690,90 +569,58 @@ function viewDetail(){
   return `${backBtn}
     <div class="det-h"><span class="c">${esc(q.category)}</span><span class="c" style="background:${TYPECOL[an.type]};color:#fff">${TYPELABEL[an.type]}</span><h2>${esc(q.text)}</h2>${addby}</div>
     ${alert}<div class="card">${renderViz(q,an)}</div>
-    ${(isChoice(q.id)||an.type==='categorical'||an.type==='text'||an.type==='numeric')?renderAI(q):''}${renderEdit(q)}`;
+    ${renderEdit(q)}`;
 }
 function distHTML(groups,unN){const N=SCHOOLS.length;return `<div class="distwrap"><div class="distbar">${groups.map((g,i)=>`<div class="distseg" style="width:${g.n/N*100}%;background:${GCOL[i%GCOL.length]}" title="${g.n}校">${g.n/N>=.1?g.n:''}</div>`).join('')}${unN?`<div class="distseg un" style="width:${unN/N*100}%">${unN/N>=.1?unN:''}</div>`:''}</div><div class="distleg">${groups.map((g,i)=>`<span class="legi"><span class="legd" style="background:${GCOL[i%GCOL.length]}"></span>${esc(g.label.length>16?g.label.slice(0,16)+'…':g.label)}（${g.n}）</span>`).join('')}${unN?`<span class="legi"><span class="legd" style="background:#e4ded2"></span>未回答（${unN}）</span>`:''}</div></div>`}
 function memNotesHTML(members){const wn=members.filter(m=>m.note);return wn.length?`<div class="memnotes">${wn.map(m=>`<div class="memnote"><b>${esc(m.short)}</b>：${esc(m.note)}</div>`).join('')}</div>`:''}
 function renderViz(q,an){
   if(isChoice(q.id))return renderChoiceViz(q,an);
   if(an.type==='empty')return `<div class="sec-h"><span class="ic">${I.chart}</span>回答状況</div><p class="muted tiny">まだ回答がありません。下の「回答を更新する」から記入できます。</p>`;
-  if(an.type==='numeric'){const max=an.numeric.length?an.numeric[0].num:1;const nums=an.numeric.map(e=>e.num);const avg=nums.reduce((a,b)=>a+b,0)/nums.length;const fmt=n=>n>=10000?(n/10000).toLocaleString(undefined,{maximumFractionDigits:1})+'万':n.toLocaleString();
-    return `<div class="sec-h"><span class="ic">${I.chart}</span>各校の比較${q.unit?`（単位：${esc(q.unit)}）`:''}</div>${an.numeric.map(e=>`<div class="numrow"><div class="numlab" onclick="startEdit('${e.id}')">${esc(e.short)}</div><div class="numtrack"><i style="width:${Math.max(3,Math.round(e.num/max*100))}%"></i></div><div class="numval">${esc(e.v)}${noteBadge(e)}</div></div>`).join('')}<div class="numstats"><div>最小<b>${fmt(Math.min(...nums))}</b></div><div>平均<b>${fmt(Math.round(avg))}</b></div><div>最大<b>${fmt(Math.max(...nums))}</b></div>${an.un.length?`<div>未回答<b>${an.un.length}校</b></div>`:''}</div>`;}
+  if(an.type==='numeric'){
+    const isPct=an.isPct;
+    const nums=an.numeric.map(e=>e.num);
+    if(!nums.length){
+      // 数値が1つもない（全部テキスト）場合
+      const txt=(an.textOnly||an.ent).map(e=>`<div class="numrow"><div class="numlab" onclick="startEdit('${e.id}')">${esc(e.short)}</div><div class="numval" style="text-align:left;flex:1">${esc(e.v)}${noteBadge(e)}</div></div>`).join('');
+      return `<div class="sec-h"><span class="ic">${I.chart}</span>各校の回答${q.unit?`（単位：${esc(q.unit)}）`:''}</div>${txt}${an.un.length?unGroup(an.un):''}`;
+    }
+    const max=isPct?100:an.numeric[0].num;
+    const avg=nums.reduce((a,b)=>a+b,0)/nums.length;
+    const fmt=isPct?fmtPct:(n=>n>=10000?(n/10000).toLocaleString(undefined,{maximumFractionDigits:1})+'万':n.toLocaleString());
+    // %項目：数値化できたものはバー表示、テキスト回答は「不明」として別表示
+    const numRows=an.numeric.map(e=>`<div class="numrow"><div class="numlab" onclick="startEdit('${e.id}')">${esc(e.short)}</div><div class="numtrack"><i style="width:${Math.max(3,Math.round(e.num/max*100))}%"></i></div><div class="numval">${fmt(e.num)}${noteBadge(e)}</div></div>`).join('');
+    const txtRows=(isPct&&an.textOnly&&an.textOnly.length)?an.textOnly.map(e=>`<div class="numrow"><div class="numlab" onclick="startEdit('${e.id}')">${esc(e.short)}</div><div class="numval" style="text-align:left;flex:1;color:var(--ink3)">${esc(e.v)||'不明'}${e.note?` <span class="notebadge">備考: ${esc(e.note)}</span>`:''}</div></div>`).join(''):'';
+    const statLabel=isPct?{min:'最低',avg:'平均',max:'最高'}:{min:'最小',avg:'平均',max:'最大'};
+    return `<div class="sec-h"><span class="ic">${I.chart}</span>各校の比較${q.unit?`（単位：${esc(q.unit)}）`:''}</div>${numRows}${txtRows?`<div style="margin-top:6px;padding-top:8px;border-top:1px dashed var(--line)"><div class="tiny muted" style="margin-bottom:4px">数値以外の回答</div>${txtRows}</div>`:''}<div class="numstats"><div>${statLabel.min}<b>${fmt(Math.min(...nums))}</b></div><div>${statLabel.avg}<b>${fmt(isPct?Math.round(avg*10)/10:Math.round(avg))}</b></div><div>${statLabel.max}<b>${fmt(Math.max(...nums))}</b></div>${an.un.length?`<div>未回答<b>${an.un.length}校</b></div>`:''}</div>`;}
   if(an.type==='list'||an.type==='contact'){const mono=an.type==='contact'?'mono':'';return `<div class="sec-h"><span class="ic">${I.table}</span>各校の回答</div><div class="listgrid">${SCHOOLS.map(s=>{const a=getAns(s.id,q.id);return `<div class="listrow"><span class="ls" onclick="startEdit('${s.id}')">${esc(s.short)}</span><span class="lv ${mono} ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</span></div>`}).join('')}</div>`;}
   if(an.type==='categorical'){
     const groups=an.groups.map(g=>({label:g.label,n:g.members.length,members:g.members}));
     const cards=groups.map((g,i)=>{const col=GCOL[i%GCOL.length];const top=i===0&&g.n>1;return `<div class="gcard" style="border-left-color:${col}"><div class="gcard-h"><span class="gdot" style="background:${col}"></span><span class="glabel">${esc(g.label)}</span>${top?'<span class="gtag">最多</span>':''}<span class="gcount">${g.n}校</span></div><div class="gchips">${g.members.map(m=>`<span class="gch" onclick="startEdit('${m.id}')">${esc(m.short)}</span>`).join('')}</div>${memNotesHTML(g.members)}</div>`}).join('');
     return `<div class="sec-h"><span class="ic">${I.chart}</span>回答の分布（選択式）</div>${distHTML(groups,an.un.length)}<div class="sec-h" style="margin-top:18px"><span class="ic">${I.group}</span>選択肢ごとのグループ</div>${cards}${an.un.length?unGroup(an.un):''}`;
   }
-  const ag=ST.aigroups[q.id];
-  if(ag&&ag.groups&&ag.groups.length){
-    const groups=ag.groups.map(g=>({label:g.label,n:(g.schools||[]).length,note:g.note,schools:g.schools||[]}));
-    const cards=groups.map((g,i)=>{const col=GCOL[i%GCOL.length];const top=i===0&&g.n>1;return `<div class="gcard" style="border-left-color:${col}"><div class="gcard-h"><span class="gdot" style="background:${col}"></span><span class="glabel">${esc(g.label)}</span>${top?'<span class="gtag">最多</span>':''}<span class="gcount">${g.n}校</span></div>${g.note?`<div class="gnote">${esc(g.note)}</div>`:''}<div class="gchips">${g.schools.map(sh=>{const id=SHORT2ID[sh]||matchShort(sh);return `<span class="gch" ${id?`onclick="startEdit('${id}')"`:''}>${esc(sh)}</span>`}).join('')}</div></div>`}).join('');
-    return `<div class="sec-h"><span class="ic">${I.chart}</span>回答の分布（AIグループ）</div>${distHTML(groups,an.un.length)}<div class="sec-h" style="margin-top:18px"><span class="ic">${I.group}</span>AIが分類した似た回答のグループ</div>${cards}${an.un.length?unGroup(an.un):''}<div style="margin-top:10px"><button class="btn sm" id="grpbtn" onclick="genGroups('${q.id}')">${I.spark} グループ化をやり直す</button> <span class="tiny muted">生成: ${fmtDate(ag.t)}</span></div>`;
-  }
   const list=an.ent.map(e=>`<div class="gmem"><span class="gms" onclick="startEdit('${e.id}')">${esc(e.short)}</span><span class="gmv">${esc(e.v)}${noteBadge(e)}</span></div>`).join('');
-  return `<div class="sec-h"><span class="ic">${I.group}</span>記述回答（${an.ent.length}校）</div>
-    <div style="background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:10px;padding:11px 14px;margin-bottom:12px"><div class="tiny" style="color:var(--amber-d);font-weight:500;margin-bottom:7px">括弧書きや言い回しが違っても、AIが内容で似た学校をまとめます。</div><button class="btn pri sm" id="grpbtn" onclick="genGroups('${q.id}')">${I.spark} AIで似た回答をグループ化</button></div>
+  return `<div class="sec-h"><span class="ic">${I.group}</span>各校の回答（${an.ent.length}校）</div>
     <div class="card" style="border:none;padding:0">${list}</div>${an.un.length?'<div style="margin-top:10px">'+unGroup(an.un)+'</div>':''}`;
 }
 function unGroup(un){return `<div class="gcard" style="border-left-color:#cbc4b5"><div class="gcard-h"><span class="gdot" style="background:#cbc4b5"></span><span class="glabel" style="color:var(--ink3)">未回答</span><span class="gcount">${un.length}校</span></div><div class="gchips">${un.map(s=>`<span class="gch" onclick="startEdit('${s.id}')">${esc(s.short)} ＋</span>`).join('')}</div></div>`}
 function matchShort(sh){const f=SCHOOLS.find(s=>sh.includes(s.short)||s.short.includes(sh)||sh.includes(s.name));return f?f.id:null}
-function renderAI(q){const c=ST.summaries[q.id];return `<div class="ai"><div class="aih">${I.spark} この質問のAI要約</div><div class="aitxt" id="aitxt">${c?esc(c.text):'<span class="muted">各校の回答をAIが読み取り、共通点・少数派の工夫などを文章でまとめます。</span>'}</div>${c?`<div class="aimeta">生成: ${fmtDate(c.t)}</div>`:''}<div style="margin-top:11px"><button class="btn pri sm" id="aibtn" onclick="genSummary('${q.id}')">${I.spark} ${c?'もう一度生成':'AI要約を生成'}</button></div></div>`}
 function renderEdit(q){
   const rows=SCHOOLS.map(s=>{const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${isChoice(q.id)?renderSel(s.id,q.id,a?a.v:''):`<textarea class="tx" id="ed-${s.id}" rows="2" placeholder="${esc(s.name)}の回答...">${esc(a?a.v:'')}</textarea>`}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
-  return `<div class="editsec"><button class="btn edit-toggle" onclick="ST.showEdit=!ST.showEdit;render()"><span>${I.edit} 回答を更新する</span><span>${I.down}</span></button>${ST.showEdit?`<div class="card" style="margin-top:10px">${rows}</div>`:''}</div>`;
+  return `<div class="editsec"><button class="btn edit-toggle" onclick="toggleShowEdit()"><span>${I.edit} 回答を更新する</span><span>${I.down}</span></button>${ST.showEdit?`<div class="card" style="margin-top:10px">${rows}</div>`:''}</div>`;
 }
-function startEdit(sid){ST.showEdit=true;ST.editing=sid;render();setTimeout(()=>{const el=document.getElementById('ed-'+sid);if(el){el.focus();const r=document.getElementById('row-'+sid);if(r)r.scrollIntoView({block:'center',behavior:'smooth'})}},50)}
-function cancelEdit(){ST.editing=null;render()}
+function startEdit(sid){const y=window.scrollY||0;ST.showEdit=true;ST.editing=sid;render({keepScroll:true});setTimeout(()=>{const el=document.getElementById('ed-'+sid);if(el)el.focus();else window.scrollTo(0,y)},20)}
+function cancelEdit(){const y=window.scrollY||0;ST.editing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
+function toggleShowEdit(){const y=window.scrollY||0;ST.showEdit=!ST.showEdit;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 async function saveEdit(sid){
+  const y=window.scrollY||0;
   const v=isChoice(ST.q)?(readSel(sid)||''):((document.getElementById('ed-'+sid)||{}).value||'');
   const n=(document.getElementById('edn-'+sid)||{}).value||'';
   await setAns(sid,ST.q,v,n);
   ST.editing=null;
-  render();
+  render({keepScroll:true});
+  setTimeout(()=>window.scrollTo(0,y),20);
   toast(v.trim()?'回答を保存しました':'回答を削除しました');
 }
-async function callClaude(prompt,mt){
-  if(USE_API){const r=await gas('ai',{prompt:prompt,max_tokens:mt||1200});if(r&&r.ok)return r.text||'';throw new Error((r&&r.error)||'AIエラー');}
-  const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:mt||1200,messages:[{role:"user",content:prompt}]})});const data=await res.json();return (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
-}
-async function genSummary(qid){
-  const q=ST.questions.find(x=>x.id===qid);const btn=document.getElementById('aibtn');const box=document.getElementById('aitxt');
-  if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span> 生成中...'}if(box)box.innerHTML='<span class="muted"><span class="spin"></span> 読み込み中...</span>';
-  const lines=SCHOOLS.map(s=>{const a=getAns(s.id,qid);return `・${s.name}：${a?a.v+(a.note?'（備考:'+a.note+'）':''):'（未回答）'}`}).join('\n');
-  const prompt=`あなたはPTA調査をまとめる編集者です。次の項目について10校の回答を比較し、多い方式・少数派の工夫・他校と違う点・未回答状況をふまえ、少し気の利いた語り口で日本語3〜4文の要約を書いてください。箇条書き・見出しは使わず自然な文章のみ。\n\n【質問】${q.text}（${q.category}）\n【回答】\n${lines}`;
-  try{const text=await callClaude(prompt);if(!text)throw 0;ST.summaries[qid]={text,t:Date.now()};await sSet('summaries_'+ST.year,ST.summaries);render();}catch(e){if(box)box.innerHTML='<span style="color:var(--red)">生成に失敗しました。もう一度お試しください。</span>';if(btn){btn.disabled=false;btn.innerHTML=I.spark+' もう一度'}}
-}
-async function genGroups(qid){
-  const q=ST.questions.find(x=>x.id===qid);const btn=document.getElementById('grpbtn');if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span> グループ化中...'}
-  const ent=SCHOOLS.map(s=>{const a=getAns(s.id,qid);return a?`・${s.short}：${a.v}${a.note?'（備考:'+a.note+'）':''}`:null}).filter(Boolean).join('\n');
-  const shorts=SCHOOLS.map(s=>s.short).join('、');
-  const prompt=`次のPTA記述回答を、内容が似ているものでグループに分類してください。括弧書きの補足や言い回し・表記の違いは無視し、本質的な内容で判断します。\n出力は次の形式のJSON配列のみ（前後の説明や\`\`\`は不要）：\n[{"label":"グループ名（簡潔に）","schools":["略称",...],"note":"このグループの共通点を一文で"}]\n略称は必ず次のいずれか：${shorts}\n未回答の学校は含めない。多い順に並べる。\n\n【質問】${q.text}\n【回答】\n${ent}`;
-  try{let text=await callClaude(prompt);text=text.replace(/```json|```/g,'').trim();const m=text.match(/\[[\s\S]*\]/);if(m)text=m[0];const groups=JSON.parse(text);if(!Array.isArray(groups)||!groups.length)throw 0;ST.aigroups[qid]={groups,t:Date.now()};await sSet('aigroups_'+ST.year,ST.aigroups);render();toast('AIがグループ化しました');}
-  catch(e){console.error(e);if(btn){btn.disabled=false;btn.innerHTML=I.spark+' もう一度試す'}toast('グループ化に失敗しました')}
-}
-/* ---- HOME ANALYSIS ---- */
-function analysisDigest(){
-  const lines=[];
-  ST.questions.forEach(q=>{
-    const t=qType(q.id);const ent=SCHOOLS.map(s=>({s,a:getAns(s.id,q.id)})).filter(x=>x.a);
-    if(ent.length<4)return;
-    if(t==='categorical'){const m={};ent.forEach(x=>{const k=nrm(x.a.v);(m[k]=m[k]||{label:x.a.v,sch:[]}).sch.push(x.s.short)});const gs=Object.values(m).sort((a,b)=>b.sch.length-a.sch.length);lines.push(`「${q.text}」: `+gs.map(g=>`${g.label}(${g.sch.join('・')})`).join(' / '));}
-    else if(t==='numeric'){const ns=ent.map(x=>({short:x.s.short,n:pnum(x.a.v),v:x.a.v})).filter(x=>x.n!=null).sort((a,b)=>b.n-a.n);if(ns.length>=4)lines.push(`「${q.text}」(数値): 多い順 `+ns.slice(0,3).map(x=>`${x.short}:${x.v}`).join('、')+` … 最少 ${ns[ns.length-1].short}:${ns[ns.length-1].v}`);}
-  });
-  return lines.join('\n');
-}
-async function genHomeAnalysis(force){
-  const totalAns=SCHOOLS.reduce((a,s)=>a+schoolCount(s.id),0);
-  if(totalAns<20){return}
-  if(ST.analyzing)return;ST.analyzing=true;if(ST.view==='home')render();
-  const digest=analysisDigest();
-  const prompt=`以下はPTA${SCHOOLS.length}校の調査データの要約です。保護者にとって興味深い「気づき」を5〜7個、特に【ある1校だけ他校と違う点】【多数派と少数派の対比】【数値が突出している学校】に注目して挙げてください。各項目は学校名を具体的に入れて1〜2文、親しみやすい日本語に。出力は「・」で始まる箇条書きのみ。前置き・まとめ文は不要。\n\n${digest}`;
-  try{let text=await callClaude(prompt,1400);const items=text.split('\n').map(l=>l.replace(/^[・\-*\s]+/,'').trim()).filter(l=>l.length>3);ST.homeAnalysis={items,t:Date.now()};await sSet('home_analysis_'+ST.year,ST.homeAnalysis);}
-  catch(e){console.error(e);if(force)toast('分析に失敗しました')}
-  ST.analyzing=false;if(ST.view==='home')render();
-}
-function maybeAnalyze(){if(!ST.homeAnalysis){const totalAns=SCHOOLS.reduce((a,s)=>a+schoolCount(s.id),0);if(totalAns>=20)genHomeAnalysis(false)}}
 /* ---- TABLE ---- */
 function viewTable(){
   const rows=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))rows.push({short:s.short,cat:q.category,q:q.text,v:a.v,note:a.note,t:a.t})}));rows.sort((a,b)=>b.t-a.t);
@@ -786,7 +633,7 @@ function exportCSV(){const rows=[['年度','学校','カテゴリ','質問','回
 function viewAdd(){const cs=cats();return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div><p class="muted tiny" style="margin-bottom:16px">追加した質問は全校で共有されます。だれが追加したか記録され、トップにも表示されます。</p>
   <label class="lb">カテゴリ</label><select class="tx" id="addCat" onchange="toggleNewCat()" style="margin-bottom:12px">${cs.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}<option value="__new__">＋ 新しいカテゴリを作る</option></select>
   <div id="newCatWrap" style="display:none;margin-bottom:12px"><label class="lb">新しいカテゴリ名</label><input class="tx" id="newCatName" placeholder="例：登下校・安全"></div>
-  <label class="lb">回答の種類</label><select class="tx" id="addType" onchange="toggleAddType()" style="margin-bottom:12px"><option value="記述">記述（自由記述・AIグループ化）</option><option value="選択式">選択式（ボタンで選ぶ・複数選択可）</option><option value="数値">数値</option><option value="一覧">一覧（氏名など）</option><option value="連絡先">連絡先</option></select>
+  <label class="lb">回答の種類</label><select class="tx" id="addType" onchange="toggleAddType()" style="margin-bottom:12px"><option value="記述">記述（自由記述）</option><option value="選択式">選択式（ボタンで選ぶ・複数選択可）</option><option value="数値">数値</option><option value="一覧">一覧（氏名など）</option><option value="連絡先">連絡先</option></select>
   <div id="addOptsWrap" style="display:none;margin-bottom:12px"><label class="lb">選択肢（「 / 」で区切る）</label><input class="tx" id="addOpts" placeholder="例：あり / なし　または　口座引落し / 振込 / 現金徴収"><p class="selmulti-hint">「あり / なし」だけにすると“今年度の方針で択一”の質問になります。それ以外は複数選択になります。選択肢はスプレッドシートに保存され、後からシート上で自由に編集できます。</p></div>
   <div id="addUnitWrap" style="display:none;margin-bottom:12px"><label class="lb">単位（数値の場合）</label><input class="tx" id="addUnit" placeholder="例：万円 ／ 人 ／ 回 ／ ％ ／ 家庭"></div>
   <label class="lb">質問の内容</label><input class="tx" id="addText" placeholder="例：登校班の編成方法は？" style="margin-bottom:14px">
@@ -816,6 +663,6 @@ async function addQuestion(){
   render(); // ローディング画面を即座に表示
   await seedIfNeeded();await loadYear();
   ST.loading=false;
-  render();maybeAnalyze();
+  render();
 })();
 </script></body></html>
