@@ -213,7 +213,7 @@ async function confirmCarry(ev,sid,qid){
   const y=window.scrollY||0;
   const prev=ST.prevAnswers[sid+'__'+qid];
   if(!prev){toast('前年度のデータが見つかりません');return}
-  await setAns(sid,qid,prev.v,prev.note||'');
+  setAns(sid,qid,prev.v,prev.note||'');
   render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);
   toast('今年度の回答として確定しました');
 }
@@ -221,7 +221,7 @@ async function saveSchoolEdit(sid,qid){
   const y=window.scrollY||0;
   const v=isChoice(qid)?(readSel('sch_'+qid)||''):((document.getElementById('sch-ed-'+qid)||{}).value||'');
   const n=(document.getElementById('sch-edn-'+qid)||{}).value||'';
-  await setAns(sid,qid,v,n);ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);toast(v.trim()?'回答を保存しました':'回答を削除しました');
+  setAns(sid,qid,v,n);ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);toast(v.trim()?'回答を保存しました':'回答を削除しました');
 }
 async function seedIfNeeded(){
   // スプレッドシート（GAS）が唯一の正データ。直書きシードは廃止したため何もしない。
@@ -474,7 +474,7 @@ function viewSchool(){
       const catCol=CATCOL[c]||'var(--navy2)';
       const carried=a&&a.carried;
       return `<div class="sc-card${carried?' sc-carried':''}" id="sc-card-${q.id}">
-        <div class="sc-qlabel" style="background:${catCol}" onclick="startSchoolEdit('${q.id}')">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}</div>
+        <div class="sc-qlabel" style="background:${catCol};cursor:pointer" onclick="openQ('${q.id}','${sid}')" title="全校の回答を見る">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}<span style="float:right;font-size:10px;opacity:.75;font-weight:400;margin-left:4px">全校▶</span></div>
         <div class="sc-ans ${a?'':'sc-empty'}" onclick="startSchoolEdit('${q.id}')">${a?esc(a.v)+(a.note?`<span class="notebadge">備考: ${esc(a.note)}</span>`:''):'— 未回答　タップして入力'}</div>
         ${carried?`<div class="sc-carry-bar"><span class="sc-carry-badge">前年度のまま・更新待ち</span><button class="sc-carry-btn" onclick="confirmCarry(event,'${sid}','${q.id}')">${I.check} 今年度も同じ</button></div>`:''}
       </div>`;
@@ -528,7 +528,7 @@ function viewFlow(){
 }
 function pickCand(i){const el=document.getElementById('flowInput');if(el&&window._cand){el.value=window._cand[i];el.focus()}}
 function readFlowInputs(){const qid=ST.flow.queue[ST.flow.idx];const v=isChoice(qid)?(readSel('flow')||''):((document.getElementById('flowInput')||{}).value||'');const n=(document.getElementById('flowNote')||{}).value||'';return {v:v,n:n}}
-async function flowSave(){const {v,n}=readFlowInputs();const qid=ST.flow.queue[ST.flow.idx];await setAns(ST.flow.sid,qid,v,n);ST.flow.idx++;render();if(ST.flow&&ST.flow.idx>=ST.flow.queue.length){} }
+async function flowSave(){const {v,n}=readFlowInputs();const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n);ST.flow.idx++;render();if(ST.flow&&ST.flow.idx>=ST.flow.queue.length){} }
 function flowSkip(){const {v,n}=readFlowInputs();if(v.trim()){flowSave();return}ST.flow.idx++;render()}
 function flowPrev(){const {v,n}=readFlowInputs();if(v.trim()){const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n)}ST.flow.idx=Math.max(0,ST.flow.idx-1);render()}
 function flowDoneHTML(sc){return `<div class="flow"><div class="flow-card flow-done"><div class="em">🎉</div><h2 style="font-size:19px;margin-bottom:6px">${esc(sc.name)} の回答が完了しました</h2><p class="muted" style="margin-bottom:18px">ご協力ありがとうございます。AIが全校の傾向を分析します。</p><button class="btn pri lg" onclick="flowExit()">ホームへ戻る</button></div></div>`}
@@ -615,7 +615,7 @@ async function saveEdit(sid){
   const y=window.scrollY||0;
   const v=isChoice(ST.q)?(readSel(sid)||''):((document.getElementById('ed-'+sid)||{}).value||'');
   const n=(document.getElementById('edn-'+sid)||{}).value||'';
-  await setAns(sid,ST.q,v,n);
+  setAns(sid,ST.q,v,n);
   ST.editing=null;
   render({keepScroll:true});
   setTimeout(()=>window.scrollTo(0,y),20);
