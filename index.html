@@ -194,7 +194,15 @@ function renderChoiceViz(q,an){
   const head=bin?'回答の分布（あり／なし）':'回答の分布（選択式・複数回答可）';
   return `<div class="sec-h"><span class="ic">${I.chart}</span>${head}</div>${cards||'<p class="muted tiny">まだ回答がありません。</p>'}${an.un.length?unGroup(an.un):''}`;
 }
-const YEARS=[{id:'R8',label:'令和8年度（現在）'},{id:'R9',label:'令和9年度（新年度）'}];
+let YEARS=[{id:'R8',label:'令和8年度'},{id:'R9',label:'令和9年度'}];
+function buildYears(dataYears){
+  var nums=dataYears.map(y=>parseInt(y.slice(1))).filter(n=>!isNaN(n));
+  if(!nums.length)return;
+  var mx=Math.max(...nums);
+  YEARS=dataYears.map(y=>({id:y,label:'令和'+y.slice(1)+'年度'}));
+  YEARS.push({id:'R'+(mx+1),label:'令和'+(mx+1)+'年度'});
+  if(!YEARS.find(y=>y.id===ST.year))ST.year=YEARS[Math.max(0,YEARS.length-2)].id;
+}
 const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,schoolReturnQid:null};
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
 function startSchoolEdit(qid){
@@ -235,6 +243,7 @@ async function loadYear(){
       if(d&&d.ok){
         ST.questions=d.questions||[];
         ST.answers=d.answers||{};
+        if(d.allYears&&d.allYears.length)buildYears(d.allYears);
         // 前年度の回答も取得（更新待ち表示・他校比較の引き継ぎ用）
         ST.prevYear=prevYearOf(ST.year);
         if(ST.prevYear){try{const pd=await gasGet({action:'get',year:ST.prevYear});ST.prevAnswers=(pd&&pd.ok&&pd.answers)?pd.answers:{};}catch(_){ST.prevAnswers={};}}
@@ -660,7 +669,7 @@ async function addQuestion(){
   toast('質問を追加しました');openQ(id);
 }
 (async function(){
-  render(); // ローディング画面を即座に表示
+  render();
   await seedIfNeeded();await loadYear();
   ST.loading=false;
   render();
