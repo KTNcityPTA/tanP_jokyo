@@ -632,12 +632,17 @@ async function saveEdit(sid){
 }
 /* ---- TABLE ---- */
 function viewTable(){
-  const rows=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))rows.push({short:s.short,cat:q.category,q:q.text,v:a.v,note:a.note,t:a.t})}));rows.sort((a,b)=>b.t-a.t);
+  const _ci=c=>{const i=CATEGORIES.indexOf(c);return i<0?999:i;};
+  const _qi=id=>parseInt(id.slice(1))||0;
+  const _si=id=>parseInt(id.slice(1))||0;
+  const _sq=[...ST.questions].sort((a,b)=>{const d=_ci(a.category)-_ci(b.category);return d!==0?d:_qi(a.id)-_qi(b.id);});
+  const _ss=[...SCHOOLS].sort((a,b)=>_si(a.id)-_si(b.id));
+  const rows=[];_sq.forEach(q=>_ss.forEach(s=>{const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))rows.push({short:s.short,cat:q.category,q:q.text,v:a.v,note:a.note,t:a.t});}));
   return `<div class="toolbar"><div class="sec-h" style="margin:0">${I.table} 回答テーブル</div><div style="flex:1"></div><select class="tx" style="width:auto" onchange="ST.tFilter=this.value;render()"><option value="all" ${ST.tFilter==='all'?'selected':''}>全校</option>${SCHOOLS.map(s=>`<option value="${s.id}" ${ST.tFilter===s.id?'selected':''}>${esc(s.short)}</option>`).join('')}</select><button class="btn sm" onclick="exportCSV()">CSVで書き出し</button></div>
-    <p class="muted tiny" style="margin-bottom:12px">各校が回答・更新するたびに1行ずつ記録されます（${ST.year}年度・${rows.length}件、新しい順）。</p>
+    <p class="muted tiny" style="margin-bottom:12px">各校が回答・更新するたびに1行ずつ記録されます（${ST.year}年度・${rows.length}件、カテゴリ→質問→学校順）。</p>
     <div style="overflow-x:auto"><table class="ttable"><thead><tr><th>学校</th><th>カテゴリ</th><th>質問</th><th>回答</th><th>備考</th><th>更新</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap;font-weight:500">${esc(r.short)}</td><td class="tc" style="white-space:nowrap">${esc(r.cat)}</td><td style="min-width:120px">${esc(r.q)}</td><td style="min-width:150px">${esc(r.v)}</td><td class="tc" style="min-width:90px">${esc(r.note||'')}</td><td class="tc" style="white-space:nowrap">${fmtDate(r.t)}</td></tr>`).join('')}</tbody></table></div>${rows.length?'':'<p class="empty-note">まだ回答がありません。</p>'}`;
 }
-function exportCSV(){const rows=[['年度','学校','カテゴリ','質問','回答','備考','更新']];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{const a=getAns(s.id,q.id);if(a)rows.push([ST.year,s.name,q.category,q.text,a.v,a.note||'',new Date(a.t).toLocaleString('ja-JP')])}));const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
+function exportCSV(){const _ci=c=>{const i=CATEGORIES.indexOf(c);return i<0?999:i;};const _qi=id=>parseInt(id.slice(1))||0;const _si=id=>parseInt(id.slice(1))||0;const _sq=[...ST.questions].sort((a,b)=>{const d=_ci(a.category)-_ci(b.category);return d!==0?d:_qi(a.id)-_qi(b.id);});const _ss=[...SCHOOLS].sort((a,b)=>_si(a.id)-_si(b.id));const rows=[['年度','学校','カテゴリ','質問','回答','備考','更新']];_sq.forEach(q=>_ss.forEach(s=>{const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))rows.push([ST.year,s.name,q.category,q.text,a.v,a.note||'',new Date(a.t).toLocaleString('ja-JP')]);}));const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
 /* ---- ADD ---- */
 function viewAdd(){const cs=cats();return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div><p class="muted tiny" style="margin-bottom:16px">追加した質問は全校で共有されます。だれが追加したか記録され、トップにも表示されます。</p>
   <label class="lb">カテゴリ</label><select class="tx" id="addCat" onchange="toggleNewCat()" style="margin-bottom:12px">${cs.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}<option value="__new__">＋ 新しいカテゴリを作る</option></select>
