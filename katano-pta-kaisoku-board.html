@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交野市PTA 会則・細則 くらべる板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#f4f0e6;--surface:#fff;--ink:#2b2a26;--ink2:#6f6a60;--ink3:#a39d91;
+ --line:#e7e1d4;--line2:#d9d2c2;
+ --navy:#2d445f;--navy2:#3f5d83;--navy-soft:#e5ebf2;
+ --amber:#d98a3c;--amber-d:#a9631d;--amber-soft:#f8ead4;
+ --teal:#3a9d7e;--teal-d:#2c7a61;--teal-soft:#e1efe9;
+ --red:#c65f45;--red-soft:#f7e2da;
+ --seal:#b4472f;
+ --r:15px;--r-s:11px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:"Noto Sans JP",sans-serif;font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
+.mincho{font-family:"Shippori Mincho",serif}
+.wrap{max-width:940px;margin:0 auto;padding:0 18px}
+/* header */
+.hd{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.hd-in{max-width:940px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Zen Maru Gothic";font-weight:700;font-size:16.5px;letter-spacing:.02em}
+.logo .mk{width:30px;height:30px;border-radius:9px;background:var(--seal);display:flex;align-items:center;justify-content:center;font-family:"Shippori Mincho";font-weight:700;color:#fff;font-size:15px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.hd .sub{font-size:11.5px;color:#c4cfdd;font-weight:400;font-family:"Noto Sans JP"}
+.nav{background:#26394f}.nav-in{max-width:940px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
+.navbtn{background:none;border:none;color:#c1ccda;font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;padding:11px 15px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.navbtn:hover{color:#fff}.navbtn.on{color:#fff;border-bottom-color:var(--amber)}
+.page{padding:22px 0 80px}
+/* generic */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.muted{color:var(--ink2)}.tiny{font-size:12px}.mb0{margin-bottom:0}
+.sec-h{font-family:"Zen Maru Gothic";font-weight:700;font-size:17px;margin:0 0 13px;display:flex;align-items:center;gap:9px}.sec-h .ic{color:var(--amber);display:flex}
+.btn{font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;border-radius:10px;padding:9px 16px;cursor:pointer;border:1px solid var(--line2);background:#fff;color:var(--ink);transition:.13s;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{background:#faf7f0;border-color:var(--ink3)}
+.btn.pri{background:var(--amber);border-color:var(--amber);color:#fff}.btn.pri:hover{background:var(--amber-d);border-color:var(--amber-d)}
+.btn.nv{background:var(--navy);border-color:var(--navy);color:#fff}.btn.nv:hover{background:var(--navy2)}
+.btn.sm{font-size:12.5px;padding:6px 12px}
+/* hero */
+.hero{background:linear-gradient(175deg,#fff,#fbf7ef);border:1px solid var(--line);border-radius:var(--r);padding:22px 22px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::after{content:"約";position:absolute;right:-14px;bottom:-30px;font-family:"Shippori Mincho";font-weight:700;font-size:150px;color:rgba(180,71,47,.05);line-height:1;pointer-events:none}
+.hero h2{font-size:21px;margin-bottom:6px;line-height:1.4;position:relative}
+.hero .lead{font-size:14px;color:var(--ink2);max-width:640px;position:relative}
+.statrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-s);padding:11px 15px;min-width:96px}
+.stat b{font-family:"Zen Maru Gothic";font-size:24px;font-weight:700;color:var(--navy);display:block;line-height:1.15}
+.stat span{font-size:11.5px;color:var(--ink2)}
+.stat.hl b{color:var(--seal)}
+/* AI summary */
+.aibox{background:linear-gradient(180deg,#fbf5eb,#fff);border:1px solid var(--amber-soft);border-radius:var(--r);padding:17px 19px;margin-bottom:16px}
+.aibox .aih{font-family:"Zen Maru Gothic";font-weight:700;font-size:15px;color:var(--amber-d);display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.aibox .airow{display:flex;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+.aibox .airow:last-child{border-bottom:none}
+.aibox .aitag{flex-shrink:0;font-size:11px;font-weight:700;font-family:"Zen Maru Gothic";border-radius:7px;padding:3px 9px;white-space:nowrap;margin-top:1px}
+.aitag.common{background:var(--teal-soft);color:var(--teal-d)}
+.aitag.uniq{background:var(--red-soft);color:var(--red)}
+.aitag.mix{background:var(--navy-soft);color:var(--navy2)}
+.aibox .aitx{font-size:13.5px;line-height:1.7}
+.aibox .aimeta{font-size:11px;color:var(--ink3);margin-top:11px}
+/* filter bar */
+.filt{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:15px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 14px}
+.filt .fl{font-size:12px;font-weight:700;color:var(--ink3);font-family:"Zen Maru Gothic"}
+.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.seg button{border:none;background:none;font-family:"Zen Maru Gothic";font-size:12.5px;padding:7px 13px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:none}.seg button.on{background:var(--navy);color:#fff}
+/* topic card */
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;transition:.13s}
+.tcard.uniq{border-color:#e7c3b3}
+.tcard-main{padding:15px 18px;cursor:pointer}
+.tcard-main:hover{background:#fdfbf6}
+.tmeta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
+.chchip{font-size:11px;color:var(--navy2);background:var(--navy-soft);border-radius:6px;padding:2px 9px;font-weight:500;white-space:nowrap}
+.saisoku-chip{font-size:11px;color:var(--amber-d);background:var(--amber-soft);border:1px solid #eacfaa;border-radius:6px;padding:2px 9px;font-weight:500;display:inline-flex;gap:4px;align-items:center;cursor:pointer}
+.saisoku-chip:hover{background:#f3ddba}
+.mark{font-size:10.5px;font-weight:700;font-family:"Zen Maru Gothic";border-radius:6px;padding:2px 9px;white-space:nowrap}
+.mark.uniq{background:var(--seal);color:#fff}.mark.minor{background:var(--amber);color:#fff}.mark.common{background:var(--teal);color:#fff}
+.ttitle{font-family:"Zen Maru Gothic";font-weight:700;font-size:16.5px;line-height:1.4;margin-bottom:4px}
+.tai{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:12px}
+/* stance rows */
+.stance{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line)}
+.stance:first-of-type{border-top:none}
+.sdot{width:11px;height:11px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.sbody{flex:1;min-width:0}
+.slabel{font-size:13.5px;font-weight:500;line-height:1.55;margin-bottom:5px}
+.badges{display:flex;gap:5px;flex-wrap:wrap}
+.bdg{font-size:12px;font-family:"Zen Maru Gothic";font-weight:700;min-width:26px;height:26px;padding:0 7px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:var(--paper);border:1px solid var(--line2);color:var(--ink2)}
+.bdg.iwa{background:var(--seal);color:#fff;border-color:var(--seal);box-shadow:0 1px 4px rgba(180,71,47,.3)}
+.scount{font-size:11.5px;color:var(--ink3);white-space:nowrap;margin-top:6px;flex-shrink:0}
+/* agreement meter */
+.meter{display:flex;height:8px;border-radius:5px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
+.meter i{height:100%;display:block}
+.expander{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:var(--paper);border-top:1px solid var(--line);cursor:pointer;font-family:"Zen Maru Gothic";font-size:12.5px;color:var(--navy2);font-weight:500}
+.expander:hover{background:#efe9dc}
+/* detail table */
+.detail{padding:4px 18px 16px;background:#fcfaf5;border-top:1px solid var(--line)}
+.drow{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.drow:last-child{border-bottom:none}
+.drow.iwa{background:linear-gradient(90deg,#fdf3ee,transparent);border-radius:8px;padding:11px 10px;margin:0 -10px}
+.dsch{width:96px;flex-shrink:0;display:flex;flex-direction:column;gap:3px}
+.dsch .nm{font-size:12.5px;font-weight:700;color:var(--navy);font-family:"Zen Maru Gothic"}
+.dsch .rf{font-size:10.5px;color:var(--ink3)}
+.dsch .rl{font-size:9.5px;font-weight:700;color:#fff;background:var(--seal);border-radius:5px;padding:1px 6px;width:fit-content}
+.dsch .sm{font-size:9.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #eacfaa;border-radius:5px;padding:1px 6px;width:fit-content}
+.dtxt{flex:1;font-size:13px;line-height:1.7;color:var(--ink);white-space:pre-wrap}
+.dtxt.none{color:var(--ink3);font-style:normal}
+.pending-note{margin-top:12px;font-size:12px;color:var(--ink3);background:var(--paper);border:1px dashed var(--line2);border-radius:9px;padding:8px 12px}
+/* PDF list */
+.pdf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:13px}
+.pdf-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;transition:.13s;position:relative}
+.pdf-card.real{border-color:#e7c3b3;background:linear-gradient(180deg,#fffdfb,#fff)}
+.pdf-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.07);transform:translateY(-1px)}
+.pdf-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.pdf-ico{width:46px;height:56px;flex-shrink:0;border-radius:6px;background:linear-gradient(160deg,#fff,#f0e8d8);border:1.5px solid var(--line2);position:relative;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.pdf-ico::before{content:"";position:absolute;top:0;right:0;border-width:0 13px 13px 0;border-style:solid;border-color:var(--paper) var(--paper) var(--line2) var(--line2)}
+.pdf-ico .seal{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-family:"Shippori Mincho";font-weight:700;font-size:15px;color:var(--seal);opacity:.9}
+.pdf-ico .lines{position:absolute;top:12px;left:7px;right:7px;display:flex;flex-direction:column;gap:3px}
+.pdf-ico .lines i{height:2px;background:var(--line2);border-radius:2px;display:block}
+.pdf-ico .lines i:nth-child(2){width:70%}.pdf-ico .lines i:nth-child(4){width:55%}
+.pdf-name{font-family:"Zen Maru Gothic";font-weight:700;font-size:14.5px;line-height:1.35}
+.pdf-badge{font-size:10px;font-weight:700;border-radius:6px;padding:1px 8px;margin-top:4px;display:inline-block}
+.pdf-badge.real{background:var(--red-soft);color:var(--seal)}
+.pdf-badge.samp{background:var(--paper);color:var(--ink3);border:1px solid var(--line2)}
+.pdf-actions{display:flex;flex-direction:column;gap:7px}
+.pdf-btn{font-family:"Zen Maru Gothic";font-size:12.5px;font-weight:500;border-radius:9px;padding:8px 11px;cursor:pointer;border:1px solid var(--line2);background:#fff;color:var(--ink);display:flex;align-items:center;gap:7px;text-decoration:none;transition:.12s}
+.pdf-btn:hover{background:#faf7f0;border-color:var(--ink3)}
+.pdf-btn.full{background:var(--navy);border-color:var(--navy);color:#fff}.pdf-btn.full:hover{background:var(--navy2)}
+.pdf-btn.dim{opacity:.5;cursor:not-allowed}.pdf-btn.dim:hover{background:#fff;border-color:var(--line2)}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(30,25,20,.55);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:28px 14px;overflow-y:auto;opacity:0;pointer-events:none;transition:.2s}
+.modal-bg.show{opacity:1;pointer-events:auto}
+.modal{background:var(--surface);border-radius:16px;max-width:720px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;transform:translateY(10px);transition:.2s}
+.modal-bg.show .modal{transform:none}
+.modal-h{position:sticky;top:0;background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;z-index:2}
+.modal-h .mt{font-family:"Zen Maru Gothic";font-weight:700;font-size:16px;flex:1}
+.modal-h .mx{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal-h .mx:hover{background:rgba(255,255,255,.28)}
+.modal-body{padding:22px 26px 30px;max-height:calc(100vh - 130px);overflow-y:auto}
+.doc-note{background:var(--amber-soft);border:1px solid #eacfaa;border-radius:9px;padding:9px 13px;font-size:12px;color:var(--amber-d);margin-bottom:18px;display:flex;gap:7px;align-items:flex-start}
+.doc-ch{font-family:"Shippori Mincho";font-weight:700;font-size:15px;color:var(--seal);margin:20px 0 9px;padding-bottom:5px;border-bottom:2px solid var(--amber-soft)}
+.doc-ch:first-child{margin-top:0}
+.doc-art{margin-bottom:13px}
+.doc-art .an{font-family:"Zen Maru Gothic";font-weight:700;font-size:13.5px;color:var(--navy);margin-bottom:2px}
+.doc-art .at{font-size:13px;line-height:1.85;color:var(--ink);white-space:pre-wrap}
+.doc-empty{text-align:center;color:var(--ink3);padding:40px 10px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px solid var(--line);font-size:12px;color:var(--ink2)}
+.legend .li{display:flex;align-items:center;gap:6px}
+.legend .ld{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 19px;border-radius:11px;font-size:13.5px;z-index:200;box-shadow:0 6px 22px rgba(0,0,0,.25);opacity:0;transition:.25s;font-family:"Zen Maru Gothic"}
+.toast.show{opacity:1}
+.empty-note{text-align:center;color:var(--ink3);padding:34px 10px;font-size:14px}
+@media(max-width:560px){.dsch{width:78px}.hero h2{font-size:19px}}
+</style></head>
+<body>
+<div class="hd"><div class="hd-in">
+ <div class="logo"><span class="mk mincho">約</span><span>交野市PTA 会則・細則 くらべる板<span class="sub"> ／ 単Pの見直しをらくにする</span></span></div>
+</div>
+<div class="nav"><div class="nav-in" id="nav"></div></div></div>
+<div class="wrap"><div class="page" id="page"></div></div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><span class="mt" id="modalTitle"></span><button class="mx" onclick="closeModal()">×</button></div><div class="modal-body" id="modalBody"></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ============================================================
+   交野市PTA 会則・細則 くらべる板（デモ）
+   ・岩船小学校 … 実際の会則/細則PDFから起こした本物データ
+   ・他校 … 「集まるとこう見える」を体感してもらうためのサンプル（仮）
+   ・条文番号は学校ごとにバラバラなので、AIが“趣旨”で束ねて並べています
+   ============================================================ */
+
+/* ---- 学校（badge＝頭文字バッジ） ---- */
+const SCHOOLS=[
+ {id:'iwa', name:'岩船小学校',    badge:'岩',  block:'４ブロック', real:true},
+ {id:'kzu', name:'郡津小学校',    badge:'郡',  block:'２ブロック'},
+ {id:'kra', name:'倉治小学校',    badge:'倉',  block:'２ブロック'},
+ {id:'hsi', name:'星田小学校',    badge:'星',  block:'３ブロック'},
+ {id:'kis', name:'私市小学校',    badge:'私',  block:'４ブロック'},
+ {id:'fuj', name:'藤が尾小学校',  badge:'藤',  block:'４ブロック'},
+ // ↓ まだ会則を出していない学校（“出してほしい”導線用）
+ {id:'mir', name:'交野みらい学園',badge:'み',  block:'１ブロック', pending:true},
+ {id:'ni2', name:'第２中学校',    badge:'２中',block:'２ブロック', pending:true},
+ {id:'aki', name:'旭小学校',      badge:'旭',  block:'３ブロック', pending:true},
+ {id:'ni3', name:'第３中学校',    badge:'３中',block:'３ブロック', pending:true},
+];
+const SUBMITTED=SCHOOLS.filter(s=>!s.pending);
+const PENDING=SCHOOLS.filter(s=>s.pending);
+const SMAP={};SCHOOLS.forEach(s=>SMAP[s.id]=s);
+
+/* ---- Google Drive PDFリンク（各校から届いたら、ここに貼るだけ） ----
+   例: kaisoku:'https://drive.google.com/file/d/xxxxx/view'
+   空('')のあいだは「準備中」と表示されます。岩船の全文はアプリ内に埋め込み済みなので、
+   リンクが無くても「全文を読む」ボタンはすぐ使えます。 */
+const PDFS={
+ iwa:{kaisoku:'', saisoku:''},   // ← ここに岩船会則/細則のDriveリンクを貼ると「PDFで開く」が有効化
+ kzu:{kaisoku:'', saisoku:''},
+ kra:{kaisoku:'', saisoku:''},
+ hsi:{kaisoku:'', saisoku:''},
+ kis:{kaisoku:'', saisoku:''},
+ fuj:{kaisoku:'', saisoku:''},
+};
+
+/* ---- 比較の論点（AIが趣旨で束ねたもの） ----
+   stances[0] を最上段に置く（多数派を先頭に）。
+   kind: common(多数派) / variant(別バリエーション) / uniq(岩船のみ) を色分けに使用。
+   detail: 各校の実際の条文番号(ref)と抜粋(t)。realは岩船の実データ。 */
+const KAI=[
+ {ch:'第1章 総則', title:'PTAの目的', saisoku:null,
+  ai:'全校ほぼ共通。国のPTA標準に沿い「学校・家庭・社会で子どもの幸福な成長を図る」と定めています。文言の細部だけが各校で少し違います。',
+  stances:[{kind:'common',label:'会員の協力で、学校・家庭・社会における児童の幸福な成長を図る',schools:['iwa','kzu','kra','hsi','kis','fuj']}],
+  detail:{
+   iwa:{ref:'第2条',real:true,t:'本会は、会員相互が協力して、学校と家庭と社会における児童の幸福な成長を図ることを目的とする。'},
+   kzu:{ref:'第2条',t:'本会は、会員相互の協力のもと、家庭・学校・地域社会における児童の健全な育成を図ることを目的とする。'},
+   kra:{ref:'第3条',t:'保護者と教職員が協力し、児童の幸福な成長と学校教育の充実に資することを目的とする。'},
+   hsi:{ref:'第2条',t:'会員が協力して児童・生徒の幸福な成長を図り、あわせて会員相互の親睦を深める。'},
+   kis:{ref:'第2条',t:'学校・家庭・社会における児童の福祉を増進し、健全な発達を図る。'},
+   fuj:{ref:'第2条',t:'会員相互の協力により、児童の幸福な成長と教育環境の向上を図る。'},
+  }},
+
+ {ch:'第2章 会員', title:'会員になれる人', saisoku:null,
+  ai:'全校共通で「在籍児童の保護者」と「本校教職員」の2種類。ここは市内で完全にそろっています。',
+  stances:[{kind:'common',label:'在籍児童の保護者＋本校教職員',schools:['iwa','kzu','kra','hsi','kis','fuj']}],
+  detail:{
+   iwa:{ref:'第5条',real:true,t:'（１）本校に在籍する児童の保護者\n（２）本校教職員'},
+   kzu:{ref:'第5条',t:'本校に在籍する児童の保護者、および本校の教職員。'},
+   kra:{ref:'第4条',t:'本校児童の保護者と本校教職員をもって会員とする。'},
+   hsi:{ref:'第5条',t:'在籍児童の保護者・本校教職員。'},
+   kis:{ref:'第5条',t:'本校に在籍する児童の保護者ならびに教職員。'},
+   fuj:{ref:'第4条',t:'本校に在籍する児童の保護者及び本校教職員。'},
+  }},
+
+ {ch:'第3章 役員', title:'役員の構成（人数）', saisoku:'細則で選出方法を規定',
+  ai:'「会長・副会長・書記・会計・会計監査」の5職はほぼ共通。ただし人数は学校差があり、岩船は書記3名（うち教職員1名）と多め。会計監査を置くかどうかも分かれます。',
+  stances:[
+   {kind:'variant',label:'会長1・副会長2・書記3(教職員1含む)・会計1〜2・会計監査2',schools:['iwa']},
+   {kind:'common',label:'会長1・副会長1〜2・書記1〜2・会計2・会計監査2',schools:['kzu','kra','kis','fuj']},
+   {kind:'variant',label:'会長1・副会長2・書記2・会計2（会計監査は運営委員が兼務）',schools:['hsi']},
+  ],
+  detail:{
+   iwa:{ref:'第6条',real:true,t:'（１）会長 １名（２）副会長 ２名（３）書記 ３名（内教職員１名）（４）会計 １〜２名（５）会計監査 ２名'},
+   kzu:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名・会計監査2名。'},
+   kra:{ref:'第6条',t:'会長1名・副会長1名・書記1名・会計2名・会計監査2名。'},
+   hsi:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名。会計監査は運営委員より2名を選ぶ。'},
+   kis:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名・会計監査2名。'},
+   fuj:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名・会計監査2名。'},
+  }},
+
+ {ch:'第3章 役員', title:'役員の任期', saisoku:null,
+  ai:'本体は「4/1〜翌3/31」で一致。岩船の特色は、会計監査だけ任期を延ばし「翌年度の決算報告を終える総会日まで」としている点です。前年度会計を最後まで見届ける設計で、これは少数派です。',
+  stances:[
+   {kind:'common',label:'4/1〜翌3/31（全役員一律）',schools:['kzu','kra','hsi','kis','fuj']},
+   {kind:'uniq',label:'4/1〜翌3/31。ただし会計監査のみ「翌年度の決算総会日」まで',schools:['iwa']},
+  ],
+  detail:{
+   iwa:{ref:'第7条',real:true,t:'役員（会計監査除く）の任期は4/1〜翌3/31。会計監査の任期は4/1〜翌年度の決算報告を終える次年度総会日まで。欠員時は補充し任期は前任者の残期間。'},
+   kzu:{ref:'第7条',t:'役員の任期は4/1から翌年3/31までの1年とし、再任を妨げない。'},
+   kra:{ref:'第7条',t:'任期は1年（4/1〜翌3/31）。'},
+   hsi:{ref:'第7条',t:'役員の任期は当該年度の1年間とする。'},
+   kis:{ref:'第7条',t:'任期は4/1〜翌3/31。再任は妨げない。'},
+   fuj:{ref:'第7条',t:'任期は1年とし、4/1に始まり翌3/31に終わる。'},
+  }},
+
+ {ch:'第5章 組織', title:'総会の成立・議決の要件', saisoku:null,
+  ai:'定足数と議決の割合は学校でばらつきが大きい論点です。岩船は「議決権者(委任状含む)の1/5以上で成立・過半数で議決」。決算審議に限り前年度6年保護者にも議決権を与える点はやや独自です。',
+  stances:[
+   {kind:'variant',label:'1/5以上の出席で成立／過半数で議決（決算のみ前年度6年保護者も議決権）',schools:['iwa']},
+   {kind:'common',label:'過半数の出席で成立／出席者の過半数で議決',schools:['kzu','kra','fuj']},
+   {kind:'variant',label:'1/3以上の出席（委任状含む）で成立／過半数で議決',schools:['hsi','kis']},
+  ],
+  detail:{
+   iwa:{ref:'第12条',real:true,t:'総会は年1回。議決権者(委任状含む)の1/5以上の出席で成立。議決は出席議決権者(委任状除く)または書面決議書の過半数。書面表決も可。決算審議のみ前年度6年生の保護者も議決権を有する。'},
+   kzu:{ref:'第11条',t:'会員の過半数の出席(委任状含む)で成立し、出席者の過半数で議決する。'},
+   kra:{ref:'第10条',t:'総会は会員の過半数で成立、議決は出席者の過半数による。'},
+   hsi:{ref:'第12条',t:'議決権者の3分の1以上(委任状含む)の出席で成立、過半数で議決。'},
+   kis:{ref:'第11条',t:'会員の1/3以上の出席で成立し、出席者の過半数で決する。'},
+   fuj:{ref:'第11条',t:'会員の過半数の出席で成立、出席者の過半数の同意で議決。'},
+  }},
+
+ {ch:'第5章 組織', title:'書面表決（総会に出られない人の投票）', saisoku:null,
+  ai:'「総会に来られなくても書面で意思表示できる」しくみ。岩船は明文化しています。コロナ以降に入れた学校と、まだ委任状のみの学校に分かれます。見直しのヒントになりやすい論点です。',
+  stances:[
+   {kind:'common',label:'書面表決を明文で認める',schools:['iwa','kzu','hsi']},
+   {kind:'variant',label:'委任状のみ（書面表決の規定なし）',schools:['kra','kis','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第12条5項',real:true,t:'書面による審議を行う場合、資料を配布し、議案ごとに意思が確認できるよう書面表決書の提出をもって審議できる。'},
+   kzu:{ref:'第11条4項',t:'やむを得ず欠席する会員は、書面表決書により議決に加わることができる。'},
+   kra:{ref:'—',t:'—（書面表決の規定なし。委任状のみ）'},
+   hsi:{ref:'第12条3項',t:'欠席者は書面または委任状により表決できる。'},
+   kis:{ref:'—',t:'—（委任状のみ）'},
+   fuj:{ref:'—',t:'—（委任状のみ）'},
+  }},
+
+ {ch:'第5章 組織', title:'委員会の種類とフェスタ', saisoku:'各委員の選出は細則で規定',
+  ai:'委員会の骨組み（学年・広報・地区）は共通。違いが出るのは「地域交流／お祭り系の委員会」で、岩船は"地域交流委員会"が「岩船わいわいフェスタ」を担当。名称と担当がそのまま各校の色になります。',
+  stances:[
+   {kind:'variant',label:'学年・地域交流(わいわいフェスタ)・広報・地区・特別',schools:['iwa']},
+   {kind:'common',label:'学年・広報・地区・成人(文化)・特別',schools:['kzu','kis']},
+   {kind:'variant',label:'学年・広報・地区・環境整備・お祭り実行',schools:['kra','hsi','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第17条',real:true,t:'（１）学年委員会（２）地域交流委員会＝岩船わいわいフェスタの準備・運営（３）広報委員会（４）地区委員会（５）特別委員会（必要の都度）'},
+   kzu:{ref:'第16条',t:'学年委員会・広報委員会・地区委員会・成人委員会・特別委員会。'},
+   kra:{ref:'第17条',t:'学年・広報・地区・環境整備委員会と、夏まつり実行委員会。'},
+   hsi:{ref:'第16条',t:'学級・広報・地区・環境の各委員会、および星まつり実行委員会。'},
+   kis:{ref:'第17条',t:'学年・広報・地区・文化(成人)・特別委員会。'},
+   fuj:{ref:'第16条',t:'学年・広報・地区・環境整備委員会、ふれあいフェスタ実行委員会。'},
+  }},
+
+ {ch:'第6章 会計', title:'会費の決め方', saisoku:null,
+  ai:'ほぼ全校で「その年度の総会で決定」。金額を会則に直接書かず総会に委ねる点は市内でそろっています。',
+  stances:[{kind:'common',label:'当該年度の総会で決定する',schools:['iwa','kzu','kra','hsi','kis','fuj']}],
+  detail:{
+   iwa:{ref:'第22条',real:true,t:'本会の会費は、当該年度の総会において決定する。'},
+   kzu:{ref:'第20条',t:'会費は総会において決定する。'},
+   kra:{ref:'第21条',t:'会費の額は毎年度の総会で定める。'},
+   hsi:{ref:'第22条',t:'会費は当該年度総会で決定する。'},
+   kis:{ref:'第21条',t:'会費は総会の議決による。'},
+   fuj:{ref:'第20条',t:'会費は総会において決定する。'},
+  }},
+
+ {ch:'第6章 会計', title:'会計年度', saisoku:null,
+  ai:'完全共通で「4/1〜翌3/31」。岩船はさらに「決算のための1か月の出納整理期間」を明記しています（この一文の有無だけ差が出ます）。',
+  stances:[
+   {kind:'common',label:'4/1〜翌3/31',schools:['kzu','kra','hsi','kis','fuj']},
+   {kind:'variant',label:'4/1〜翌3/31＋出納整理期間1か月を明記',schools:['iwa']},
+  ],
+  detail:{
+   iwa:{ref:'第23条',real:true,t:'会計年度は毎年4/1に始まり翌3/31に終わる。会計年度終了から1か月間を出納整理期間とし、会計年度内の出納の精算期間とする。'},
+   kzu:{ref:'第21条',t:'会計年度は4/1から翌3/31まで。'},
+   kra:{ref:'第22条',t:'会計年度は4/1〜翌3/31とする。'},
+   hsi:{ref:'第23条',t:'会計年度は4/1に始まり翌3/31に終わる。'},
+   kis:{ref:'第22条',t:'毎年4/1から翌3/31まで。'},
+   fuj:{ref:'第21条',t:'4/1〜翌3/31。'},
+  }},
+
+ {ch:'第7章 規約改正', title:'会則を変えるときの要件', saisoku:null,
+  ai:'ここは実務で一番差が効く論点。岩船は「総会で出席会員の2/3以上の賛成」。過半数で改正できる学校もあり、ハードルの高さが分かれます。改正のしやすさに直結するので要チェック。',
+  stances:[
+   {kind:'common',label:'総会で出席会員の2/3以上の賛成',schools:['iwa','hsi','kis']},
+   {kind:'variant',label:'総会で出席会員の過半数の賛成',schools:['kzu','kra','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第24条',real:true,t:'本会の会則は、総会の審議において出席会員の3分の2以上の賛成により改正することができる。'},
+   kzu:{ref:'第22条',t:'会則の改正は総会出席者の過半数の賛成による。'},
+   kra:{ref:'第23条',t:'会則は総会において出席者の過半数で改正できる。'},
+   hsi:{ref:'第24条',t:'会則の改正は総会出席者の2/3以上の賛成を要する。'},
+   kis:{ref:'第23条',t:'会則の変更は総会で出席会員の2/3以上の同意による。'},
+   fuj:{ref:'第22条',t:'会則の改正は総会出席者の過半数による。'},
+  }},
+
+ {ch:'第1章 総則', title:'個人情報の保護', saisoku:'細則に詳細な取扱規約(全16条)',
+  ai:'岩船は会則本体(第4条)で枠組みを定め、さらに細則に全16条の詳しい取扱規約を持つ手厚い構成。ここまで細則で整えている学校は多くありません。個人情報まわりを見直したい学校の“お手本”になります。',
+  stances:[
+   {kind:'uniq',label:'会則で枠組み＋細則に全16条の取扱規約(法令準拠)',schools:['iwa']},
+   {kind:'common',label:'会則に数項の個人情報条項のみ',schools:['kzu','kra','hsi','fuj']},
+   {kind:'variant',label:'別紙「個人情報取扱方針」を用意',schools:['kis']},
+  ],
+  detail:{
+   iwa:{ref:'第4条＋細則第15〜30条',real:true,t:'会則第4条で収集目的・提供先(協議会/教委/学校/区長自治会等)・管理を規定。さらに細則第4章に、管理者・秘密保持・収集/利用/保管/第三者提供・開示請求・漏えい対応・研修・苦情処理まで全16条を整備。'},
+   kzu:{ref:'第4条',t:'取得した個人情報は会の活動目的にのみ利用し、適正に管理する旨を数項で規定。'},
+   kra:{ref:'第5条',t:'個人情報は目的外に使用せず、適切に管理する。'},
+   hsi:{ref:'第4条',t:'個人情報は活動に必要な範囲で収集・利用し、外部に漏らさない。'},
+   kis:{ref:'第4条＋別紙',t:'会則で概要を定め、詳細は別紙「個人情報取扱方針」による。'},
+   fuj:{ref:'第4条',t:'収集した個人情報は目的の範囲で利用し、管理責任者を会長とする。'},
+  }},
+];
+
+const SAI=[
+ {ch:'第1章 役員の選出', title:'役員をどう割り当てるか（地区制）', saisoku:null,
+  ai:'岩船は「森／寺／天／私部」を2グループに分け、地区ごとに役員を出す地区割方式。地域に根ざした独自色が強い部分で、そのまま真似るより「自校の地区に置き換えて考える」お手本になります。',
+  stances:[
+   {kind:'uniq',label:'居住地区(森/寺/天/私部)を2グループに分け地区ごとに選出',schools:['iwa']},
+   {kind:'common',label:'学年ごとに割り当て(輪番)',schools:['kzu','kis','fuj']},
+   {kind:'variant',label:'立候補＋推薦、不足分を地区・学年から補充',schools:['kra','hsi']},
+  ],
+  detail:{
+   iwa:{ref:'第2条',real:true,t:'地区名(森Ⅰ/森Ⅱ/寺/天Ⅰ・Ⅱ/天Ⅲ/私部)ごとに、会長・会計監査を除く役員6名を2グループに分けて選出。具体的方法は各地区で定める。会計監査は原則前年度会計から。'},
+   kzu:{ref:'第2条',t:'役員は各学年から輪番で選出する。'},
+   kra:{ref:'第1条',t:'立候補と推薦により選び、不足は地区から補う。'},
+   hsi:{ref:'第2条',t:'立候補を基本とし、不足分は学年ごとに割り当てる。'},
+   kis:{ref:'第2条',t:'各学年から人数を割り当てて選出。'},
+   fuj:{ref:'第2条',t:'学年ごとの輪番制で役員を出す。'},
+  }},
+
+ {ch:'第1章 役員の選出', title:'役員を辞退できる条件', saisoku:null,
+  ai:'「小さい子・介護・病気・経験者は辞退できる」という配慮は各校に共通。岩船は"3歳以下(次年度4/2時点)"と基準日まで明記し、経験者免除も細かく定義しています。',
+  stances:[
+   {kind:'common',label:'乳幼児・介護・病気・経験者などは希望すれば辞退可',schools:['iwa','kzu','kra','hsi','kis','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第3条',real:true,t:'希望すれば役員候補を免れる：(1)3歳以下(次年度4/2時点)の子がいる(2)介護を要する家族がいる(3)本人が病気等(4)役員経験者(5)地区選管長が認める特別な理由。申請と証明を要する場合あり。'},
+   kzu:{ref:'第3条',t:'未就学児の育児・介護・疾病・過去の役員経験がある場合は辞退できる。'},
+   kra:{ref:'第3条',t:'乳幼児のいる家庭、介護・病気の事情、経験者は免除を申し出できる。'},
+   hsi:{ref:'第3条',t:'3歳未満児の養育・介護・傷病・役員経験者は辞退可。'},
+   kis:{ref:'第3条',t:'未就学児がいる・介護中・病気・経験済みの場合は免除申請できる。'},
+   fuj:{ref:'第3条',t:'乳児養育・介護・疾病・役員経験者は希望により免除。'},
+  }},
+
+ {ch:'第1章 役員の選出', title:'会長の選び方', saisoku:null,
+  ai:'まず立候補を募り、いなければ選挙や輪番、という流れは共通。岩船の独自点は「立候補ゼロのとき2グループ輪番制で会長を出す」明確なルールがあること。“決まらない年”への備えとして参考になります。',
+  stances:[
+   {kind:'variant',label:'立候補→(複数は選挙/1人は信任)→不在なら2グループ輪番制',schools:['iwa']},
+   {kind:'common',label:'立候補優先、いなければ役員互選',schools:['kzu','kra','kis','fuj']},
+   {kind:'variant',label:'推薦委員会が候補を推薦',schools:['hsi']},
+  ],
+  detail:{
+   iwa:{ref:'第4・5条',real:true,t:'中央選管が立候補を募る。複数なら無記名投票で最高得票者、1人なら信任投票(過半数)。不在時は再募集し、なお不在なら「森Ⅰ・森Ⅱ・寺」と「天Ⅰ・Ⅱ・天Ⅲ」の2グループ輪番で選出。'},
+   kzu:{ref:'第4条',t:'立候補を優先し、いない場合は役員の互選による。'},
+   kra:{ref:'第4条',t:'立候補者から選び、不在時は前役員会が推薦する。'},
+   hsi:{ref:'第4条',t:'推薦委員会が候補者を選び総会で承認する。'},
+   kis:{ref:'第4条',t:'立候補、なければ役員間の互選で決める。'},
+   fuj:{ref:'第4条',t:'立候補優先、不在なら役員会推薦。'},
+  }},
+
+ {ch:'第2章 委員の選出', title:'学級委員の選び方と人数', saisoku:null,
+  ai:'「1家庭1回以上」の原則は共通。岩船は学級数(1〜3学級)ごとに委員長・広報の人数配分まで細かく定義し、6年保護者の扱い(地域交流委員補佐)まで規定。運用で迷わない作り込みが特徴です。',
+  stances:[
+   {kind:'variant',label:'1家庭1回以上。学級数別に委員長/広報の人数を細かく規定',schools:['iwa']},
+   {kind:'common',label:'各学級から数名を話し合い/くじで選出(1家庭1回)',schools:['kzu','kra','hsi','kis','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第8条',real:true,t:'学級委員=学級委員長＋広報委員。1家庭1回以上。1学年4人を学級懇談で選出。1学級なら委員長2/広報2、2学級なら各学級で委員長1/広報1、3学級なら学年で委員長2/広報2になるよう調整。話し合いで決まらなければくじ引き。'},
+   kzu:{ref:'第7条',t:'各学級から2名を選び、1家庭1回以上を原則とする。'},
+   kra:{ref:'第6条',t:'学級ごとに委員を話し合いで選出、不調時はくじ引き。'},
+   hsi:{ref:'第7条',t:'各学級から学級委員・広報委員を各1名選ぶ。'},
+   kis:{ref:'第7条',t:'学級から数名を選出。1家庭1回を原則。'},
+   fuj:{ref:'第7条',t:'各学級2名を選び、立候補多数・不足時はくじで決定。'},
+  }},
+
+ {ch:'第2章 委員の選出', title:'役員と委員の兼務', saisoku:null,
+  ai:'「役員と委員の掛け持ちは不可」は各校ほぼ共通。岩船は加えて「学級委員と地区委員は兼務可、ただし両方の委員長は不可」と一段細かく定めています。',
+  stances:[
+   {kind:'common',label:'役員と委員の兼務は不可',schools:['iwa','kzu','kra','hsi','kis','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第10条',real:true,t:'役員と学級委員・地区委員の兼任は不可。学級委員と地区委員は兼任可。ただし両方の委員長を兼ねることはできない。'},
+   kzu:{ref:'第9条',t:'役員は委員を兼ねることができない。'},
+   kra:{ref:'第8条',t:'役員と委員の兼務を認めない。'},
+   hsi:{ref:'第9条',t:'役員・委員の兼任は原則不可。'},
+   kis:{ref:'第9条',t:'役員は委員を兼務しない。'},
+   fuj:{ref:'第8条',t:'役員と各委員の兼任はできない。'},
+  }},
+
+ {ch:'第3章 会費・会計', title:'会費の集め方', saisoku:null,
+  ai:'口座引き落としが主流。岩船は「ゆうちょ銀行から引き落とし」「兄弟姉妹は下の子で納入」「年度途中の加入は月割り、退会時の返金なし」まで具体的。集金トラブルを減らす書き方の見本です。',
+  stances:[
+   {kind:'common',label:'口座引き落とし(年1回)。兄弟は1家庭でまとめる',schools:['iwa','kzu','kra','kis']},
+   {kind:'variant',label:'現金徴収または振込',schools:['hsi','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第11〜13条',real:true,t:'会費はゆうちょ銀行より引き落とし、納入回数は年1回。兄弟姉妹がいる場合は弟妹の方で納入。教職員は免除できる。年度途中加入は月額×残月分、途中退会の返金は行わない。'},
+   kzu:{ref:'第10条',t:'会費は口座引き落としで年1回。兄弟姉妹は1口とする。'},
+   kra:{ref:'第9条',t:'会費は指定口座からの引き落とし。'},
+   hsi:{ref:'第10条',t:'会費は学期ごとに現金で徴収する。'},
+   kis:{ref:'第10条',t:'会費は口座振替により年1回徴収。'},
+   fuj:{ref:'第9条',t:'会費は指定口座への振込による。'},
+  }},
+
+ {ch:'第3章 会費・会計', title:'回収事業(アルミ缶など)の収益の使い道', saisoku:null,
+  ai:'岩船だけが「アルミ缶回収の収益は図書購入などへ還元」と使途を明記。回収・ベルマーク系の収益の行き先を会則/細則に書いている学校は少なく、透明性の面で参考になる独自ルールです。',
+  stances:[
+   {kind:'uniq',label:'アルミ缶回収の収益は図書購入などへ還元(明文)',schools:['iwa']},
+   {kind:'common',label:'収益事業の使途は会則/細則に明記なし',schools:['kzu','kra','hsi','kis','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第14条',real:true,t:'アルミ缶回収による収益金は、図書購入などへ還元する。'},
+   kzu:{ref:'—',t:'—（回収収益の使途規定なし。都度、総会/運営委で決定）'},
+   kra:{ref:'—',t:'—（規定なし）'},
+   hsi:{ref:'—',t:'—（ベルマーク収益は都度使途を協議）'},
+   kis:{ref:'—',t:'—（規定なし）'},
+   fuj:{ref:'—',t:'—（規定なし）'},
+  }},
+
+ {ch:'第4章 個人情報', title:'個人情報の取扱規約(細則本体)', saisoku:null,
+  ai:'岩船は細則に、管理者・秘密保持・収集/利用/保管/第三者提供の記録・開示請求・漏えい対応・研修・苦情処理まで全16条。法令に沿った本格的な規約で、市内で最も手厚い部類。見直しの“基準テンプレ”に使えます。',
+  stances:[
+   {kind:'uniq',label:'細則に法令準拠の取扱規約 全16条(第15〜30条)',schools:['iwa']},
+   {kind:'common',label:'細則に数条の取扱規定',schools:['kra','hsi','fuj']},
+   {kind:'variant',label:'別紙の個人情報方針で対応',schools:['kzu','kis']},
+  ],
+  detail:{
+   iwa:{ref:'第15〜30条',real:true,t:'目的・責務・管理者(会長)・秘密保持義務(退任後も)・収集/利用/利用目的制限・管理/保管(施錠書庫・ウィルス対策・パスワード)・第三者提供の制限と記録作成・開示等請求への対応・漏えい時の即時報告・定期研修・苦情処理まで、全16条を整備。'},
+   kra:{ref:'第11〜13条',t:'収集目的の明示・目的外利用の禁止・適正管理を3条で規定。'},
+   hsi:{ref:'第12〜14条',t:'利用目的・管理責任・第三者提供の制限を規定。'},
+   kis:{ref:'別紙',t:'細則本体では触れず、別紙「個人情報取扱方針」で対応。'},
+   kzu:{ref:'別紙',t:'個人情報は別途「取扱方針」により管理。'},
+   fuj:{ref:'第11〜12条',t:'目的の範囲での利用と管理責任者を規定。'},
+  }},
+
+ {ch:'第5章 改正', title:'細則を変えるときの要件', saisoku:null,
+  ai:'細則は会則より軽く変えられるのが一般的。岩船は「運営委員会で出席者の2/3以上」。会則(総会2/3)より一段機動的に見直せる設計で、多くの学校と同じ考え方です。',
+  stances:[
+   {kind:'common',label:'運営委員会で出席者の2/3以上の賛成',schools:['iwa','hsi','kis']},
+   {kind:'variant',label:'運営委員会で出席者の過半数の賛成',schools:['kzu','kra','fuj']},
+  ],
+  detail:{
+   iwa:{ref:'第31条',real:true,t:'この細則は、運営委員会において出席者の3分の2以上の賛成により改正することができる。'},
+   kzu:{ref:'第20条',t:'細則の改正は運営委員会出席者の過半数による。'},
+   kra:{ref:'第18条',t:'細則は運営委員会の過半数で改正できる。'},
+   hsi:{ref:'第22条',t:'細則の改正は運営委員会で出席者の2/3以上。'},
+   kis:{ref:'第20条',t:'細則の変更は運営委員会2/3以上の賛成による。'},
+   fuj:{ref:'第19条',t:'細則は運営委員会の過半数で改正。'},
+  }},
+];
+
+/* ---- 岩船の全文（実データ。モーダルで表示） ---- */
+const IWA_KAISOKU={title:'岩船小学校PTA会則（令和8年1月17日改正）',chapters:[
+ {ch:'第1章 総則',arts:[
+  {n:'第1条（名称）',t:'この会は、交野市立岩船小学校ＰＴＡ（以下「本会」という）と呼び、所在地を岩船小学校におく。'},
+  {n:'第2条（目的）',t:'本会は、会員相互が協力して、学校と家庭と社会における児童の幸福な成長を図ることを目的とする。'},
+  {n:'第3条（活動）',t:'前条の目的達成のため次の方針に従い活動する。(1)教育を本旨とする民主団体として活動(2)児童憲章の精神に即し他団体・機関と協力(3)適正な教育予算充実に努力(4)特定政党・宗教に片寄らず営利行為は行わない(5)本会・役員名で選挙候補者を推薦しない(6)学校の人事その他管理運営に干渉しない。'},
+  {n:'第4条（個人情報保護）',t:'本会は目的達成に必要な個人情報を収集することがある。利用目的＝(1)活動の情報伝達・広報(2)会費徴収・集金事務(3)その他必要と認める活動。提供先＝(1)加入するPTA協議会等(2)交野市教委・岩船小(3)校区内の区長・自治会(4)その他必要と認める社会教育団体等。利用・管理は別に細則で定める。'},
+ ]},
+ {ch:'第2章 会員',arts:[
+  {n:'第5条（会員）',t:'会員となれる者：(1)本校に在籍する児童の保護者(2)本校教職員。'},
+ ]},
+ {ch:'第3章 役員',arts:[
+  {n:'第6条（役員）',t:'(1)会長1名(2)副会長2名(3)書記3名(内教職員1名)(4)会計1〜2名(5)会計監査2名。'},
+  {n:'第7条（任期）',t:'役員(会計監査除く)の任期は4/1〜翌3/31。会計監査は4/1〜翌年度の決算報告を終える次年度総会日まで。欠員は補充し、任期は前任者の残留期間。'},
+  {n:'第8条（任務）',t:'(1)会長=本会を代表し会務を総轄、各委員会を召集し報告を受ける(2)副会長=会長を補佐、事故時は職務代行(3)書記=庶務(4)会計=財務(5)会計監査=年1回以上監査し総会で報告。'},
+ ]},
+ {ch:'第4章 役員の選出',arts:[
+  {n:'第9条（役員選出）',t:'役員は着任年度の2〜6年生保護者から選出(書記1名は教職員)。保護者役員(会計監査除く)の具体的方法は細則で定める。役職は互選。会計監査は前運営委員から前役員会が2名推薦。欠員時は当該地区から後任を選出。'},
+  {n:'第10条（選挙管理委員会）',t:'各地区に選挙管理委員会を設け、統括する中央選管を置く。中央選管は年度内に役員選出結果を役職名を付して報告。次年度役員の承認は承認書提出数の過半数で決定。'},
+ ]},
+ {ch:'第5章 組織',arts:[
+  {n:'第11条（組織）',t:'(1)総会(2)運営委員会(3)役員会(4)各委員会。'},
+  {n:'第12条（総会）',t:'総会は最高議決機関で年1回。会員の1/3以上の希望または会長が必要と認めるとき臨時開催可。議決権は全会員(決算審議のみ前年度6年保護者も)。議決権者(委任状含む)の1/5以上で成立、議決は過半数。書面表決も可。'},
+  {n:'第13条（審議事項）',t:'(1)運営の基本方針(2)予算・決算(3)会則改正(4)その他重要事項。'},
+  {n:'第14条（運営委員会）',t:'総会に次ぐ議決機関。(1)運営計画(2)総会議案(3)事業計画(4)細則の改正(5)その他を審議。原則月1回、臨時開催可。役員会は内容を随時会員に報告。'},
+  {n:'第15条（構成員）',t:'役員(会計監査除く)・学校長・教頭・各委員長・会長/校長が必要と認める者。'},
+  {n:'第16条（役員会）',t:'役員で構成、運営委員会に次ぐ議決機関。運営委員会議案の作成、諸問題の対応。'},
+  {n:'第17条（各委員会）',t:'(1)学年委員会(2)地域交流委員会(3)広報委員会(4)地区委員会(5)特別委員会(必要の都度)。'},
+  {n:'第18条（各委員の選出）',t:'1〜3号は細則で選出(総称=学級委員)。地区委員会は各地区から選出。特別委員会は関係会員から。各委員会は委員長・副委員長を互選。'},
+  {n:'第19条（任期）',t:'委員の任期は1年、再任可。欠員は補充(任期は残留期間)。'},
+  {n:'第20条（任務）',t:'学年委員会=学年環境整備・ベルマーク回収分類発送/地域交流委員会=岩船わいわいフェスタの準備・運営/広報委員会=広報活動/地区委員会=地区の連絡と校外生活の補導。'},
+  {n:'第21条（校長の参画）',t:'学校長は第11条の各会に出席し、学校管理・教育に関して意見を述べることができる。'},
+ ]},
+ {ch:'第6章 会計',arts:[
+  {n:'第22条（会費）',t:'会費は当該年度の総会で決定する。'},
+  {n:'第23条（会計年度）',t:'会計年度は4/1〜翌3/31。終了から1か月を出納整理期間とする。'},
+ ]},
+ {ch:'第7章 規約改正',arts:[
+  {n:'第24条（会則改正）',t:'会則は総会の審議で出席会員の2/3以上の賛成により改正できる。'},
+ ]},
+ {ch:'第8章 細則',arts:[
+  {n:'第25条（細則の制定）',t:'会長は施行に細則を要する場合、運営委員会に諮り定めることができる。'},
+ ]},
+ {ch:'附則',arts:[
+  {n:'第26条（附則）',t:'昭和53年12月3日施行。以後、昭和58年〜令和8年1月17日(第7条改正)まで多数回の一部改正を経る。'},
+ ]},
+]};
+
+const IWA_SAISOKU={title:'岩船小学校PTA細則（令和8年2月21日改正）',chapters:[
+ {ch:'第1章 役員の選出',arts:[
+  {n:'第1条（選挙管理委員会）',t:'選管は役員選出の一切の事務を行う。各地区委員で構成し委員長・副委員長を互選。各地区選管委員長で中央選管を構成。委員が役員候補に上がった場合は任務を解かれる。'},
+  {n:'第2条（役員の選出）',t:'地区名(森Ⅰ=森北1・2/森南3、森Ⅱ=森南1・2、寺=寺全体、天Ⅰ・Ⅱ=天野が原1・2・5、天Ⅲ=天野が原3・4、私部=私部南4他)ごとに、会長・会計監査を除く役員6名を2グループに分けて選出。具体的方法は各地区で定める。会計監査は原則前年度会計から。'},
+  {n:'第3条（役員免除条件）',t:'希望すれば免除：(1)3歳以下(次年度4/2時点)の子(2)介護を要する家族(3)本人が病気等(4)役員経験者(5)地区選管長が認める特別な理由。申請・証明を要する場合あり。免除理由は第三者に漏らさない。'},
+  {n:'第4条（会長の選出）',t:'中央選管が立候補を募る。複数は無記名投票で最高得票者、1人は信任投票(過半数)。地区ごと投票し開票は全地区終了後。不在なら再受付、なお不在なら2グループ輪番制。'},
+  {n:'第5条（会長の輪番制）',t:'「森Ⅰ・森Ⅱ・寺」と「天Ⅰ・Ⅱ・天Ⅲ」の2グループから交互に会長を選出する。'},
+  {n:'第6条（選挙方法）',t:'1月現在6年児童のみで下級の弟妹がいない会員は選挙に参加不可(選挙事務は除く)。投票は単記無記名、1家庭1票、地区ごと。最高得票者を役員とする。結果は中央選管が一括公表。'},
+ ]},
+ {ch:'第2章 地区委員及び学級委員の選出',arts:[
+  {n:'第7条（地区委員）',t:'会則第17条1項4号の地区委員の選出方法は各地区で定める。'},
+  {n:'第8条（学級委員）',t:'学級委員=学級委員長＋広報委員。1家庭1回以上。1学年4人を学級懇談で選出。学級数(1〜3)に応じ委員長/広報の人数を調整。各学年で学年委員長・地域交流委員を選出。話し合いで決まらなければくじ引き。6年保護者で未経験者は地域交流委員補佐(経験にカウントせず)。'},
+  {n:'第9条（学級委員の免除）',t:'役員経験者は事前アンケートで免除希望可。各種委員長経験者は、全家庭が1回以上経験済みの場合に2回目の対象から免除。'},
+  {n:'第10条（委員の兼務）',t:'役員と学級委員/地区委員の兼任は不可。学級委員と地区委員は兼任可(ただし両方の委員長は不可)。'},
+ ]},
+ {ch:'第3章 会費及び会計',arts:[
+  {n:'第11条（納入者）',t:'兄弟姉妹がいる場合は弟妹の方で納入。事情のある家庭は考慮。教職員は免除できる。'},
+  {n:'第12条（納入回数）',t:'納入回数は年1回とする。'},
+  {n:'第13条（徴収方法）',t:'会費はゆうちょ銀行より引き落とし。年度途中加入は月額×残月分。途中退会の返金は行わない。'},
+  {n:'第14条（アルミ缶回収）',t:'アルミ缶回収による収益金は、図書購入などへ還元する。'},
+ ]},
+ {ch:'第4章 個人情報取扱規約',arts:[
+  {n:'第15〜17条（目的・責務・管理者）',t:'保有個人情報の適正管理と権利保護を目的とし、法令遵守。管理者はPTA会長で、会員の管理監督に努める。'},
+  {n:'第18〜21条（秘密保持・収集・利用）',t:'職務上知り得た情報をみだりに漏らさない(退任後も)。収集時は利用目的を明示(要配慮情報は同意)。会則の目的の範囲で利用し、範囲を超えて取り扱わない。'},
+  {n:'第22〜24条（管理・保管・第三者提供）',t:'必要最低限の期間で保管し不要分は年度末までに廃棄。施錠書庫・ウィルス対策・パスワード等で適切に管理。法令・規約の場合を除き同意なく第三者提供しない。'},
+  {n:'第25〜27条（提供の記録・開示）',t:'第三者提供・受領時は氏名・項目・同意等の記録を作成保存。本人からの開示・利用停止・追加・削除の求めに法令に沿って応じる。'},
+  {n:'第28〜30条（漏えい対応・研修・苦情）',t:'漏えい等を把握したら直ちに管理者へ報告。役員に定期研修を実施。苦情の適切・迅速な処理に努める。'},
+ ]},
+ {ch:'第5章 規約改正',arts:[
+  {n:'第31条（細則改正）',t:'この細則は運営委員会で出席者の2/3以上の賛成により改正できる。'},
+ ]},
+ {ch:'附則',arts:[
+  {n:'第32条（附則）',t:'平成14年5月18日以降、多数回の一部改正を経て、令和8年2月21日(第2条・第5条改正)に至る。'},
+ ]},
+]};
+
+/* ============ 状態 ============ */
+const ST={tab:'kaisoku', onlyIwa:false, expanded:{}};
+
+/* ============ ヘルパ ============ */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
+const KINDCOL={common:'#3a9d7e',variant:'#d98a3c',uniq:'#b4472f',pending:'#cbc4b5'};
+function topics(){return ST.tab==='kaisoku'?KAI:SAI}
+// 岩船のスタンスが独自/少数派/多数派か
+function iwaStance(tp){
+ const idx=tp.stances.findIndex(s=>s.schools.includes('iwa'));
+ if(idx<0)return null;
+ const st=tp.stances[idx];
+ const sizes=tp.stances.map(s=>s.schools.length);
+ const max=Math.max(...sizes);
+ if(st.schools.length===1)return {mark:'uniq',label:'岩船のみ'};
+ if(st.schools.length<max)return {mark:'minor',label:'少数派'};
+ return {mark:'common',label:'多数派と一致'};
+}
+function submittedCount(tp){const set=new Set();tp.stances.forEach(s=>s.schools.forEach(x=>set.add(x)));return set.size}
+
+/* ============ 描画 ============ */
+function renderNav(){
+ const items=[['kaisoku','会則をくらべる'],['saisoku','細則をくらべる'],['pdf','会則・細則PDF']];
+ document.getElementById('nav').innerHTML=items.map(([v,l])=>`<button class="navbtn ${ST.tab===v?'on':''}" onclick="setTab('${v}')">${l}</button>`).join('');
+}
+function setTab(v){ST.tab=v;ST.expanded={};render()}
+function toggleOnlyIwa(){ST.onlyIwa=!ST.onlyIwa;render()}
+function toggleExp(i){ST.expanded[ST.tab+i]=!ST.expanded[ST.tab+i];render()}
+
+function render(){
+ renderNav();
+ document.getElementById('page').innerHTML=(ST.tab==='pdf')?viewPDF():viewCompare();
+}
+
+function viewCompare(){
+ const list=topics();
+ const isKai=ST.tab==='kaisoku';
+ const uniqCount=list.filter(t=>{const s=iwaStance(t);return s&&s.mark==='uniq'}).length;
+ const minorCount=list.filter(t=>{const s=iwaStance(t);return s&&s.mark==='minor'}).length;
+ const commonCount=list.filter(t=>{const s=iwaStance(t);return s&&s.mark==='common'}).length;
+
+ // ヒーロー
+ let h=`<div class="hero">
+  <h2>${isKai?'会則':'細則'}を、条文番号ではなく“中身”でくらべる</h2>
+  <p class="lead">条文の並びや言い回しは学校ごとに違います。同じ趣旨の条文をAIが束ねて横に並べたので、「うちだけ違うところ」「市内でそろっているところ」がひと目でわかります。まずは岩船小の実データ＋サンプル校でご覧ください。</p>
+  <div class="statrow">
+   <div class="stat"><b>${SUBMITTED.length}</b><span>提出校（岩船＝実データ）</span></div>
+   <div class="stat"><b>${list.length}</b><span>くらべた論点</span></div>
+   <div class="stat hl"><b>${uniqCount+minorCount}</b><span>岩船の特色・少数派</span></div>
+   <div class="stat"><b>${PENDING.length}</b><span>これからの学校</span></div>
+  </div>
+ </div>`;
+
+ // AIサマリー
+ h+=`<div class="aibox">
+   <div class="aih">${I.spark} AIによる全体のまとめ（岩船小の視点）</div>
+   <div class="airow"><span class="aitag common">そろっている</span><div class="aitx">目的・会員資格・会計年度・会費の決め方は市内でほぼ共通。土台は各校とも同じ考え方です。</div></div>
+   <div class="airow"><span class="aitag mix">分かれている</span><div class="aitx">${isKai?'総会の成立要件・会則改正のハードル(2/3か過半数か)・委員会の顔ぶれ(フェスタ名)で差が出ます。改正のしやすさに直結する部分です。':'役員の割り当て方(地区制か学年輪番か)・会長の決め方・会費の集め方で運用の色が分かれます。'}</div></div>
+   <div class="airow"><span class="aitag uniq">岩船らしさ</span><div class="aitx">${isKai?'会計監査だけ任期を延ばし決算まで見届ける設計、そして個人情報を細則で手厚く整備している点が岩船の特色です。':'居住地区を2グループに分ける地区制と会長の輪番制、アルミ缶収益の使途明記、全16条の個人情報規約が岩船ならでは。他校の“お手本”になり得ます。'}</div></div>
+   <div class="aimeta">${I.info} サンプル校の内容はイメージ用の仮データです。各校の会則が届くと、この比較が本物のデータに置き換わります。</div>
+ </div>`;
+
+ // フィルタ
+ h+=`<div class="filt"><span class="fl">表示</span>
+   <div class="seg"><button class="${!ST.onlyIwa?'on':''}" onclick="if(ST.onlyIwa)toggleOnlyIwa()">すべての論点</button><button class="${ST.onlyIwa?'on':''}" onclick="if(!ST.onlyIwa)toggleOnlyIwa()">岩船が他校と違う所だけ</button></div>
+   <span style="flex:1"></span><span class="tiny muted">${I.tap} カードをタップで各校の条文を全文表示</span></div>`;
+
+ // 論点カード
+ const shown=ST.onlyIwa?list.filter(t=>{const s=iwaStance(t);return s&&s.mark!=='common'}):list;
+ if(!shown.length){h+='<p class="empty-note">岩船が他校と違う論点はこのタブにはありません。「すべての論点」に切り替えてご覧ください。</p>';return h;}
+ h+=shown.map(tp=>topicCard(tp,list.indexOf(tp))).join('');
+ return h;
+}
+
+function topicCard(tp,i){
+ const sub=submittedCount(tp);
+ const st=iwaStance(tp);
+ const expanded=ST.expanded[ST.tab+i];
+ // メーター（提出校ぶんをスタンス色で。未提出は薄色）
+ const total=SCHOOLS.length;
+ let meter='';
+ tp.stances.forEach(s=>{meter+=`<i style="width:${s.schools.length/total*100}%;background:${KINDCOL[s.kind]}"></i>`});
+ const penN=total-sub;
+ if(penN>0)meter+=`<i style="width:${penN/total*100}%;background:#ece7db"></i>`;
+
+ // スタンス行
+ const stanceRows=tp.stances.map(s=>{
+  const badges=s.schools.map(id=>{const sc=SMAP[id];return `<span class="bdg ${id==='iwa'?'iwa':''}" title="${esc(sc.name)}">${esc(sc.badge)}</span>`}).join('');
+  return `<div class="stance"><span class="sdot" style="background:${KINDCOL[s.kind]}"></span><div class="sbody"><div class="slabel">${esc(s.label)}</div><div class="badges">${badges}</div></div><span class="scount">${s.schools.length}校</span></div>`;
+ }).join('');
+
+ // 詳細（各校の条文）
+ let detail='';
+ if(expanded){
+  const rows=SUBMITTED.map(sc=>{
+   const d=tp.detail[sc.id];
+   if(!d)return '';
+   const isIwa=sc.id==='iwa';
+   const refBadge=d.real?`<span class="rl">実データ</span>`:`<span class="sm">サンプル</span>`;
+   return `<div class="drow ${isIwa?'iwa':''}"><div class="dsch"><span class="nm">${esc(sc.badge)}${isIwa?'':''}</span><span class="rf">${esc(sc.name)}</span><span class="rf">${esc(d.ref)}</span>${refBadge}</div><div class="dtxt ${d.t.startsWith('—')?'none':''}">${esc(d.t)}</div></div>`;
+  }).join('');
+  const penList=PENDING.map(s=>s.badge).join('・');
+  detail=`<div class="detail">${rows}${penN>0?`<div class="pending-note">${I.clock} 未提出：${esc(PENDING.map(s=>s.name).join('・'))}（会則が届き次第ここに追加されます）</div>`:''}</div>`;
+ }
+
+ const saisokuChip=tp.saisoku?`<span class="saisoku-chip" onclick="event.stopPropagation();gotoSaisoku()">${I.link}${esc(tp.saisoku)}</span>`:'';
+ const markHTML=st?`<span class="mark ${st.mark}">${esc(st.label)}</span>`:'';
+
+ return `<div class="tcard ${st&&st.mark==='uniq'?'uniq':''}">
+   <div class="tcard-main" onclick="toggleExp(${i})">
+     <div class="tmeta"><span class="chchip">${esc(tp.ch)}</span>${markHTML}${saisokuChip}</div>
+     <div class="ttitle">${esc(tp.title)}</div>
+     <div class="tai">${esc(tp.ai)}</div>
+     ${stanceRows}
+     <div class="meter">${meter}</div>
+   </div>
+   <div class="expander" onclick="toggleExp(${i})">${expanded?'各校の条文を閉じる':`各校の実際の条文を見る（提出${sub}校）`}<span>${expanded?I.up:I.down}</span></div>
+   ${detail}
+ </div>`;
+}
+function gotoSaisoku(){ST.tab='saisoku';ST.expanded={};render();window.scrollTo(0,0);toast('細則タブに移動しました')}
+
+/* ---- PDF一覧 ---- */
+function viewPDF(){
+ let h=`<div class="hero"><h2>会則・細則のPDFを1か所に</h2>
+   <p class="lead">各校の会則・細則をここにまとめます。文書アイコンをタップすると全文をその場で読め、Google DriveのPDFにも飛べます（岩船小は全文を収録済み。他校はPDFリンクが届き次第、順次追加します）。</p></div>`;
+ h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.doc}</span>提出済み</div><div class="pdf-grid">`;
+ h+=SUBMITTED.map(pdfCard).join('');
+ h+=`</div></div>`;
+ h+=`<div class="card"><div class="sec-h"><span class="ic">${I.clock}</span>これから提出</div><div class="pdf-grid">`;
+ h+=PENDING.map(pdfCard).join('');
+ h+=`</div><p class="tiny muted" style="margin-top:14px">${I.info} PDFリンクは、各校から届いたものをコード内の一覧に貼るだけで有効化されます。難しい設定は不要です。</p></div>`;
+ return h;
+}
+function pdfCard(sc){
+ const isReal=sc.real;
+ const pdf=PDFS[sc.id]||{};
+ const hasK=pdf.kaisoku&&pdf.kaisoku.length>4;
+ const hasS=pdf.saisoku&&pdf.saisoku.length>4;
+ const fullBtn=isReal
+   ? `<button class="pdf-btn full" onclick="openDoc('${sc.id}','kaisoku')">${I.book} 会則の全文を読む</button><button class="pdf-btn full" onclick="openDoc('${sc.id}','saisoku')">${I.book} 細則の全文を読む</button>`
+   : (sc.pending
+      ? `<button class="pdf-btn dim">未提出</button>`
+      : `<button class="pdf-btn dim">全文は準備中</button>`);
+ const driveK=hasK?`<a class="pdf-btn" href="${esc(pdf.kaisoku)}" target="_blank" rel="noopener">${I.pdf} 会則PDF(Drive)</a>`:'';
+ const driveS=hasS?`<a class="pdf-btn" href="${esc(pdf.saisoku)}" target="_blank" rel="noopener">${I.pdf} 細則PDF(Drive)</a>`:'';
+ const badge=isReal?`<span class="pdf-badge real">実データ収録</span>`:(sc.pending?`<span class="pdf-badge samp">これから</span>`:`<span class="pdf-badge samp">サンプル</span>`);
+ return `<div class="pdf-card ${isReal?'real':''}">
+   <div class="pdf-top"><div class="pdf-ico"><div class="lines"><i></i><i></i><i></i><i></i></div><span class="seal mincho">約</span></div>
+     <div><div class="pdf-name">${esc(sc.name)}<br>PTA会則・細則</div>${badge}</div></div>
+   <div class="pdf-actions">${fullBtn}${driveK}${driveS}</div>
+ </div>`;
+}
+
+/* ---- 全文モーダル ---- */
+function openDoc(sid,kind){
+ const sc=SMAP[sid];
+ let doc=null;
+ if(sid==='iwa')doc=(kind==='kaisoku')?IWA_KAISOKU:IWA_SAISOKU;
+ const body=document.getElementById('modalBody');
+ document.getElementById('modalTitle').textContent=doc?doc.title:(sc.name+' '+(kind==='kaisoku'?'会則':'細則'));
+ if(!doc){body.innerHTML='<div class="doc-empty">この学校の全文はまだ収録されていません。</div>';showModal();return;}
+ let h=`<div class="doc-note">${I.info}<div>これは岩船小学校PTAの実際の${kind==='kaisoku'?'会則':'細則'}を要約・収録したものです。正式な原本は各校のPDFをご確認ください。</div></div>`;
+ doc.chapters.forEach(c=>{h+=`<div class="doc-ch mincho">${esc(c.ch)}</div>`;c.arts.forEach(a=>{h+=`<div class="doc-art"><div class="an">${esc(a.n)}</div><div class="at">${esc(a.t)}</div></div>`})});
+ body.innerHTML=h;showModal();
+}
+function showModal(){document.getElementById('modalBg').classList.add('show');document.body.style.overflow='hidden'}
+function closeModal(){document.getElementById('modalBg').classList.remove('show');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ---- アイコン ---- */
+const I={
+ spark:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>',
+ down:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+ up:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>',
+ link:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>',
+ doc:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>',
+ book:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/></svg>',
+ pdf:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+ clock:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ info:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/></svg>',
+ tap:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 11V8a1.5 1.5 0 0 1 3 0v3M15 11v-1a1.5 1.5 0 0 1 3 0v5a5 5 0 0 1-5 5h-1.5a4 4 0 0 1-3-1.4L6 18"/></svg>',
+};
+
+render();
+</script></body></html>
