@@ -24,6 +24,11 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .logo{display:flex;align-items:center;gap:10px;font-family:"Zen Maru Gothic";font-weight:700;font-size:16.5px;letter-spacing:.02em}
 .logo .mk{width:30px;height:30px;border-radius:9px;background:var(--seal);display:flex;align-items:center;justify-content:center;font-family:"Shippori Mincho";font-weight:700;color:#fff;font-size:15px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
 .hd .sub{font-size:11.5px;color:#c4cfdd;font-weight:400;font-family:"Noto Sans JP"}
+.axiswrap{display:flex;align-items:center;gap:7px;margin-left:auto}
+.axiswrap .al{font-size:11px;color:#a9b7c8;font-family:"Zen Maru Gothic";white-space:nowrap}
+.axissel{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;padding:6px 10px;font-size:13px;font-family:"Zen Maru Gothic";font-weight:500;cursor:pointer}
+.axissel option{color:#222}
+.warnbar{background:var(--amber-soft);border:1px solid #eacfaa;color:var(--amber-d);border-radius:11px;padding:9px 14px;font-size:12.5px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start}
 .nav{background:#26394f}.nav-in{max-width:940px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
 .navbtn{background:none;border:none;color:#c1ccda;font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;padding:11px 15px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:7px}
 .navbtn:hover{color:#fff}.navbtn.on{color:#fff;border-bottom-color:var(--amber)}
@@ -85,7 +90,7 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .slabel{font-size:13.5px;font-weight:500;line-height:1.55;margin-bottom:5px}
 .badges{display:flex;gap:5px;flex-wrap:wrap}
 .bdg{font-size:12px;font-family:"Zen Maru Gothic";font-weight:700;min-width:26px;height:26px;padding:0 7px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:var(--paper);border:1px solid var(--line2);color:var(--ink2)}
-.bdg.iwa{background:var(--seal);color:#fff;border-color:var(--seal);box-shadow:0 1px 4px rgba(180,71,47,.3)}
+.bdg.ax{background:var(--seal);color:#fff;border-color:var(--seal);box-shadow:0 1px 4px rgba(180,71,47,.3)}
 .scount{font-size:11.5px;color:var(--ink3);white-space:nowrap;margin-top:6px;flex-shrink:0}
 /* agreement meter */
 .meter{display:flex;height:8px;border-radius:5px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
@@ -96,7 +101,7 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .detail{padding:4px 18px 16px;background:#fcfaf5;border-top:1px solid var(--line)}
 .drow{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:flex-start}
 .drow:last-child{border-bottom:none}
-.drow.iwa{background:linear-gradient(90deg,#fdf3ee,transparent);border-radius:8px;padding:11px 10px;margin:0 -10px}
+.drow.ax{background:linear-gradient(90deg,#fdf3ee,transparent);border-radius:8px;padding:11px 10px;margin:0 -10px;box-shadow:inset 3px 0 0 var(--seal)}
 .dsch{width:96px;flex-shrink:0;display:flex;flex-direction:column;gap:3px}
 .dsch .nm{font-size:12.5px;font-weight:700;color:var(--navy);font-family:"Zen Maru Gothic"}
 .dsch .rf{font-size:10.5px;color:var(--ink3)}
@@ -154,6 +159,7 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 <body>
 <div class="hd"><div class="hd-in">
  <div class="logo"><span class="mk mincho">約</span><span>交野市PTA 会則・細則 くらべる板<span class="sub"> ／ 単Pの見直しをらくにする</span></span></div>
+ <div class="axiswrap"><span class="al">目線</span><select class="axissel" id="axisSel" onchange="setAxis(this.value)"></select></div>
 </div>
 <div class="nav"><div class="nav-in" id="nav"></div></div></div>
 <div class="wrap"><div class="page" id="page"></div></div>
@@ -169,17 +175,17 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 
 /* ---- 学校（badge＝頭文字バッジ） ---- */
 const SCHOOLS=[
- {id:'iwa', name:'岩船小学校',    badge:'岩',  block:'４ブロック', real:true},
- {id:'kzu', name:'郡津小学校',    badge:'郡',  block:'２ブロック'},
- {id:'kra', name:'倉治小学校',    badge:'倉',  block:'２ブロック'},
- {id:'hsi', name:'星田小学校',    badge:'星',  block:'３ブロック'},
- {id:'kis', name:'私市小学校',    badge:'私',  block:'４ブロック'},
- {id:'fuj', name:'藤が尾小学校',  badge:'藤',  block:'４ブロック'},
+ {id:'iwa', name:'岩船小学校',    sname:'岩船小',   badge:'岩',  block:'４ブロック', real:true},
+ {id:'kzu', name:'郡津小学校',    sname:'郡津小',   badge:'郡',  block:'２ブロック'},
+ {id:'kra', name:'倉治小学校',    sname:'倉治小',   badge:'倉',  block:'２ブロック'},
+ {id:'hsi', name:'星田小学校',    sname:'星田小',   badge:'星',  block:'３ブロック'},
+ {id:'kis', name:'私市小学校',    sname:'私市小',   badge:'私',  block:'４ブロック'},
+ {id:'fuj', name:'藤が尾小学校',  sname:'藤が尾小', badge:'藤',  block:'４ブロック'},
  // ↓ まだ会則を出していない学校（“出してほしい”導線用）
- {id:'mir', name:'交野みらい学園',badge:'み',  block:'１ブロック', pending:true},
- {id:'ni2', name:'第２中学校',    badge:'２中',block:'２ブロック', pending:true},
- {id:'aki', name:'旭小学校',      badge:'旭',  block:'３ブロック', pending:true},
- {id:'ni3', name:'第３中学校',    badge:'３中',block:'３ブロック', pending:true},
+ {id:'mir', name:'交野みらい学園',sname:'みらい学園',badge:'み',  block:'１ブロック', pending:true},
+ {id:'ni2', name:'第２中学校',    sname:'２中',     badge:'２中',block:'２ブロック', pending:true},
+ {id:'aki', name:'旭小学校',      sname:'旭小',     badge:'旭',  block:'３ブロック', pending:true},
+ {id:'ni3', name:'第３中学校',    sname:'３中',     badge:'３中',block:'３ブロック', pending:true},
 ];
 const SUBMITTED=SCHOOLS.filter(s=>!s.pending);
 const PENDING=SCHOOLS.filter(s=>s.pending);
@@ -587,21 +593,21 @@ const IWA_SAISOKU={title:'岩船小学校PTA細則（令和8年2月21日改正�
 ]};
 
 /* ============ 状態 ============ */
-const ST={tab:'kaisoku', onlyIwa:false, expanded:{}};
+const ST={tab:'kaisoku', onlyDiff:false, axis:'iwa', expanded:{}};
 
 /* ============ ヘルパ ============ */
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
 const KINDCOL={common:'#3a9d7e',variant:'#d98a3c',uniq:'#b4472f',pending:'#cbc4b5'};
 function topics(){return ST.tab==='kaisoku'?KAI:SAI}
-// 岩船のスタンスが独自/少数派/多数派か
-function iwaStance(tp){
- const idx=tp.stances.findIndex(s=>s.schools.includes('iwa'));
+// いま選んでいる学校（軸）のスタンスが独自/少数派/多数派か
+function axisSchool(){return SMAP[ST.axis]||SMAP['iwa']}
+function axisStance(tp){
+ const idx=tp.stances.findIndex(s=>s.schools.includes(ST.axis));
  if(idx<0)return null;
  const st=tp.stances[idx];
- const sizes=tp.stances.map(s=>s.schools.length);
- const max=Math.max(...sizes);
- if(st.schools.length===1)return {mark:'uniq',label:'岩船のみ'};
+ const max=Math.max(...tp.stances.map(s=>s.schools.length));
+ if(st.schools.length===1)return {mark:'uniq',label:axisSchool().sname+'のみ'};
  if(st.schools.length<max)return {mark:'minor',label:'少数派'};
  return {mark:'common',label:'多数派と一致'};
 }
@@ -611,9 +617,14 @@ function submittedCount(tp){const set=new Set();tp.stances.forEach(s=>s.schools.
 function renderNav(){
  const items=[['kaisoku','会則をくらべる'],['saisoku','細則をくらべる'],['pdf','会則・細則PDF']];
  document.getElementById('nav').innerHTML=items.map(([v,l])=>`<button class="navbtn ${ST.tab===v?'on':''}" onclick="setTab('${v}')">${l}</button>`).join('');
+ const sel=document.getElementById('axisSel');
+ sel.innerHTML=SUBMITTED.map(s=>`<option value="${s.id}" ${s.id===ST.axis?'selected':''}>${esc(s.sname)}${s.real?'（実データ）':'（サンプル）'}</option>`).join('');
+ sel.disabled=(ST.tab==='pdf');
+ sel.parentNode.style.opacity=(ST.tab==='pdf')?'.35':'1';
 }
 function setTab(v){ST.tab=v;ST.expanded={};render()}
-function toggleOnlyIwa(){ST.onlyIwa=!ST.onlyIwa;render()}
+function setAxis(v){ST.axis=v;render();window.scrollTo(0,0);toast(SMAP[v].sname+'の目線に切り替えました')}
+function setOnlyDiff(v){ST.onlyDiff=v;render()}
 function toggleExp(i){ST.expanded[ST.tab+i]=!ST.expanded[ST.tab+i];render()}
 
 function render(){
@@ -624,46 +635,48 @@ function render(){
 function viewCompare(){
  const list=topics();
  const isKai=ST.tab==='kaisoku';
- const uniqCount=list.filter(t=>{const s=iwaStance(t);return s&&s.mark==='uniq'}).length;
- const minorCount=list.filter(t=>{const s=iwaStance(t);return s&&s.mark==='minor'}).length;
- const commonCount=list.filter(t=>{const s=iwaStance(t);return s&&s.mark==='common'}).length;
+ const A=axisSchool();
+ const doc=isKai?'会則':'細則';
+ const uniq=list.filter(t=>{const s=axisStance(t);return s&&s.mark==='uniq'});
+ const minor=list.filter(t=>{const s=axisStance(t);return s&&s.mark==='minor'});
+ const common=list.filter(t=>{const s=axisStance(t);return s&&s.mark==='common'});
+ const tt=a=>a.map(t=>t.title).join('／');
 
- // ヒーロー
- let h=`<div class="hero">
-  <h2>${isKai?'会則':'細則'}を、条文番号ではなく“中身”でくらべる</h2>
-  <p class="lead">条文の並びや言い回しは学校ごとに違います。同じ趣旨の条文をAIが束ねて横に並べたので、「うちだけ違うところ」「市内でそろっているところ」がひと目でわかります。まずは岩船小の実データ＋サンプル校でご覧ください。</p>
+ let h='';
+ if(!A.real)h+=`<div class="warnbar">${I.info}<div><b>${esc(A.sname)}</b>の内容は、イメージをつかむためのサンプル（仮）です。実際の${doc}が届くと、この比較が本物のデータに置き換わります。岩船小だけが実データです。</div></div>`;
+
+ h+=`<div class="hero">
+  <h2>${doc}を、条文番号ではなく“中身”でくらべる</h2>
+  <p class="lead">条文の並びも言い回しも学校ごとに違います。同じ趣旨の条文をAIが束ねて横に並べたので、いま選んでいる<b>${esc(A.sname)}</b>から見て「うちだけ違うところ」「市内でそろっているところ」がひと目でわかります。右上の「目線」を切り替えると、どの学校を軸にも見られます。</p>
   <div class="statrow">
-   <div class="stat"><b>${SUBMITTED.length}</b><span>提出校（岩船＝実データ）</span></div>
+   <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
    <div class="stat"><b>${list.length}</b><span>くらべた論点</span></div>
-   <div class="stat hl"><b>${uniqCount+minorCount}</b><span>岩船の特色・少数派</span></div>
+   <div class="stat hl"><b>${uniq.length+minor.length}</b><span>${esc(A.sname)}の特色・少数派</span></div>
    <div class="stat"><b>${PENDING.length}</b><span>これからの学校</span></div>
   </div>
  </div>`;
 
- // AIサマリー
  h+=`<div class="aibox">
-   <div class="aih">${I.spark} AIによる全体のまとめ（岩船小の視点）</div>
-   <div class="airow"><span class="aitag common">そろっている</span><div class="aitx">目的・会員資格・会計年度・会費の決め方は市内でほぼ共通。土台は各校とも同じ考え方です。</div></div>
-   <div class="airow"><span class="aitag mix">分かれている</span><div class="aitx">${isKai?'総会の成立要件・会則改正のハードル(2/3か過半数か)・委員会の顔ぶれ(フェスタ名)で差が出ます。改正のしやすさに直結する部分です。':'役員の割り当て方(地区制か学年輪番か)・会長の決め方・会費の集め方で運用の色が分かれます。'}</div></div>
-   <div class="airow"><span class="aitag uniq">岩船らしさ</span><div class="aitx">${isKai?'会計監査だけ任期を延ばし決算まで見届ける設計、そして個人情報を細則で手厚く整備している点が岩船の特色です。':'居住地区を2グループに分ける地区制と会長の輪番制、アルミ缶収益の使途明記、全16条の個人情報規約が岩船ならでは。他校の“お手本”になり得ます。'}</div></div>
-   <div class="aimeta">${I.info} サンプル校の内容はイメージ用の仮データです。各校の会則が届くと、この比較が本物のデータに置き換わります。</div>
+   <div class="aih">${I.spark} AIのまとめ ／ ${esc(A.sname)}の目線</div>
+   <div class="airow"><span class="aitag common">そろっている</span><div class="aitx">${common.length?`他校と同じ考え方なのは <b>${esc(tt(common))}</b>（${common.length}論点）。ここは見直しの優先度が低い部分です。`:'他校と足並みがそろう論点はありません。'}</div></div>
+   <div class="airow"><span class="aitag mix">少数派</span><div class="aitx">${minor.length?`書き方が分かれる中で少数側なのは <b>${esc(tt(minor))}</b>（${minor.length}論点）。多数派の条文も見てから判断すると安心です。`:'少数派になっている論点はありません。'}</div></div>
+   <div class="airow"><span class="aitag uniq">${esc(A.sname)}だけ</span><div class="aitx">${uniq.length?`市内で唯一の独自ルールは <b>${esc(tt(uniq))}</b>（${uniq.length}論点）。他校のお手本にも、見直しの候補にもなります。`:'独自ルールはありません。すべて他校と同じ考え方です。'}</div></div>
+   <div class="aimeta">${I.info} 条文番号は学校ごとに違うため、AIが趣旨で束ねて対応づけています。判断の最終確認は原本のPDFでお願いします。</div>
  </div>`;
 
- // フィルタ
  h+=`<div class="filt"><span class="fl">表示</span>
-   <div class="seg"><button class="${!ST.onlyIwa?'on':''}" onclick="if(ST.onlyIwa)toggleOnlyIwa()">すべての論点</button><button class="${ST.onlyIwa?'on':''}" onclick="if(!ST.onlyIwa)toggleOnlyIwa()">岩船が他校と違う所だけ</button></div>
-   <span style="flex:1"></span><span class="tiny muted">${I.tap} カードをタップで各校の条文を全文表示</span></div>`;
+   <div class="seg"><button class="${!ST.onlyDiff?'on':''}" onclick="setOnlyDiff(false)">すべての論点</button><button class="${ST.onlyDiff?'on':''}" onclick="setOnlyDiff(true)">${esc(A.sname)}が他校と違う所だけ</button></div>
+   <span style="flex:1"></span><span class="tiny muted">${I.tap} カードをタップで各校の条文を表示</span></div>`;
 
- // 論点カード
- const shown=ST.onlyIwa?list.filter(t=>{const s=iwaStance(t);return s&&s.mark!=='common'}):list;
- if(!shown.length){h+='<p class="empty-note">岩船が他校と違う論点はこのタブにはありません。「すべての論点」に切り替えてご覧ください。</p>';return h;}
+ const shown=ST.onlyDiff?list.filter(t=>{const s=axisStance(t);return s&&s.mark!=='common'}):list;
+ if(!shown.length){h+=`<p class="empty-note">${esc(A.sname)}が他校と違う論点は、このタブにはありません。「すべての論点」に切り替えてご覧ください。</p>`;return h;}
  h+=shown.map(tp=>topicCard(tp,list.indexOf(tp))).join('');
  return h;
 }
 
 function topicCard(tp,i){
  const sub=submittedCount(tp);
- const st=iwaStance(tp);
+ const st=axisStance(tp);
  const expanded=ST.expanded[ST.tab+i];
  // メーター（提出校ぶんをスタンス色で。未提出は薄色）
  const total=SCHOOLS.length;
@@ -674,19 +687,20 @@ function topicCard(tp,i){
 
  // スタンス行
  const stanceRows=tp.stances.map(s=>{
-  const badges=s.schools.map(id=>{const sc=SMAP[id];return `<span class="bdg ${id==='iwa'?'iwa':''}" title="${esc(sc.name)}">${esc(sc.badge)}</span>`}).join('');
+  const badges=s.schools.map(id=>{const sc=SMAP[id];return `<span class="bdg ${id===ST.axis?'ax':''}" title="${esc(sc.name)}">${esc(sc.badge)}</span>`}).join('');
   return `<div class="stance"><span class="sdot" style="background:${KINDCOL[s.kind]}"></span><div class="sbody"><div class="slabel">${esc(s.label)}</div><div class="badges">${badges}</div></div><span class="scount">${s.schools.length}校</span></div>`;
  }).join('');
 
  // 詳細（各校の条文）
  let detail='';
  if(expanded){
-  const rows=SUBMITTED.map(sc=>{
+  const ordered=SUBMITTED.slice().sort((a,b)=>(b.id===ST.axis?1:0)-(a.id===ST.axis?1:0));
+  const rows=ordered.map(sc=>{
    const d=tp.detail[sc.id];
    if(!d)return '';
-   const isIwa=sc.id==='iwa';
+   const isAx=sc.id===ST.axis;
    const refBadge=d.real?`<span class="rl">実データ</span>`:`<span class="sm">サンプル</span>`;
-   return `<div class="drow ${isIwa?'iwa':''}"><div class="dsch"><span class="nm">${esc(sc.badge)}${isIwa?'':''}</span><span class="rf">${esc(sc.name)}</span><span class="rf">${esc(d.ref)}</span>${refBadge}</div><div class="dtxt ${d.t.startsWith('—')?'none':''}">${esc(d.t)}</div></div>`;
+   return `<div class="drow ${isAx?'ax':''}"><div class="dsch"><span class="nm">${esc(sc.badge)}</span><span class="rf">${esc(sc.name)}</span><span class="rf">${esc(d.ref)}</span>${refBadge}</div><div class="dtxt ${d.t.startsWith('—')?'none':''}">${esc(d.t)}</div></div>`;
   }).join('');
   const penList=PENDING.map(s=>s.badge).join('・');
   detail=`<div class="detail">${rows}${penN>0?`<div class="pending-note">${I.clock} 未提出：${esc(PENDING.map(s=>s.name).join('・'))}（会則が届き次第ここに追加されます）</div>`:''}</div>`;
