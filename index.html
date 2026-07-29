@@ -89,6 +89,30 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .sc-carry-badge{font-size:10.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:6px;padding:2px 7px}
 .sc-carry-btn{font-family:'Zen Maru Gothic';font-size:11px;font-weight:500;color:#fff;background:var(--teal);border:none;border-radius:7px;padding:4px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
 .sc-carry-btn:hover{background:var(--teal-d)}
+/* hint / candidate chips / preview */
+.qhint{display:flex;gap:8px;align-items:flex-start;background:#f1f5fa;border:1px solid #dae4f0;border-radius:9px;padding:8px 11px;font-size:12.5px;line-height:1.7;color:var(--navy);margin-bottom:11px}
+.qhint .qhi{flex-shrink:0;color:var(--navy2);margin-top:2px;display:flex}
+.candwrap{margin-bottom:13px}
+.cand.prev{background:var(--amber-soft);border-color:#f0d9b5;color:var(--amber-d);font-weight:500}
+.cand.ex{background:#eef2f8;border-color:#dae4f0;color:var(--navy)}
+.previewbox{margin-top:18px;border:1px dashed var(--line2);border-radius:var(--r);padding:14px;background:#fbf9f4}
+.previewbox .pvh{font-family:'Zen Maru Gothic';font-weight:700;font-size:12.5px;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pvdisabled{opacity:.5;pointer-events:none}
+/* category picker / category flow */
+.blockh .cat-flow-btn{margin-left:auto;font-family:'Zen Maru Gothic';font-size:11.5px;font-weight:500;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:7px;padding:3px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1.5}
+.blockh .cat-flow-btn:hover{background:#f7e2c4}
+.fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.fp-grid{grid-template-columns:1fr}}
+.fp-card{display:flex;align-items:center;gap:10px;text-align:left;width:100%;background:#fff;border:1px solid var(--line);border-left-width:5px;border-radius:var(--r-s);padding:11px 13px;cursor:pointer;font-family:inherit;transition:.12s}
+.fp-card:hover{background:#fdfbf6;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.fp-card.fp-off{opacity:.5;cursor:default}
+.fp-card.fp-off:hover{background:#fff;transform:none;box-shadow:none}
+.fp-body{flex:1;min-width:0}
+.fp-nm{display:block;font-family:'Zen Maru Gothic';font-weight:700;font-size:14.5px;color:var(--ink)}
+.fp-sub{display:block;font-size:11.5px;color:var(--ink3);margin-top:2px}
+.fp-n{font-family:'Zen Maru Gothic';font-weight:700;font-size:15px;color:var(--navy);white-space:nowrap}
+.fp-n.done{color:var(--teal-d);font-size:12.5px;font-weight:500}
+.flow-catchip{font-family:'Zen Maru Gothic';font-size:11.5px;font-weight:700;color:#fff;border-radius:7px;padding:3px 9px;white-space:nowrap}
 /* flow */
 .flow{max-width:620px;margin:0 auto}
 .flow-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}.flow-top .fs{font-family:"Zen Maru Gothic";font-weight:700;font-size:16px;color:var(--navy)}
@@ -203,7 +227,7 @@ function buildYears(dataYears){
   YEARS.push({id:'R'+(mx+1),label:'令和'+(mx+1)+'年度'});
   if(!YEARS.find(y=>y.id===ST.year))ST.year=YEARS[Math.max(0,YEARS.length-2)].id;
 }
-const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,schoolReturnQid:null};
+const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,schoolReturnQid:null,flowPick:null,flowMode:'todo'};
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
 function startSchoolEdit(qid){
   const y=window.scrollY||window.pageYOffset||0;
@@ -322,6 +346,24 @@ function schoolCount(sid){return ST.questions.filter(q=>getConfirmedAns(sid,q.id
 function schoolUnanswered(sid){return ST.questions.filter(q=>!getConfirmedAns(sid,q.id))}
 function cats(){return CATEGORIES.filter(c=>ST.questions.some(q=>q.category===c)).concat(ST.questions.map(q=>q.category).filter(c=>!CATEGORIES.includes(c)).filter((v,i,a)=>a.indexOf(v)===i))}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function qOf(qid){return ST.questions.find(x=>x.id===qid)||{}}
+function hintHTML(qid){const q=qOf(qid);return q.hint?`<div class="qhint"><span class="qhi">${I.bell}</span><span>${esc(q.hint)}</span></div>`:''}
+window._CANDS={};
+function candsHTML(sid,qid,inputId){
+  if(isChoice(qid))return '';
+  const q=qOf(qid),seen={},items=[];
+  function add(v,cls,lab){v=String(v==null?'':v).trim();if(!v)return;const k=nrm(v);if(seen[k])return;seen[k]=1;items.push({v:v,cls:cls,lab:lab||v})}
+  const prev=ST.prevAnswers[sid+'__'+qid];
+  if(prev&&String(prev.v).trim())add(prev.v,'prev','前年度：'+String(prev.v).trim());
+  splitOpts(q.example).forEach(v=>add(v,'ex','例：'+v));
+  otherValues(qid,sid).forEach(v=>add(v,'',v));
+  if(!items.length)return '';
+  const key='k'+Math.random().toString(36).slice(2,9);
+  window._CANDS[key]=items.map(x=>x.v);
+  const chips=items.map((x,i)=>`<span class="cand ${x.cls}" onclick="pickCand('${key}',${i},'${inputId}')">${esc(x.lab.length>30?x.lab.slice(0,30)+'…':x.lab)}</span>`).join('');
+  return `<div class="candwrap"><div class="cand-h">前年度・回答例・他校の回答（タップで入力できます）</div><div class="cand-chips">${chips}</div></div>`;
+}
+function jsq(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 function fmtDate(t){const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
 function pnum(s){s=String(s).replace(/,/g,'');if(s.indexOf('@')>=0)return null;let m=s.match(/([0-9]+(?:\.[0-9]+)?)\s*万/);if(m)return parseFloat(m[1])*1e4;m=s.match(/([0-9]+(?:\.[0-9]+)?)/);return m?parseFloat(m[1]):null}
@@ -368,7 +410,7 @@ function render(opt){
   opt=opt||{};
   if(ST.loading){renderShell();document.getElementById('page').innerHTML=viewLoading();return;}
   if(USE_API&&(ST.loadError||!ST.questions.length)){renderShell();document.getElementById('page').innerHTML=viewError();return;}
-  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,school:viewSchool}[ST.view]||viewHome)();
+  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,flowpick:viewFlowPick,school:viewSchool}[ST.view]||viewHome)();
   if(ST.view==='search')setTimeout(rerenderSearch,0);
   if(ST.view==='flow')setTimeout(()=>{const el=document.getElementById('flowInput');if(el)el.focus()},40);
   // スクロール制御：keepScroll指定時は現在位置を維持、restoreScroll指定時は指定位置へ、それ以外は最上部
@@ -471,6 +513,7 @@ function viewSchool(){
         return `<div class="sc-card sc-editing" id="sc-card-${q.id}">
           <div class="sc-qlabel" style="background:var(--navy)">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}</div>
           <div style="padding:10px">
+            ${hintHTML(q.id)}${candsHTML(sid,q.id,'sch-ed-'+q.id)}
             ${isChoice(q.id)?renderSel('sch_'+q.id,q.id,a?a.v:''):`<textarea class="tx" id="sch-ed-${q.id}" rows="2" style="font-size:13px">${esc(a?a.v:'')}</textarea>`}
             <input class="tx" id="sch-edn-${q.id}" style="margin:8px 0 8px;font-size:13px" placeholder="備考（任意）" value="${esc(a?a.note:'')}">
             <div style="display:flex;gap:8px">
@@ -488,11 +531,14 @@ function viewSchool(){
         ${carried?`<div class="sc-carry-bar"><span class="sc-carry-badge">前年度のまま・更新待ち</span><button class="sc-carry-btn" onclick="confirmCarry(event,'${sid}','${q.id}')">${I.check} 今年度も同じ</button></div>`:''}
       </div>`;
     }).join('');
-    return `<div class="blockh">${esc(c)}</div><div class="sc-grid">${cards}</div>`;
+    const todoN=qs.filter(q=>!getConfirmedAns(sid,q.id)).length;
+    const cbMode=todoN?'todo':'all';
+    const cbLab=todoN?('未回答'+todoN+'問をまとめて回答'):'このカテゴリを見直す';
+    return `<div class="blockh">${esc(c)}<button class="cat-flow-btn" onclick="startFlow('${sid}','${esc(jsq(c))}','${cbMode}')">${I.edit} ${cbLab}</button></div><div class="sc-grid">${cards}</div>`;
   }).filter(Boolean).join('');
   return `<button class="back" onclick="go('home')">${I.back} ホーム（学校一覧）へ戻る</button>
     <div class="hero"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><div class="tiny muted">${esc(sc.block)}・${esc(sc.type)}</div><h2>${esc(sc.name)}</h2></div><div class="stat" style="min-width:88px"><b>${pc}%</b><span>回答率（${f}/${tq}）</span></div></div>
-      ${un.length?`<div style="margin-top:12px"><button class="btn pri" onclick="startFlow('${sid}')">${I.edit} 未回答 ${un.length}項目をまとめて回答</button></div>`:`<div class="alert done" style="margin-top:12px"><div class="at">${I.check} 全${tq}項目に回答済みです</div></div>`}
+      ${un.length?`<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" onclick="startFlow('${sid}','__all__','todo')">${I.edit} 未回答 ${un.length}項目をまとめて回答</button><button class="btn" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで回答</button></div>`:`<div class="alert done" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="at">${I.check} 全${tq}項目に回答済みです</div><button class="btn sm" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで見直す</button></div>`}
       ${tiles?`<div style="font-size:12px;color:var(--ink3);margin:14px 0 7px;font-family:'Zen Maru Gothic'">自校のプロフィール（タップで詳細）</div><div class="statgrid">${tiles}</div>`:''}</div>
     <div class="card"><div class="sec-h"><span class="ic">${I.spark}</span>他校と違うところ${diffs.length?` <span class="badge" style="margin-left:4px">${diffs.length}</span>`:''}</div>
       <p class="muted tiny" style="margin-bottom:12px">回答が4校以上ある項目で、自校が多数派と異なる点・数値が突出している点を表示します。カードをタップすると全校の比較が見られます。</p>
@@ -501,10 +547,37 @@ function viewSchool(){
     <div class="card"><div class="sec-h"><span class="ic">${I.table}</span>自校の回答一覧 <span class="tiny muted" style="font-family:'Noto Sans JP';font-weight:400;margin-left:4px">タップで回答・編集</span></div>${catBlocks||'<p class="empty-note">まだ回答がありません。上の「まとめて回答」から入力できます。</p>'}</div>`;
 }
 /* ---- FLOW ---- */
-function startFlow(sid){
-  const un=schoolUnanswered(sid);
-  if(!un.length){toast('この学校はすべて回答済みです 🎉');return}
-  ST.flow={sid,queue:un.map(q=>q.id),idx:0};ST.view='flow';render();
+function openFlowPicker(sid){ST.flowPick=sid;ST.view='flowpick';ST.flow=null;render()}
+function openFlowPickerFromFlow(){const sid=ST.flow&&ST.flow.sid;ST.flow=null;if(sid)openFlowPicker(sid);else{ST.view='home';render()}}
+function setFlowMode(m){const y=window.scrollY||0;ST.flowMode=m;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
+function flowQs(sid,cat,mode){return ST.questions.filter(q=>(cat==='__all__'||q.category===cat)&&(mode==='all'||!getConfirmedAns(sid,q.id)))}
+function startFlow(sid,cat,mode){
+  cat=cat||'__all__';mode=mode||ST.flowMode||'todo';
+  const qs=flowQs(sid,cat,mode);
+  if(!qs.length){toast(mode==='all'?'このカテゴリには質問がありません':'この範囲はすべて回答済みです 🎉');return}
+  ST.flowMode=mode;
+  ST.flow={sid:sid,cat:cat,mode:mode,queue:qs.map(q=>q.id),idx:0};ST.view='flow';render();
+}
+function viewFlowPick(){
+  const sid=ST.flowPick,sc=SCHOOLS.find(s=>s.id===sid);
+  if(!sc)return '<p class="empty-note">学校が見つかりません</p>';
+  const mode=ST.flowMode,cs=cats();
+  const totalTodo=schoolUnanswered(sid).length,totalAll=ST.questions.length;
+  const bigN=mode==='all'?totalAll:totalTodo;
+  const cards=cs.map(c=>{
+    const qs=ST.questions.filter(q=>q.category===c);
+    if(!qs.length)return '';
+    const todo=qs.filter(q=>!getConfirmedAns(sid,q.id)).length;
+    const n=mode==='all'?qs.length:todo;
+    const col=CATCOL[c]||'#30496a',off=!n;
+    return `<button class="fp-card${off?' fp-off':''}" style="border-left-color:${col}" ${off?'disabled':`onclick="startFlow('${sid}','${esc(jsq(c))}','${mode}')"`}><span class="fp-body"><span class="fp-nm">${esc(c)}</span><span class="fp-sub">全${qs.length}問${todo?`・未回答 ${todo}問`:'・すべて回答済み ✓'}</span></span><span class="fp-n${off?' done':''}">${off?'完了 ✓':n+'問'}</span></button>`;
+  }).filter(Boolean).join('');
+  return `<button class="back" onclick="openSchool('${sid}')">${I.back} ${esc(sc.name)}へ戻る</button>
+    <div class="hero"><div class="tiny muted">${esc(sc.name)}</div><h2>どのカテゴリから回答しますか？</h2>
+      <p class="muted tiny" style="margin-top:6px">カテゴリを選ぶと、その中の質問だけを順番に回答できます。途中でやめても、保存した分はそのまま残ります。</p>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="flabel" style="width:auto">対象</span><div class="seg"><button class="${mode==='todo'?'on':''}" onclick="setFlowMode('todo')">未回答のみ</button><button class="${mode==='all'?'on':''}" onclick="setFlowMode('all')">回答済みも見直す</button></div></div>
+      ${bigN?`<div style="margin-top:12px"><button class="btn pri" onclick="startFlow('${sid}','__all__','${mode}')">${I.edit} すべてのカテゴリ（${bigN}問）を順番に回答</button></div>`:`<div class="alert done" style="margin-top:12px"><div class="at">${I.check} 未回答の項目はありません 🎉</div></div>`}</div>
+    <div class="card"><div class="sec-h"><span class="ic">${I.group}</span>カテゴリから選ぶ</div><div class="fp-grid">${cards}</div></div>`;
 }
 function viewFlow(){
   const fl=ST.flow;
@@ -512,16 +585,15 @@ function viewFlow(){
   const sc=SCHOOLS.find(s=>s.id===fl.sid);
   if(fl.idx>=fl.queue.length)return flowDoneHTML(sc);
   const qid=fl.queue[fl.idx];const q=ST.questions.find(x=>x.id===qid);
-  const cur=getAns(fl.sid,qid);const cands=otherValues(qid,fl.sid);
-  window._cand=cands;
+  const cur=getAns(fl.sid,qid);
   const total=fl.queue.length;
   return `<div class="flow">
-    <button class="back" onclick="flowExit()">${I.back} 中断してホームへ</button>
-    <div class="flow-top"><div class="fs">${esc(sc.name)}</div><div class="flow-prog"><div class="pt">${fl.idx+1} / ${total} 問目</div><div class="pbar"><i style="width:${Math.round((fl.idx)/total*100)}%"></i></div></div></div>
+    <button class="back" onclick="flowExit()">${I.back} 中断して${esc(sc.name)}へ戻る</button>
+    <div class="flow-top"><div class="fs">${esc(sc.name)}</div>${fl.cat&&fl.cat!=='__all__'?`<span class="flow-catchip" style="background:${CATCOL[fl.cat]||'#30496a'}">${esc(fl.cat)}</span>`:''}<div class="flow-prog"><div class="pt">${fl.idx+1} / ${total} 問目</div><div class="pbar"><i style="width:${Math.round((fl.idx)/total*100)}%"></i></div></div></div>
     <div class="flow-card">
-      <span class="flow-cat">${esc(q.category)}・${TYPELABEL[qType(qid)]}</span>
+      <span class="flow-cat">${esc(q.category)}・${TYPELABEL[qType(qid)]}</span>${cur?`<span class="flow-cat" style="margin-left:6px;background:${cur.carried?'var(--amber-soft)':'var(--teal-soft)'};color:${cur.carried?'var(--amber-d)':'var(--teal-d)'}">${cur.carried?'前年度のまま・要確認':'回答済み・見直し'}</span>`:''}
       <div class="flow-q">${esc(q.text)}</div>
-      ${isChoice(qid)?'':(cands.length?`<div class="cand-h">他校の回答（タップで入力／表記をそろえられます）</div><div class="cand-chips">${cands.map((c,i)=>`<span class="cand" onclick="pickCand(${i})">${esc(c.length>26?c.slice(0,26)+'…':c)}</span>`).join('')}</div>`:'')}
+      ${hintHTML(qid)}${candsHTML(fl.sid,qid,'flowInput')}
       <label class="lb">回答${q.unit?`（単位：${esc(q.unit)}）`:''}</label>
       ${isChoice(qid)?renderSel('flow',qid,cur?cur.v:''):`<textarea class="tx" id="flowInput" rows="2" placeholder="回答を入力（他校の候補をタップしてもOK）">${esc(cur?cur.v:'')}</textarea>`}
       <label class="lb" style="margin-top:10px">備考（任意・伝えたい補足があれば）</label>
@@ -533,15 +605,18 @@ function viewFlow(){
         <button class="btn pri" onclick="flowSave()">${fl.idx+1===total?'保存して完了':'保存して次へ'} ${I.check}</button>
       </div>
     </div>
-    <p class="tiny muted" style="text-align:center;margin-top:12px">残り ${total-fl.idx} 問・いつでも「中断してホームへ」で終了できます</p></div>`;
+    <p class="tiny muted" style="text-align:center;margin-top:12px">残り ${total-fl.idx} 問・いつでも中断できます　<a href="javascript:void(0)" style="color:var(--amber-d)" onclick="openFlowPickerFromFlow()">別のカテゴリに切り替える</a></p></div>`;
 }
-function pickCand(i){const el=document.getElementById('flowInput');if(el&&window._cand){el.value=window._cand[i];el.focus()}}
+function pickCand(key,i,inputId){const el=document.getElementById(inputId||'flowInput');const arr=window._CANDS[key];if(el&&arr){el.value=arr[i];el.focus()}}
 function readFlowInputs(){const qid=ST.flow.queue[ST.flow.idx];const v=isChoice(qid)?(readSel('flow')||''):((document.getElementById('flowInput')||{}).value||'');const n=(document.getElementById('flowNote')||{}).value||'';return {v:v,n:n}}
 async function flowSave(){const {v,n}=readFlowInputs();const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n);ST.flow.idx++;render();if(ST.flow&&ST.flow.idx>=ST.flow.queue.length){} }
 function flowSkip(){const {v,n}=readFlowInputs();if(v.trim()){flowSave();return}ST.flow.idx++;render()}
 function flowPrev(){const {v,n}=readFlowInputs();if(v.trim()){const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n)}ST.flow.idx=Math.max(0,ST.flow.idx-1);render()}
-function flowDoneHTML(sc){return `<div class="flow"><div class="flow-card flow-done"><div class="em">🎉</div><h2 style="font-size:19px;margin-bottom:6px">${esc(sc.name)} の回答が完了しました</h2><p class="muted" style="margin-bottom:18px">ご協力ありがとうございます。AIが全校の傾向を分析します。</p><button class="btn pri lg" onclick="flowExit()">ホームへ戻る</button></div></div>`}
-function flowExit(){ST.flow=null;ST.view='home';render()}
+function flowDoneHTML(sc){
+  const cat=ST.flow&&ST.flow.cat;
+  const lab=(cat&&cat!=='__all__')?`「${esc(cat)}」の`:'';
+  return `<div class="flow"><div class="flow-card flow-done"><div class="em">🎉</div><h2 style="font-size:19px;margin-bottom:6px">${esc(sc.name)} ${lab}回答が完了しました</h2><p class="muted" style="margin-bottom:18px">ご協力ありがとうございます。続けて別のカテゴリにも回答できます。</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn pri lg" onclick="openFlowPickerFromFlow()">${I.group} 別のカテゴリを回答</button><button class="btn lg" onclick="flowExit()">学校ページへ戻る</button></div></div></div>`}
+function flowExit(){const fl=ST.flow,sid=fl&&fl.sid;if(fl&&fl.queue&&fl.queue.length)ST.schoolReturnQid=fl.queue[0];ST.flow=null;if(sid)openSchool(sid);else{ST.view='home';render()}}
 /* ---- SEARCH ---- */
 function viewSearch(){
   const cs=cats();const STATUS=[['all','すべて'],['todo','未回答あり'],['done','全校回答済'],['empty','未着手']];const SORT=[['cat','カテゴリ順'],['todo','未回答が多い順'],['new','新着順']];
@@ -577,7 +652,7 @@ function viewDetail(){
     : `<button class="back" onclick="go('search')">${I.back} 質問一覧へ戻る</button>`;
   return `${backBtn}
     <div class="det-h"><span class="c">${esc(q.category)}</span><span class="c" style="background:${TYPECOL[an.type]};color:#fff">${TYPELABEL[an.type]}</span><h2>${esc(q.text)}</h2>${addby}</div>
-    ${alert}<div class="card">${renderViz(q,an)}</div>
+    ${hintHTML(q.id)}${alert}<div class="card">${renderViz(q,an)}</div>
     ${renderEdit(q)}`;
 }
 function distHTML(groups,unN){const N=SCHOOLS.length;return `<div class="distwrap"><div class="distbar">${groups.map((g,i)=>`<div class="distseg" style="width:${g.n/N*100}%;background:${GCOL[i%GCOL.length]}" title="${g.n}校">${g.n/N>=.1?g.n:''}</div>`).join('')}${unN?`<div class="distseg un" style="width:${unN/N*100}%">${unN/N>=.1?unN:''}</div>`:''}</div><div class="distleg">${groups.map((g,i)=>`<span class="legi"><span class="legd" style="background:${GCOL[i%GCOL.length]}"></span>${esc(g.label.length>16?g.label.slice(0,16)+'…':g.label)}（${g.n}）</span>`).join('')}${unN?`<span class="legi"><span class="legd" style="background:#e4ded2"></span>未回答（${unN}）</span>`:''}</div></div>`}
@@ -614,7 +689,7 @@ function renderViz(q,an){
 function unGroup(un){return `<div class="gcard" style="border-left-color:#cbc4b5"><div class="gcard-h"><span class="gdot" style="background:#cbc4b5"></span><span class="glabel" style="color:var(--ink3)">未回答</span><span class="gcount">${un.length}校</span></div><div class="gchips">${un.map(s=>`<span class="gch" onclick="startEdit('${s.id}')">${esc(s.short)} ＋</span>`).join('')}</div></div>`}
 function matchShort(sh){const f=SCHOOLS.find(s=>sh.includes(s.short)||s.short.includes(sh)||sh.includes(s.name));return f?f.id:null}
 function renderEdit(q){
-  const rows=SCHOOLS.map(s=>{const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${isChoice(q.id)?renderSel(s.id,q.id,a?a.v:''):`<textarea class="tx" id="ed-${s.id}" rows="2" placeholder="${esc(s.name)}の回答...">${esc(a?a.v:'')}</textarea>`}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
+  const rows=SCHOOLS.map(s=>{const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${isChoice(q.id)?renderSel(s.id,q.id,a?a.v:''):`<textarea class="tx" id="ed-${s.id}" rows="2" placeholder="${esc(s.name)}の回答...">${esc(a?a.v:'')}</textarea>`}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
   return `<div class="editsec"><button class="btn edit-toggle" onclick="toggleShowEdit()"><span>${I.edit} 回答を更新する</span><span>${I.down}</span></button>${ST.showEdit?`<div class="card" style="margin-top:10px">${rows}</div>`:''}</div>`;
 }
 function startEdit(sid){const y=window.scrollY||0;ST.showEdit=true;ST.editing=sid;render({keepScroll:true});setTimeout(()=>{const el=document.getElementById('ed-'+sid);if(el)el.focus();else window.scrollTo(0,y)},20)}
@@ -654,26 +729,61 @@ function viewAdd(){const cs=cats();return `<div class="card" style="max-width:56
   <label class="lb">回答の種類</label><select class="tx" id="addType" onchange="toggleAddType()" style="margin-bottom:12px"><option value="記述">記述（自由記述）</option><option value="選択式">選択式（ボタンで選ぶ・複数選択可）</option><option value="数値">数値</option><option value="一覧">一覧（氏名など）</option><option value="連絡先">連絡先</option></select>
   <div id="addOptsWrap" style="display:none;margin-bottom:12px"><label class="lb">選択肢（「 / 」で区切る）</label><input class="tx" id="addOpts" placeholder="例：あり / なし　または　口座引落し / 振込 / 現金徴収"><p class="selmulti-hint">「あり / なし」だけにすると“今年度の方針で択一”の質問になります。それ以外は複数選択になります。選択肢はスプレッドシートに保存され、後からシート上で自由に編集できます。</p></div>
   <div id="addUnitWrap" style="display:none;margin-bottom:12px"><label class="lb">単位（数値の場合）</label><input class="tx" id="addUnit" placeholder="例：万円 ／ 人 ／ 回 ／ ％ ／ 家庭"></div>
-  <label class="lb">質問の内容</label><input class="tx" id="addText" placeholder="例：登校班の編成方法は？" style="margin-bottom:14px">
+  <label class="lb">質問の内容</label><input class="tx" id="addText" placeholder="例：登校班の編成方法は？" style="margin-bottom:12px">
+  <label class="lb">補足説明（任意・回答画面に表示されます）</label><textarea class="tx" id="addHint" rows="2" placeholder="例：今年度当初の在籍数を記入してください。小中一貫校は小学生・中学生を分けて書いてください。" style="margin-bottom:12px"></textarea>
+  <label class="lb">回答例（任意・「 / 」で区切ると複数出せます）</label><input class="tx" id="addExample" placeholder="例：4〜10人 / 定めなし"><p class="selmulti-hint" style="margin-bottom:14px">回答例は回答画面にチップで並び、タップすると入力欄に入ります。選択式は選択肢ボタンがあるため表示されません。</p>
   <div class="frow" style="gap:10px"><div style="flex:1"><label class="lb">追加した学校</label><select class="tx" id="addSchool">${SCHOOLS.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')}</select></div><div style="flex:1"><label class="lb">お名前</label><input class="tx" id="addName" placeholder="例：田中"></div></div>
-  <div style="margin-top:16px"><button class="btn pri" onclick="addQuestion()">${I.plus} この質問を追加する</button></div></div>`}
-function toggleNewCat(){document.getElementById('newCatWrap').style.display=document.getElementById('addCat').value==='__new__'?'block':'none'}
-function toggleAddType(){const t=document.getElementById('addType').value;const w=document.getElementById('addOptsWrap');if(w)w.style.display=(t==='選択式')?'block':'none';const u=document.getElementById('addUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
-async function addQuestion(){
+  <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="previewAdd()">${I.search} 回答画面をプレビュー</button><button class="btn pri" onclick="addQuestion()">${I.plus} この質問を追加する</button></div><div id="addPreview"></div></div>`}
+function readAddForm(){
   let cat=document.getElementById('addCat').value;
-  if(cat==='__new__'){cat=(document.getElementById('newCatName').value||'').trim();if(!cat){toast('カテゴリ名を入力してください');return}}
-  const text=(document.getElementById('addText').value||'').trim();if(!text){toast('質問の内容を入力してください');return}
+  if(cat==='__new__'){cat=(document.getElementById('newCatName').value||'').trim();if(!cat){toast('カテゴリ名を入力してください');return null}}
+  const text=(document.getElementById('addText').value||'').trim();if(!text){toast('質問の内容を入力してください');return null}
   const type=document.getElementById('addType').value;
   const optsRaw=(document.getElementById('addOpts')||{}).value||'';
   const options=(type==='選択式')?optsRaw.split('/').map(x=>x.trim()).filter(Boolean).join(' / '):'';
-  if(type==='選択式'&&!options){toast('選択肢を「 / 」区切りで入力してください');return}
+  if(type==='選択式'&&!options){toast('選択肢を「 / 」区切りで入力してください');return null}
   const unit=(type==='数値')?((document.getElementById('addUnit')||{}).value||'').trim():'';
+  const hint=((document.getElementById('addHint')||{}).value||'').trim();
+  const example=((document.getElementById('addExample')||{}).value||'').trim();
+  return {category:cat,text:text,type:type,unit:unit,options:options,hint:hint,example:example};
+}
+function previewCardHTML(q){
+  const exChips=isChoice(q.id)?'':splitOpts(q.example).map(v=>`<span class="cand ex">例：${esc(v)}</span>`).join('');
+  return `<div class="flow-card">
+    <span class="flow-cat">${esc(q.category)}・${esc(q.type||'記述')}</span>
+    <div class="flow-q">${esc(q.text)}</div>
+    ${q.hint?`<div class="qhint"><span class="qhi">${I.bell}</span><span>${esc(q.hint)}</span></div>`:''}
+    ${exChips?`<div class="candwrap"><div class="cand-h">前年度・回答例・他校の回答（タップで入力できます）</div><div class="cand-chips">${exChips}</div></div>`:''}
+    <label class="lb">回答${q.unit?`（単位：${esc(q.unit)}）`:''}</label>
+    ${isChoice(q.id)?renderSel('pv',q.id,''):'<textarea class="tx" rows="2" placeholder="回答を入力（他校の候補をタップしてもOK）"></textarea>'}
+    <label class="lb" style="margin-top:10px">備考（任意・伝えたい補足があれば）</label>
+    <input class="tx" placeholder="例：令和8年度から変更予定 など">
+    <div class="flow-nav pvdisabled"><button class="btn sm">スキップ</button><div style="flex:1"></div><button class="btn pri">保存して次へ ${I.check}</button></div>
+  </div>`;
+}
+function previewAdd(){
+  const f=readAddForm();if(!f)return;
+  const q=Object.assign({id:'__pv__',createdAt:Date.now()},f);
+  ST.questions=ST.questions.filter(x=>x.id!=='__pv__');ST.questions.push(q);
+  let html='';
+  try{html=previewCardHTML(q)}finally{ST.questions=ST.questions.filter(x=>x.id!=='__pv__')}
+  const el=document.getElementById('addPreview');
+  el.innerHTML=`<div class="previewbox"><div class="pvh">${I.search} 回答画面のプレビュー（実際の「まとめて回答」と同じ表示です・保存はされません）</div>${html}</div>`;
+  setTimeout(()=>{try{el.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}},30);
+}
+function toggleNewCat(){document.getElementById('newCatWrap').style.display=document.getElementById('addCat').value==='__new__'?'block':'none'}
+function toggleAddType(){const t=document.getElementById('addType').value;const w=document.getElementById('addOptsWrap');if(w)w.style.display=(t==='選択式')?'block':'none';const u=document.getElementById('addUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
+async function addQuestion(){
+  const f=readAddForm();if(!f)return;
   const addedSchool=document.getElementById('addSchool').value;const addedName=(document.getElementById('addName').value||'').trim();
   const id='q'+Date.now().toString(36);
-  const q={id:id,category:cat,text:text,type:type,unit:unit,options:options,addedSchool:addedSchool,addedName:addedName,createdAt:Date.now()};
+  const q=Object.assign({id:id,addedSchool:addedSchool,addedName:addedName,createdAt:Date.now()},f);
   if(USE_API){
-    try{const r=await gas('addQuestion',{id:id,category:cat,text:text,type:type,unit:unit,options:options,addedSchool:addedSchool,addedName:addedName});if(!(r&&r.ok)){toast('追加に失敗: '+((r&&r.error)||''));return}q.createdAt=r.createdAt||q.createdAt;ST.questions.push(q);}
-    catch(e){toast('追加に失敗しました（通信エラー）');return}
+    try{
+      const r=await gas('addQuestion',Object.assign({id:id,addedSchool:addedSchool,addedName:addedName},f));
+      if(!(r&&r.ok)){toast('追加に失敗: '+((r&&r.error)||''));return}
+      q.createdAt=r.createdAt||q.createdAt;ST.questions.push(q);
+    }catch(e){toast('追加に失敗しました（通信エラー）');return}
   }else{ST.questions.push(q);await sSet('questions',ST.questions);}
   toast('質問を追加しました');openQ(id);
 }
