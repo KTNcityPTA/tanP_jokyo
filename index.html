@@ -227,7 +227,7 @@ function buildYears(dataYears){
   YEARS.push({id:'R'+(mx+1),label:'令和'+(mx+1)+'年度'});
   if(!YEARS.find(y=>y.id===ST.year))ST.year=YEARS[Math.max(0,YEARS.length-2)].id;
 }
-const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,schoolReturnQid:null,flowPick:null,flowMode:'todo'};
+const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[]};
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
 function startSchoolEdit(qid){
   const y=window.scrollY||window.pageYOffset||0;
@@ -400,12 +400,50 @@ function noteBadge(a){return (a&&a.note?` <span class="notebadge">備考: ${esc(
 function renderShell(){
   document.getElementById('pvbanner').outerHTML=(USE_API||HASSTORE)?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
   const ys=document.getElementById('yearSel');ys.innerHTML=YEARS.map(y=>`<option value="${y.id}" ${y.id===ST.year?'selected':''}>${y.label}</option>`).join('');
-  ys.onchange=async e=>{ST.year=e.target.value;ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render()};
+  ys.onchange=async e=>{ST.year=e.target.value;navReset();ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render()};
   const nav=[['home','ホーム',I.home],['search','質問をさがす',I.search],['table','回答テーブル',I.table],['add','質問を追加',I.plus]];
   document.getElementById('nav').innerHTML=nav.map(([v,l,ic])=>`<button class="navbtn ${ST.view===v||(v==='search'&&ST.view==='detail')?'on':''}" onclick="go('${v}')">${ic}${l}</button>`).join('');
 }
-function go(v){ST.view=v;ST.editing=null;ST.flow=null;render()}
-function openQ(qid,fromSchool){ST.q=qid;ST.view='detail';ST.editing=null;ST.showEdit=false;ST.fromSchool=fromSchool||null;if(fromSchool)ST.schoolReturnQid=qid;render()}
+/* ===== 画面遷移とスクロール位置の記憶 =====
+   進むとき（navPush）に「今いる画面＋スクロール位置」を積み、
+   戻るとき（navBack / navBackTo）にその位置へ復元します。
+   その画面から来ていない場合は積まれていないので、常に最上部から表示されます。 */
+function curY(){return window.scrollY||window.pageYOffset||(document.documentElement&&document.documentElement.scrollTop)||0}
+function pageKey(){
+  if(ST.view==='school')return 'school:'+ST.school;
+  if(ST.view==='detail')return 'detail:'+ST.q;
+  if(ST.view==='flowpick')return 'flowpick:'+ST.flowPick;
+  return ST.view;
+}
+function applyKey(k){
+  const i=k.indexOf(':'),v=i<0?k:k.slice(0,i),arg=i<0?null:k.slice(i+1);
+  ST.editing=null;ST.schoolEditing=null;ST.flow=null;
+  if(v==='school'){ST.school=arg;ST.view='school'}
+  else if(v==='detail'){ST.q=arg;ST.view='detail';ST.showEdit=false}
+  else if(v==='flowpick'){ST.flowPick=arg;ST.view='flowpick'}
+  else ST.view=v;
+}
+function navPush(){ST.navStack.push({k:pageKey(),y:curY()});if(ST.navStack.length>40)ST.navStack.shift()}
+function navReset(){ST.navStack=[]}
+function navBackTo(key){for(let i=ST.navStack.length-1;i>=0;i--){if(ST.navStack[i].k===key){const y=ST.navStack[i].y;ST.navStack.length=i;return y}}return null}
+function navLabel(fb){
+  const k=ST.navStack.length?ST.navStack[ST.navStack.length-1].k:(fb||'home');
+  const i=k.indexOf(':'),v=i<0?k:k.slice(0,i),arg=i<0?'':k.slice(i+1);
+  if(v==='school'){const s=SCHOOLS.find(x=>x.id===arg);return (s?s.name:'学校ページ')+'へ戻る'}
+  if(v==='detail'){const t=qOf(arg).text||'';return t?('「'+(t.length>12?t.slice(0,12)+'…':t)+'」へ戻る'):'前の画面へ戻る'}
+  if(v==='flowpick')return 'カテゴリ選択へ戻る';
+  if(v==='home')return 'ホーム（学校一覧）へ戻る';
+  if(v==='search')return '質問一覧へ戻る';
+  if(v==='table')return '回答テーブルへ戻る';
+  if(v==='add')return '質問を追加へ戻る';
+  return '前の画面へ戻る';
+}
+function navBack(fb){
+  if(ST.navStack.length){const e=ST.navStack.pop();applyKey(e.k);render({restoreScroll:e.y});return}
+  applyKey(fb||'home');render();
+}
+function go(v){navReset();ST.view=v;ST.editing=null;ST.flow=null;render()}
+function openQ(qid,fromSchool){navPush();ST.q=qid;ST.view='detail';ST.editing=null;ST.showEdit=false;ST.fromSchool=fromSchool||null;render()}
 function render(opt){
   opt=opt||{};
   if(ST.loading){renderShell();document.getElementById('page').innerHTML=viewLoading();return;}
@@ -415,7 +453,7 @@ function render(opt){
   if(ST.view==='flow')setTimeout(()=>{const el=document.getElementById('flowInput');if(el)el.focus()},40);
   // スクロール制御：keepScroll指定時は現在位置を維持、restoreScroll指定時は指定位置へ、それ以外は最上部
   if(opt.keepScroll){/* 何もしない（現在のスクロール位置を維持） */}
-  else if(opt.restoreScroll!=null){const y=opt.restoreScroll;setTimeout(()=>window.scrollTo(0,y),30);}
+  else if(opt.restoreScroll!=null){const y=opt.restoreScroll;window.scrollTo(0,y);setTimeout(()=>window.scrollTo(0,y),0);setTimeout(()=>window.scrollTo(0,y),40);}
   else if(opt.scrollToEl){setTimeout(()=>{const el=document.getElementById(opt.scrollToEl);if(el)el.scrollIntoView({block:'center',behavior:'auto'})},40);}
   else{window.scrollTo(0,0);}
 }
@@ -442,10 +480,9 @@ function viewHome(){
 }
 /* ---- SCHOOL (自校ビュー) ---- */
 function openSchool(sid){
-  ST.school=sid;ST.view='school';ST.editing=null;ST.flow=null;
-  const rq=ST.schoolReturnQid;ST.schoolReturnQid=null;
-  if(rq){render({scrollToEl:'sc-card-'+rq});}
-  else{render();}
+  navPush();
+  ST.school=sid;ST.view='school';ST.editing=null;ST.schoolEditing=null;ST.flow=null;
+  render();
 }
 function sortedSel(v){return selVals(v).map(nrm).sort().join(' / ')}
 function fmtMan(n){return n>=10000?(n/10000).toLocaleString(undefined,{maximumFractionDigits:1})+'万':n.toLocaleString()}
@@ -536,7 +573,7 @@ function viewSchool(){
     const cbLab=todoN?('未回答'+todoN+'問をまとめて回答'):'このカテゴリを見直す';
     return `<div class="blockh">${esc(c)}<button class="cat-flow-btn" onclick="startFlow('${sid}','${esc(jsq(c))}','${cbMode}')">${I.edit} ${cbLab}</button></div><div class="sc-grid">${cards}</div>`;
   }).filter(Boolean).join('');
-  return `<button class="back" onclick="go('home')">${I.back} ホーム（学校一覧）へ戻る</button>
+  return `<button class="back" onclick="navBack('home')">${I.back} ${esc(navLabel('home'))}</button>
     <div class="hero"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><div class="tiny muted">${esc(sc.block)}・${esc(sc.type)}</div><h2>${esc(sc.name)}</h2></div><div class="stat" style="min-width:88px"><b>${pc}%</b><span>回答率（${f}/${tq}）</span></div></div>
       ${un.length?`<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" onclick="startFlow('${sid}','__all__','todo')">${I.edit} 未回答 ${un.length}項目をまとめて回答</button><button class="btn" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで回答</button></div>`:`<div class="alert done" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="at">${I.check} 全${tq}項目に回答済みです</div><button class="btn sm" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで見直す</button></div>`}
       ${tiles?`<div style="font-size:12px;color:var(--ink3);margin:14px 0 7px;font-family:'Zen Maru Gothic'">自校のプロフィール（タップで詳細）</div><div class="statgrid">${tiles}</div>`:''}</div>
@@ -547,15 +584,21 @@ function viewSchool(){
     <div class="card"><div class="sec-h"><span class="ic">${I.table}</span>自校の回答一覧 <span class="tiny muted" style="font-family:'Noto Sans JP';font-weight:400;margin-left:4px">タップで回答・編集</span></div>${catBlocks||'<p class="empty-note">まだ回答がありません。上の「まとめて回答」から入力できます。</p>'}</div>`;
 }
 /* ---- FLOW ---- */
-function openFlowPicker(sid){ST.flowPick=sid;ST.view='flowpick';ST.flow=null;render()}
-function openFlowPickerFromFlow(){const sid=ST.flow&&ST.flow.sid;ST.flow=null;if(sid)openFlowPicker(sid);else{ST.view='home';render()}}
+function openFlowPicker(sid){navPush();ST.flowPick=sid;ST.view='flowpick';ST.flow=null;render()}
+function openFlowPickerFromFlow(){
+  const sid=ST.flow&&ST.flow.sid;
+  if(!sid){navBack('home');return}
+  const key='flowpick:'+sid,y=navBackTo(key);
+  if(y!=null){applyKey(key);render({restoreScroll:y})}
+  else{ST.flow=null;ST.flowPick=sid;ST.view='flowpick';render()}
+}
 function setFlowMode(m){const y=window.scrollY||0;ST.flowMode=m;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 function flowQs(sid,cat,mode){return ST.questions.filter(q=>(cat==='__all__'||q.category===cat)&&(mode==='all'||!getConfirmedAns(sid,q.id)))}
 function startFlow(sid,cat,mode){
   cat=cat||'__all__';mode=mode||ST.flowMode||'todo';
   const qs=flowQs(sid,cat,mode);
   if(!qs.length){toast(mode==='all'?'このカテゴリには質問がありません':'この範囲はすべて回答済みです 🎉');return}
-  ST.flowMode=mode;
+  ST.flowMode=mode;navPush();
   ST.flow={sid:sid,cat:cat,mode:mode,queue:qs.map(q=>q.id),idx:0};ST.view='flow';render();
 }
 function viewFlowPick(){
@@ -572,7 +615,7 @@ function viewFlowPick(){
     const col=CATCOL[c]||'#30496a',off=!n;
     return `<button class="fp-card${off?' fp-off':''}" style="border-left-color:${col}" ${off?'disabled':`onclick="startFlow('${sid}','${esc(jsq(c))}','${mode}')"`}><span class="fp-body"><span class="fp-nm">${esc(c)}</span><span class="fp-sub">全${qs.length}問${todo?`・未回答 ${todo}問`:'・すべて回答済み ✓'}</span></span><span class="fp-n${off?' done':''}">${off?'完了 ✓':n+'問'}</span></button>`;
   }).filter(Boolean).join('');
-  return `<button class="back" onclick="openSchool('${sid}')">${I.back} ${esc(sc.name)}へ戻る</button>
+  return `<button class="back" onclick="navBack('school:${sid}')">${I.back} ${esc(navLabel('school:'+sid))}</button>
     <div class="hero"><div class="tiny muted">${esc(sc.name)}</div><h2>どのカテゴリから回答しますか？</h2>
       <p class="muted tiny" style="margin-top:6px">カテゴリを選ぶと、その中の質問だけを順番に回答できます。途中でやめても、保存した分はそのまま残ります。</p>
       <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="flabel" style="width:auto">対象</span><div class="seg"><button class="${mode==='todo'?'on':''}" onclick="setFlowMode('todo')">未回答のみ</button><button class="${mode==='all'?'on':''}" onclick="setFlowMode('all')">回答済みも見直す</button></div></div>
@@ -588,7 +631,7 @@ function viewFlow(){
   const cur=getAns(fl.sid,qid);
   const total=fl.queue.length;
   return `<div class="flow">
-    <button class="back" onclick="flowExit()">${I.back} 中断して${esc(sc.name)}へ戻る</button>
+    <button class="back" onclick="navBack('school:${fl.sid}')">${I.back} 中断して${esc(navLabel('school:'+fl.sid))}</button>
     <div class="flow-top"><div class="fs">${esc(sc.name)}</div>${fl.cat&&fl.cat!=='__all__'?`<span class="flow-catchip" style="background:${CATCOL[fl.cat]||'#30496a'}">${esc(fl.cat)}</span>`:''}<div class="flow-prog"><div class="pt">${fl.idx+1} / ${total} 問目</div><div class="pbar"><i style="width:${Math.round((fl.idx)/total*100)}%"></i></div></div></div>
     <div class="flow-card">
       <span class="flow-cat">${esc(q.category)}・${TYPELABEL[qType(qid)]}</span>${cur?`<span class="flow-cat" style="margin-left:6px;background:${cur.carried?'var(--amber-soft)':'var(--teal-soft)'};color:${cur.carried?'var(--amber-d)':'var(--teal-d)'}">${cur.carried?'前年度のまま・要確認':'回答済み・見直し'}</span>`:''}
@@ -616,7 +659,13 @@ function flowDoneHTML(sc){
   const cat=ST.flow&&ST.flow.cat;
   const lab=(cat&&cat!=='__all__')?`「${esc(cat)}」の`:'';
   return `<div class="flow"><div class="flow-card flow-done"><div class="em">🎉</div><h2 style="font-size:19px;margin-bottom:6px">${esc(sc.name)} ${lab}回答が完了しました</h2><p class="muted" style="margin-bottom:18px">ご協力ありがとうございます。続けて別のカテゴリにも回答できます。</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn pri lg" onclick="openFlowPickerFromFlow()">${I.group} 別のカテゴリを回答</button><button class="btn lg" onclick="flowExit()">学校ページへ戻る</button></div></div></div>`}
-function flowExit(){const fl=ST.flow,sid=fl&&fl.sid;if(fl&&fl.queue&&fl.queue.length)ST.schoolReturnQid=fl.queue[0];ST.flow=null;if(sid)openSchool(sid);else{ST.view='home';render()}}
+// 学校ページまで一気に戻る（完了画面など）
+function flowExit(){
+  const sid=ST.flow&&ST.flow.sid;
+  if(!sid){navBack('home');return}
+  const key='school:'+sid,y=navBackTo(key);
+  applyKey(key);render(y!=null?{restoreScroll:y}:{});
+}
 /* ---- SEARCH ---- */
 function viewSearch(){
   const cs=cats();const STATUS=[['all','すべて'],['todo','未回答あり'],['done','全校回答済'],['empty','未着手']];const SORT=[['cat','カテゴリ順'],['todo','未回答が多い順'],['new','新着順']];
@@ -647,9 +696,8 @@ function viewDetail(){
   const an=analyzeQ(q.id);const un=an.un;
   const alert=un.length?`<div class="alert"><div class="at">${I.bell} 未回答の学校が ${un.length}校 あります</div><p class="tiny muted" style="margin-bottom:9px">学校名をタップするとその場で回答できます。</p><div class="chips">${un.map(s=>`<span class="chip warn" onclick="startEdit('${s.id}')">${esc(s.short)} に回答 ＋</span>`).join('')}</div></div>`:`<div class="alert done"><div class="at">${I.check} 全校から回答が集まっています</div></div>`;
   const addby=q.addedSchool?`<div class="addby">${esc(q.addedSchool)}${q.addedName?'・'+esc(q.addedName):''} さんが追加</div>`:'';
-  const backBtn=ST.fromSchool
-    ? `<button class="back" onclick="openSchool('${ST.fromSchool}')">${I.back} ${esc((SCHOOLS.find(s=>s.id===ST.fromSchool)||{}).name||'')}へ戻る</button>`
-    : `<button class="back" onclick="go('search')">${I.back} 質問一覧へ戻る</button>`;
+  const bfb=ST.fromSchool?('school:'+ST.fromSchool):'search';
+  const backBtn=`<button class="back" onclick="navBack('${bfb}')">${I.back} ${esc(navLabel(bfb))}</button>`;
   return `${backBtn}
     <div class="det-h"><span class="c">${esc(q.category)}</span><span class="c" style="background:${TYPECOL[an.type]};color:#fff">${TYPELABEL[an.type]}</span><h2>${esc(q.text)}</h2>${addby}</div>
     ${hintHTML(q.id)}${alert}<div class="card">${renderViz(q,an)}</div>
