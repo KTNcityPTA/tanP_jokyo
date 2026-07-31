@@ -89,6 +89,31 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .sc-carry-badge{font-size:10.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:6px;padding:2px 7px}
 .sc-carry-btn{font-family:'Zen Maru Gothic';font-size:11px;font-weight:500;color:#fff;background:var(--teal);border:none;border-radius:7px;padding:4px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
 .sc-carry-btn:hover{background:var(--teal-d)}
+/* 閲覧モード / 編集モード */
+.modebtn{font-family:'Zen Maru Gothic';font-weight:700;font-size:12.5px;border-radius:9px;padding:6px 12px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;margin-right:9px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#e6ecf4}
+.modebtn:hover{background:rgba(255,255,255,.18)}
+.modebtn.on{background:var(--amber);border-color:var(--amber);color:#3b2a10}
+.rolock{display:flex;gap:9px;align-items:flex-start;background:#f7f5ef;border:1px solid var(--line2);border-radius:10px;padding:11px 13px;font-size:12.5px;line-height:1.7;color:var(--ink2)}
+.rolock b{color:var(--navy)}
+.rolock .btn{margin-top:8px}
+.mask{position:fixed;inset:0;background:rgba(24,30,40,.5);display:flex;align-items:center;justify-content:center;padding:18px;z-index:200}
+.mask.hide{display:none}
+.mdl{background:#fff;border-radius:16px;max-width:430px;width:100%;padding:20px 20px 17px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.mdl h3{font-family:'Zen Maru Gothic';font-size:17px;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mdl .warn-box{background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.8;color:var(--ink);margin-bottom:14px}
+.mdl .warn-box b{color:var(--amber-d)}
+.mdl .mrow{display:flex;gap:8px;margin-bottom:12px}
+.mdl .mrow>*{flex:1;min-width:0}
+.mdl-btns{display:flex;gap:8px;margin-top:4px}
+.mdl-btns .btn{flex:1;justify-content:center}
+/* 対象区分 */
+.tgnote{display:flex;gap:8px;align-items:flex-start;background:#f7f5ef;border:1px solid var(--line2);border-radius:9px;padding:8px 11px;font-size:12.5px;line-height:1.7;color:var(--ink2);margin-bottom:11px}
+.tgnote b{color:var(--navy)}
+.tgbadge{font-size:10.5px;font-weight:700;color:#fff;background:var(--navy2);border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.offrow{opacity:.55}
+.offrow .av{color:var(--ink3);font-style:italic}
+.offchip{font-size:11.5px;background:#f0ede5;border:1px dashed var(--line2);border-radius:11px;padding:2px 9px;color:var(--ink3)}
+.tgpick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
 /* hint / candidate chips / preview */
 .qhint{display:flex;gap:8px;align-items:flex-start;background:#f1f5fa;border:1px solid #dae4f0;border-radius:9px;padding:8px 11px;font-size:12.5px;line-height:1.7;color:var(--navy);margin-bottom:11px}
 .qhint .qhi{flex-shrink:0;color:var(--navy2);margin-top:2px;display:flex}
@@ -145,9 +170,10 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .vschip.maj{background:var(--paper);color:var(--ink2)}
 </style></head>
 <body>
-<div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div style="flex:1"></div><select class="yearsel" id="yearSel"></select></div>
+<div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div style="flex:1"></div><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button><select class="yearsel" id="yearSel"></select></div>
 <div id="pvbanner"></div><div class="nav"><div class="nav-in" id="nav"></div></div></div>
 <div class="wrap"><div class="page" id="page"></div></div><div class="toast" id="toast"></div>
+<div class="mask hide" id="mask"><div class="mdl" id="mdl"></div></div>
 <script>
 const SCHOOLS=[{id:"s1",name:"交野みらい学園",short:"みらい学園",block:"１ブロック",type:"小中"},{id:"s2",name:"郡津小学校",short:"郡津小",block:"２ブロック",type:"小"},{id:"s3",name:"倉治小学校",short:"倉治小",block:"２ブロック",type:"小"},{id:"s4",name:"第２中学校",short:"２中",block:"２ブロック",type:"中"},{id:"s5",name:"旭小学校",short:"旭小",block:"３ブロック",type:"小"},{id:"s6",name:"星田小学校",short:"星田小",block:"３ブロック",type:"小"},{id:"s7",name:"第３中学校",short:"３中",block:"３ブロック",type:"中"},{id:"s8",name:"岩船小学校",short:"岩船小",block:"４ブロック",type:"小"},{id:"s9",name:"私市小学校",short:"私市小",block:"４ブロック",type:"小"},{id:"s10",name:"藤が尾小学校",short:"藤が尾小",block:"４ブロック",type:"小"}];
 const CATEGORIES=["基本情報", "会計", "役員・委員", "フェスタ", "会議", "情報・連絡ツール", "広報・個人情報", "加入・行事", "その他・特色"];
@@ -216,7 +242,7 @@ function renderChoiceViz(q,an){
   const bin=isBinary(q.id);
   const cards=groups.filter(g=>g.members.length).map((g,i)=>{const col=GCOL[i%GCOL.length];const top=i===0&&g.members.length>1;return `<div class="gcard" style="border-left-color:${col}"><div class="gcard-h"><span class="gdot" style="background:${col}"></span><span class="glabel">${esc(g.label)}</span>${top?'<span class="gtag">最多</span>':''}<span class="gcount">${g.members.length}校</span></div><div class="numtrack" style="margin-bottom:9px"><i style="width:${Math.max(4,Math.round(g.members.length/maxN*100))}%"></i></div><div class="gchips">${g.members.map(m=>`<span class="gch" onclick="startEdit('${m.id}')">${esc(m.short)}</span>`).join('')}</div>${memNotesHTML(g.members)}</div>`}).join('');
   const head=bin?'回答の分布（あり／なし）':'回答の分布（選択式・複数回答可）';
-  return `<div class="sec-h"><span class="ic">${I.chart}</span>${head}</div>${cards||'<p class="muted tiny">まだ回答がありません。</p>'}${an.un.length?unGroup(an.un):''}`;
+  return `<div class="sec-h"><span class="ic">${I.chart}</span>${head}</div>${cards||'<p class="muted tiny">まだ回答がありません。</p>'}${unGroup(an.un,q.id)}`;
 }
 let YEARS=[{id:'R8',label:'令和8年度'},{id:'R9',label:'令和9年度'}];
 function buildYears(dataYears){
@@ -227,9 +253,10 @@ function buildYears(dataYears){
   YEARS.push({id:'R'+(mx+1),label:'令和'+(mx+1)+'年度'});
   if(!YEARS.find(y=>y.id===ST.year))ST.year=YEARS[Math.max(0,YEARS.length-2)].id;
 }
-const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[]};
+const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[],allQuestions:[],mode:'view'};
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
 function startSchoolEdit(qid){
+  if(!requireEdit())return;
   const y=window.scrollY||window.pageYOffset||0;
   ST.schoolEditing=qid;
   render({keepScroll:true});
@@ -242,6 +269,7 @@ function startSchoolEdit(qid){
 function cancelSchoolEdit(){const y=window.scrollY||0;ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 async function confirmCarry(ev,sid,qid){
   if(ev)ev.stopPropagation();
+  if(!requireEdit())return;
   const y=window.scrollY||0;
   const prev=ST.prevAnswers[sid+'__'+qid];
   if(!prev){toast('前年度のデータが見つかりません');return}
@@ -265,7 +293,9 @@ async function loadYear(){
     try{
       const d=await gasGet({action:'get',year:ST.year});
       if(d&&d.ok){
-        ST.questions=d.questions||[];
+        restoreMode();
+        ST.allQuestions=d.questions||[];
+        ST.questions=ST.allQuestions.filter(q=>!q.hidden);
         ST.answers=d.answers||{};
         if(d.allYears&&d.allYears.length)buildYears(d.allYears);
         // 前年度の回答も取得（更新待ち表示・他校比較の引き継ぎ用）
@@ -285,7 +315,8 @@ async function loadYear(){
     return;
   }
   // 非API（claude.aiプレビュー等）はwindow.storage / メモリを使用
-  ST.questions=await sGet('questions')||[];ST.answers=await sGet('answers_'+ST.year)||{};
+  restoreMode();
+  ST.allQuestions=await sGet('questions')||[];ST.questions=ST.allQuestions.filter(q=>!q.hidden);ST.answers=await sGet('answers_'+ST.year)||{};
   ST.prevYear=prevYearOf(ST.year);ST.prevAnswers=ST.prevYear?(await sGet('answers_'+ST.prevYear)||{}):{};
 }
 // GAS接続エラー時に管理者へメール通知（GASのsendErrorMailアクション経由）
@@ -335,18 +366,49 @@ function getAns(sid,qid){
 // 今年度に実際に確定された回答だけ（引き継ぎを除く）。確定状況のカウント用。
 function getConfirmedAns(sid,qid){const c=ST.answers[sid+'__'+qid];return (c&&String(c.v).trim()!=='')?c:undefined}
 async function setAns(sid,qid,val,note){
+  if(!canEdit()){toast('閲覧モードでは保存できません');return}
   const k=sid+'__'+qid,v=(val||'').trim(),n=(note||'').trim();
   if(v)ST.answers[k]={v:v,note:n,t:Date.now()};else delete ST.answers[k];
   if(USE_API){try{await gas('saveAnswer',{year:ST.year,school_id:sid,question_id:qid,value:v,note:n})}catch(e){toast('保存に失敗しました（通信エラー）')}return;}
   await sSet('answers_'+ST.year,ST.answers);
 }
-function ansCount(qid){return SCHOOLS.filter(s=>getConfirmedAns(s.id,qid)).length}
-function unanswered(qid){return SCHOOLS.filter(s=>!getConfirmedAns(s.id,qid))}
-function schoolCount(sid){return ST.questions.filter(q=>getConfirmedAns(sid,q.id)).length}
-function schoolUnanswered(sid){return ST.questions.filter(q=>!getConfirmedAns(sid,q.id))}
+/* ===== 質問ごとの回答対象（小学校 / 中学校） =====
+   質問マスタの「対象区分」列が '小 / 中'・'小'・'中' のいずれか。空欄は両方（後方互換）。
+   交野みらい学園は小中一貫（種別='小中'）のため、小・中どちらが対象でも回答対象に含みます。 */
+function qTarget(qid){
+  const t=String(qOf(qid).target||'').trim();
+  if(!t)return {sho:true,chu:true};
+  return {sho:t.indexOf('小')>=0,chu:t.indexOf('中')>=0};
+}
+function targetLabel(qid){const t=qTarget(qid);return (t.sho&&t.chu)?'小中学校すべて':(t.sho?'小学校のみ':(t.chu?'中学校のみ':'対象なし'))}
+function isTargetSchool(sid,qid){
+  const s=SCHOOLS.find(x=>x.id===sid);if(!s)return false;
+  const t=qTarget(qid);
+  if(s.type==='小中')return t.sho||t.chu;   // 小中一貫校はどちらでも対象
+  if(s.type==='中')return t.chu;
+  return t.sho;
+}
+function targetSchools(qid){return SCHOOLS.filter(s=>isTargetSchool(s.id,qid))}
+function offSchools(qid){return SCHOOLS.filter(s=>!isTargetSchool(s.id,qid))}
+function schoolQuestions(sid){return ST.questions.filter(q=>isTargetSchool(sid,q.id))}
+function ansCount(qid){return targetSchools(qid).filter(s=>getConfirmedAns(s.id,qid)).length}
+function unanswered(qid){return targetSchools(qid).filter(s=>!getConfirmedAns(s.id,qid))}
+function schoolCount(sid){return schoolQuestions(sid).filter(q=>getConfirmedAns(sid,q.id)).length}
+function schoolUnanswered(sid){return schoolQuestions(sid).filter(q=>!getConfirmedAns(sid,q.id))}
 function cats(){return CATEGORIES.filter(c=>ST.questions.some(q=>q.category===c)).concat(ST.questions.map(q=>q.category).filter(c=>!CATEGORIES.includes(c)).filter((v,i,a)=>a.indexOf(v)===i))}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function qOf(qid){return ST.questions.find(x=>x.id===qid)||{}}
+function targetNoteHTML(qid){
+  const t=qTarget(qid);
+  if(t.sho&&t.chu)return '';
+  const off=offSchools(qid);
+  return `<div class="tgnote"><span>${I.group}</span><span>この質問は <b>${esc(targetLabel(qid))}</b> が回答対象です（交野みらい学園は小中一貫のため、小・中どちらが対象でも回答対象に含まれます）。${off.length?'<br>対象外：'+off.map(s=>esc(s.name)).join('・'):''}</span></div>`;
+}
+function offGroupHTML(qid){
+  const off=offSchools(qid);
+  if(!off.length)return '';
+  return `<div class="gcard" style="border-left-color:#ddd8cc"><div class="gcard-h"><span class="gdot" style="background:#ddd8cc"></span><span class="glabel" style="color:var(--ink3)">対象外（${esc(targetLabel(qid))}のため）</span><span class="gcount">${off.length}校</span></div><div class="gchips">${off.map(s=>`<span class="offchip">${esc(s.short)}</span>`).join('')}</div></div>`;
+}
 function hintHTML(qid){const q=qOf(qid);return q.hint?`<div class="qhint"><span class="qhi">${I.bell}</span><span>${esc(q.hint)}</span></div>`:''}
 window._CANDS={};
 function candsHTML(sid,qid,inputId){
@@ -365,6 +427,43 @@ function candsHTML(sid,qid,inputId){
 }
 function jsq(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 function fmtDate(t){const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
+/* ===== 閲覧モード / 編集モード =====
+   既定は閲覧モード。編集は必ず確認ダイアログを経由し、操作内容はGAS側の
+   「_操作ログ」シートに記録されます。パスワードによる制限ではなく、
+   誤操作の防止と、変更の記録を残すための仕組みです。 */
+function ssGet(k){try{return sessionStorage.getItem(k)}catch(e){return null}}
+function ssSet(k,v){try{sessionStorage.setItem(k,v)}catch(e){}}
+function canEdit(){return ST.mode==='edit'}
+function requireEdit(){
+  if(canEdit())return true;
+  openModeDialog();
+  return false;
+}
+function onModeBtn(){
+  if(canEdit()){
+    ST.mode='view';ssSet('pta_mode','view');
+    toast('閲覧モードに戻りました');renderShell();render({keepScroll:true});
+  }else openModeDialog();
+}
+function openModeDialog(){
+  document.getElementById('mdl').innerHTML=`
+    <h3>${I.edit} 編集モードに切り替えます</h3>
+    <div class="warn-box"><b>現役PTA役員のみ編集モードの使用が可能です。</b><br>操作ログ（日時・操作内容）を記録しています。</div>
+    <p class="muted tiny" style="margin-bottom:14px">閲覧するだけなら、このまま閲覧モードでご利用ください。</p>
+    <div class="mdl-btns"><button class="btn" onclick="closeModeDialog()">閲覧モードに戻る</button><button class="btn pri" onclick="enterEditMode()">編集モードで進む</button></div>`;
+  document.getElementById('mask').classList.remove('hide');
+}
+function closeModeDialog(){document.getElementById('mask').classList.add('hide')}
+function enterEditMode(){
+  ST.mode='edit';ssSet('pta_mode','edit');
+  closeModeDialog();
+  toast('編集モードになりました');
+  renderShell();render({keepScroll:true});
+}
+function restoreMode(){ST.mode=(ssGet('pta_mode')==='edit')?'edit':'view'}
+function roNotice(msg){
+  return `<div class="rolock"><span>${I.bell}</span><div><b>閲覧モードです。</b>${esc(msg||'入力・変更するには編集モードに切り替えてください。')}<br><button class="btn sm" onclick="openModeDialog()">${I.edit} 編集モードに切り替える</button></div></div>`;
+}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
 function pnum(s){s=String(s).replace(/,/g,'');if(s.indexOf('@')>=0)return null;let m=s.match(/([0-9]+(?:\.[0-9]+)?)\s*万/);if(m)return parseFloat(m[1])*1e4;m=s.match(/([0-9]+(?:\.[0-9]+)?)/);return m?parseFloat(m[1]):null}
 // パーセント項目（unit==='%'）専用：割合(0.98)も百分率(98)も%付き(98%)も正規化。テキストはnull
@@ -380,11 +479,11 @@ function pctNum(s){
 function fmtPct(n){return (Number.isInteger(n)?n:n.toFixed(1))+'%'}
 function dcount(s){return (String(s).match(/[0-9]/g)||[]).length}
 function nrm(s){return String(s).replace(/\s+/g,'').toLowerCase()}
-function classifyAuto(qid){const vals=SCHOOLS.map(s=>{const a=getAns(s.id,qid);return a?a.v:null}).filter(Boolean);const n=vals.length;if(!n)return 'empty';if(vals.filter(v=>v.indexOf('@')>=0).length/n>=.5||vals.filter(v=>dcount(v)>=9&&(v.indexOf('-')>=0||v.replace(/[0-9\-()\s]/g,'').length<=2)).length/n>=.5)return 'contact';const nr=vals.filter(v=>pnum(v)!=null).length/n,avg=vals.reduce((a,v)=>a+v.length,0)/n,dr=new Set(vals.map(nrm)).size/n;if(nr>=.7&&dr>=.7&&avg<=6)return 'numeric';if(dr>=.9&&avg<=8)return 'list';if(dr<=.7)return 'categorical';return 'text'}
+function classifyAuto(qid){const vals=targetSchools(qid).map(s=>{const a=getAns(s.id,qid);return a?a.v:null}).filter(Boolean);const n=vals.length;if(!n)return 'empty';if(vals.filter(v=>v.indexOf('@')>=0).length/n>=.5||vals.filter(v=>dcount(v)>=9&&(v.indexOf('-')>=0||v.replace(/[0-9\-()\s]/g,'').length<=2)).length/n>=.5)return 'contact';const nr=vals.filter(v=>pnum(v)!=null).length/n,avg=vals.reduce((a,v)=>a+v.length,0)/n,dr=new Set(vals.map(nrm)).size/n;if(nr>=.7&&dr>=.7&&avg<=6)return 'numeric';if(dr>=.9&&avg<=8)return 'list';if(dr<=.7)return 'categorical';return 'text'}
 function qType(qid){const q=ST.questions.find(x=>x.id===qid);if(q&&q.type&&TYPE_KEY[q.type])return TYPE_KEY[q.type];return classifyAuto(qid)}
-function otherValues(qid,exceptSid){const seen=[];const out=[];SCHOOLS.forEach(s=>{if(s.id===exceptSid)return;const a=getAns(s.id,qid);if(a&&a.v){const k=nrm(a.v);if(!seen.includes(k)){seen.push(k);out.push(a.v)}}});return out}
+function otherValues(qid,exceptSid){const seen=[];const out=[];targetSchools(qid).forEach(s=>{if(s.id===exceptSid)return;const a=getAns(s.id,qid);if(a&&a.v){const k=nrm(a.v);if(!seen.includes(k)){seen.push(k);out.push(a.v)}}});return out}
 function analyzeQ(qid){
-  const ent=SCHOOLS.map(s=>{const a=getAns(s.id,qid);return a?{id:s.id,short:s.short,name:s.name,v:a.v,note:a.note}:null}).filter(Boolean);
+  const ent=targetSchools(qid).map(s=>{const a=getAns(s.id,qid);return a?{id:s.id,short:s.short,name:s.name,v:a.v,note:a.note}:null}).filter(Boolean);
   const type=qType(qid);const un=unanswered(qid);let groups=[],numeric=null;
   if(type==='numeric'){
     const isPct=isPercentQ(qid);
@@ -401,6 +500,8 @@ function renderShell(){
   document.getElementById('pvbanner').outerHTML=(USE_API||HASSTORE)?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
   const ys=document.getElementById('yearSel');ys.innerHTML=YEARS.map(y=>`<option value="${y.id}" ${y.id===ST.year?'selected':''}>${y.label}</option>`).join('');
   ys.onchange=async e=>{ST.year=e.target.value;navReset();ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render()};
+  const mb=document.getElementById('modeBtn');
+  if(mb){mb.className='modebtn'+(canEdit()?' on':'');mb.innerHTML=canEdit()?(I.edit+' 編集モード'):(I.bell+' 閲覧モード');mb.title=canEdit()?'編集モード — タップで閲覧モードに戻ります':'タップすると編集モードに切り替えできます';}
   const nav=[['home','ホーム',I.home],['search','質問をさがす',I.search],['table','回答テーブル',I.table],['add','質問を追加',I.plus]];
   document.getElementById('nav').innerHTML=nav.map(([v,l,ic])=>`<button class="navbtn ${ST.view===v||(v==='search'&&ST.view==='detail')?'on':''}" onclick="go('${v}')">${ic}${l}</button>`).join('');
 }
@@ -463,17 +564,17 @@ function viewError(){
 }
 function viewLoading(){return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:20px"><div style="position:relative;width:56px;height:56px"><div style="position:absolute;inset:0;border-radius:50%;border:4px solid var(--amber-soft)"></div><div style="position:absolute;inset:0;border-radius:50%;border:4px solid transparent;border-top-color:var(--amber);animation:sp .8s linear infinite"></div></div><div style="font-family:\'Zen Maru Gothic\';font-size:16px;color:var(--ink2);font-weight:500">最新情報を取得しています...</div><div style="font-size:13px;color:var(--ink3)">スプレッドシートからデータを読み込み中</div></div>';}
 function viewHome(){
-  const tq=ST.questions.length;const fills=SCHOOLS.map(s=>schoolCount(s.id));const totalAns=fills.reduce((a,b)=>a+b,0);const maxA=tq*SCHOOLS.length;const rate=maxA?Math.round(totalAns*100/maxA):0;
+  const tq=ST.questions.length;const fills=SCHOOLS.map(s=>schoolCount(s.id));const totalAns=fills.reduce((a,b)=>a+b,0);const maxA=SCHOOLS.reduce((a,s)=>a+schoolQuestions(s.id).length,0);const rate=maxA?Math.round(totalAns*100/maxA):0;
   const recent=[...ST.questions].sort((a,b)=>b.createdAt-a.createdAt).slice(0,3);const NEW=Date.now()-7*864e5;
-  const need=ST.questions.map(q=>({q,u:unanswered(q.id).length})).filter(x=>x.u>0&&x.u<SCHOOLS.length).sort((a,b)=>b.u-a.u).slice(0,4);
+  const need=ST.questions.map(q=>({q,u:unanswered(q.id).length,n:targetSchools(q.id).length})).filter(x=>x.u>0&&x.u<x.n).sort((a,b)=>b.u-a.u).slice(0,4);
   const todo=ST.questions.filter(q=>ansCount(q.id)===0).length;const blocks=[...new Set(SCHOOLS.map(s=>s.block))];
   return `<div class="hero"><h2 style="margin-bottom:8px">${YEARS.find(y=>y.id===ST.year).label} の回答状況</h2><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><span class="syncpill ${USE_API?'':'syncoff'}"><span class="syncdot"></span>${USE_API?'みんなで共有中':'プレビュー（保存なし）'}</span>${USE_API?`<button class="btn sm" onclick="reloadData()">${I.spark} 最新を取得</button><button class="btn sm" onclick="showDiag()" title="GAS接続診断" style="padding:5px 9px">🔍</button>`:''}</div><p class="muted tiny">学校カードを選ぶと、自校の概要・他校との違い・回答ができます。</p>
     <div class="statgrid"><div class="stat"><b>${SCHOOLS.length}</b><span>参加校</span></div><div class="stat"><b>${tq}</b><span>質問項目</span></div><div class="stat"><b>${CATEGORIES.length}</b><span>カテゴリ</span></div><div class="stat"><b>${rate}%</b><span>全体回答率</span></div><div class="stat"><b>${todo}</b><span>未着手</span></div></div></div>
     <div class="card"><div class="sec-h"><span class="ic">${I.home}</span>学校を選ぶ（自校の概要・他校との違い）</div>
-    ${blocks.map(b=>`<div class="blockh">${esc(b)}</div><div class="schoolgrid">${SCHOOLS.filter(s=>s.block===b).map(s=>{const f=schoolCount(s.id);const pc=tq?Math.round(f*100/tq):0;const un=tq-f;return `<div class="scard" onclick="openSchool('${s.id}')"><span class="goarrow">${I.back}</span><div class="nm">${esc(s.name)}</div><div class="pc">${pc}%</div><div class="pbar" style="margin-top:6px"><i style="width:${pc}%"></i></div><div class="ct">${un>0?`未回答 ${un}項目 →`:'全項目回答済み ✓'}</div></div>`}).join('')}</div>`).join('')}</div>
+    ${blocks.map(b=>`<div class="blockh">${esc(b)}</div><div class="schoolgrid">${SCHOOLS.filter(s=>s.block===b).map(s=>{const f=schoolCount(s.id);const tqs=schoolQuestions(s.id).length;const pc=tqs?Math.round(f*100/tqs):0;const un=tqs-f;return `<div class="scard" onclick="openSchool('${s.id}')"><span class="goarrow">${I.back}</span><div class="nm">${esc(s.name)}</div><div class="pc">${pc}%</div><div class="pbar" style="margin-top:6px"><i style="width:${pc}%"></i></div><div class="ct">${un>0?`未回答 ${un}項目 →`:'全項目回答済み ✓'}</div></div>`}).join('')}</div>`).join('')}</div>
     <div style="height:16px"></div>
     <div class="grid2"><div class="card"><div class="sec-h"><span class="ic">${I.spark}</span>最近追加された質問</div>
-      ${recent.map(q=>`<div class="qmini" onclick="openQ('${q.id}')"><span class="qm-cat">${esc(q.category)}</span><span class="qm-t">${esc(q.text)}</span>${q.createdAt>NEW?'<span class="badge">NEW</span>':''}<span class="ans-pill ${ansCount(q.id)===SCHOOLS.length?'full':ansCount(q.id)===0?'none':'some'}">${ansCount(q.id)}/${SCHOOLS.length}</span></div>`).join('')||'<p class="empty-note">まだ質問がありません</p>'}
+      ${recent.map(q=>`<div class="qmini" onclick="openQ('${q.id}')"><span class="qm-cat">${esc(q.category)}</span><span class="qm-t">${esc(q.text)}</span>${q.createdAt>NEW?'<span class="badge">NEW</span>':''}<span class="ans-pill ${ansCount(q.id)===targetSchools(q.id).length?'full':ansCount(q.id)===0?'none':'some'}">${ansCount(q.id)}/${targetSchools(q.id).length}</span></div>`).join('')||'<p class="empty-note">まだ質問がありません</p>'}
       <div style="margin-top:12px"><button class="btn sm" onclick="go('add')">${I.plus} 新しい質問を追加</button></div></div>
     <div class="card"><div class="sec-h"><span class="ic">${I.bell}</span>回答をお願いします</div>
       ${need.length?need.map(({q,u})=>`<div class="qmini" onclick="openQ('${q.id}')"><span class="qm-cat">${esc(q.category)}</span><span class="qm-t">${esc(q.text)}</span><span class="ans-pill some">未回答 ${u}校</span></div>`).join(''):'<p class="empty-note">未回答の項目はありません 🎉</p>'}</div></div>`;
@@ -489,8 +590,9 @@ function fmtMan(n){return n>=10000?(n/10000).toLocaleString(undefined,{maximumFr
 function schoolDiffs(sid){
   const out=[];
   ST.questions.forEach(q=>{
+    if(!isTargetSchool(sid,q.id))return;
     const a=getAns(sid,q.id);if(!a)return;
-    const ent=SCHOOLS.map(s=>({s,a:getAns(s.id,q.id)})).filter(x=>x.a);
+    const ent=targetSchools(q.id).map(s=>({s,a:getAns(s.id,q.id)})).filter(x=>x.a);
     if(ent.length<4)return;
     const choice=isChoice(q.id),t=qType(q.id);
     if(choice||t==='categorical'){
@@ -534,14 +636,15 @@ function diffCardHTML(d){
 function viewSchool(){
   const sid=ST.school,sc=SCHOOLS.find(s=>s.id===sid);
   if(!sc)return '<p class="empty-note">学校が見つかりません</p>';
-  const tq=ST.questions.length,f=schoolCount(sid),pc=tq?Math.round(f*100/tq):0,un=schoolUnanswered(sid);
+  const myQs=schoolQuestions(sid);
+  const tq=myQs.length,f=schoolCount(sid),pc=tq?Math.round(f*100/tq):0,un=schoolUnanswered(sid);
   const KEY=['q006','q007','q009','q031','q048','q057','q066','q081'];
   const tiles=KEY.map(qid=>{const q=ST.questions.find(x=>x.id===qid);if(!q)return '';const a=getAns(sid,qid);if(!a)return '';const lab=q.text.length>8?q.text.slice(0,8):q.text;const val=a.v.length>10?a.v.slice(0,10)+'…':a.v;return `<div class="stat" style="cursor:pointer" onclick="openQ('${qid}','${sid}')"><b style="font-size:15px">${esc(val)}</b><span>${esc(lab)}</span></div>`}).filter(Boolean).join('');
   const diffs=schoolDiffs(sid);
-  const cs=cats();
+  const cs=cats().filter(c=>myQs.some(q=>q.category===c));
   // カード型回答一覧：上に質問ラベル（色付き）、下に回答、タップで編集
   const catBlocks=cs.map(c=>{
-    const qs=ST.questions.filter(q=>q.category===c);
+    const qs=myQs.filter(q=>q.category===c);
     if(!qs.length)return '';
     const cards=qs.map(q=>{
       const a=getAns(sid,q.id);
@@ -564,18 +667,18 @@ function viewSchool(){
       const carried=a&&a.carried;
       return `<div class="sc-card${carried?' sc-carried':''}" id="sc-card-${q.id}">
         <div class="sc-qlabel" style="background:${catCol};cursor:pointer" onclick="openQ('${q.id}','${sid}')" title="全校の回答を見る">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}<span style="float:right;font-size:10px;opacity:.75;font-weight:400;margin-left:4px">全校▶</span></div>
-        <div class="sc-ans ${a?'':'sc-empty'}" onclick="startSchoolEdit('${q.id}')">${a?esc(a.v)+(a.note?`<span class="notebadge">備考: ${esc(a.note)}</span>`:''):'— 未回答　タップして入力'}</div>
-        ${carried?`<div class="sc-carry-bar"><span class="sc-carry-badge">前年度のまま・更新待ち</span><button class="sc-carry-btn" onclick="confirmCarry(event,'${sid}','${q.id}')">${I.check} 今年度も同じ</button></div>`:''}
+        <div class="sc-ans ${a?'':'sc-empty'}" onclick="startSchoolEdit('${q.id}')">${a?esc(a.v)+(a.note?`<span class="notebadge">備考: ${esc(a.note)}</span>`:''):(canEdit()?'— 未回答　タップして入力':'— 未回答')}</div>
+        ${carried&&canEdit()?`<div class="sc-carry-bar"><span class="sc-carry-badge">前年度のまま・更新待ち</span><button class="sc-carry-btn" onclick="confirmCarry(event,'${sid}','${q.id}')">${I.check} 今年度も同じ</button></div>`:''}
       </div>`;
     }).join('');
     const todoN=qs.filter(q=>!getConfirmedAns(sid,q.id)).length;
     const cbMode=todoN?'todo':'all';
     const cbLab=todoN?('未回答'+todoN+'問をまとめて回答'):'このカテゴリを見直す';
-    return `<div class="blockh">${esc(c)}<button class="cat-flow-btn" onclick="startFlow('${sid}','${esc(jsq(c))}','${cbMode}')">${I.edit} ${cbLab}</button></div><div class="sc-grid">${cards}</div>`;
+    return `<div class="blockh">${esc(c)}${canEdit()?`<button class="cat-flow-btn" onclick="startFlow('${sid}','${esc(jsq(c))}','${cbMode}')">${I.edit} ${cbLab}</button>`:''}</div><div class="sc-grid">${cards}</div>`;
   }).filter(Boolean).join('');
   return `<button class="back" onclick="navBack('home')">${I.back} ${esc(navLabel('home'))}</button>
     <div class="hero"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><div class="tiny muted">${esc(sc.block)}・${esc(sc.type)}</div><h2>${esc(sc.name)}</h2></div><div class="stat" style="min-width:88px"><b>${pc}%</b><span>回答率（${f}/${tq}）</span></div></div>
-      ${un.length?`<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" onclick="startFlow('${sid}','__all__','todo')">${I.edit} 未回答 ${un.length}項目をまとめて回答</button><button class="btn" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで回答</button></div>`:`<div class="alert done" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="at">${I.check} 全${tq}項目に回答済みです</div><button class="btn sm" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで見直す</button></div>`}
+      ${!canEdit()?`<div style="margin-top:12px">${roNotice('回答を入力・修正するには編集モードに切り替えてください。')}</div>`:un.length?`<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" onclick="startFlow('${sid}','__all__','todo')">${I.edit} 未回答 ${un.length}項目をまとめて回答</button><button class="btn" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで回答</button></div>`:`<div class="alert done" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="at">${I.check} 全${tq}項目に回答済みです</div><button class="btn sm" onclick="openFlowPicker('${sid}')">${I.group} カテゴリを選んで見直す</button></div>`}
       ${tiles?`<div style="font-size:12px;color:var(--ink3);margin:14px 0 7px;font-family:'Zen Maru Gothic'">自校のプロフィール（タップで詳細）</div><div class="statgrid">${tiles}</div>`:''}</div>
     <div class="card"><div class="sec-h"><span class="ic">${I.spark}</span>他校と違うところ${diffs.length?` <span class="badge" style="margin-left:4px">${diffs.length}</span>`:''}</div>
       <p class="muted tiny" style="margin-bottom:12px">回答が4校以上ある項目で、自校が多数派と異なる点・数値が突出している点を表示します。カードをタップすると全校の比較が見られます。</p>
@@ -584,7 +687,7 @@ function viewSchool(){
     <div class="card"><div class="sec-h"><span class="ic">${I.table}</span>自校の回答一覧 <span class="tiny muted" style="font-family:'Noto Sans JP';font-weight:400;margin-left:4px">タップで回答・編集</span></div>${catBlocks||'<p class="empty-note">まだ回答がありません。上の「まとめて回答」から入力できます。</p>'}</div>`;
 }
 /* ---- FLOW ---- */
-function openFlowPicker(sid){navPush();ST.flowPick=sid;ST.view='flowpick';ST.flow=null;render()}
+function openFlowPicker(sid){if(!requireEdit())return;navPush();ST.flowPick=sid;ST.view='flowpick';ST.flow=null;render()}
 function openFlowPickerFromFlow(){
   const sid=ST.flow&&ST.flow.sid;
   if(!sid){navBack('home');return}
@@ -593,8 +696,9 @@ function openFlowPickerFromFlow(){
   else{ST.flow=null;ST.flowPick=sid;ST.view='flowpick';render()}
 }
 function setFlowMode(m){const y=window.scrollY||0;ST.flowMode=m;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
-function flowQs(sid,cat,mode){return ST.questions.filter(q=>(cat==='__all__'||q.category===cat)&&(mode==='all'||!getConfirmedAns(sid,q.id)))}
+function flowQs(sid,cat,mode){return ST.questions.filter(q=>isTargetSchool(sid,q.id)&&(cat==='__all__'||q.category===cat)&&(mode==='all'||!getConfirmedAns(sid,q.id)))}
 function startFlow(sid,cat,mode){
+  if(!requireEdit())return;
   cat=cat||'__all__';mode=mode||ST.flowMode||'todo';
   const qs=flowQs(sid,cat,mode);
   if(!qs.length){toast(mode==='all'?'このカテゴリには質問がありません':'この範囲はすべて回答済みです 🎉');return}
@@ -604,11 +708,12 @@ function startFlow(sid,cat,mode){
 function viewFlowPick(){
   const sid=ST.flowPick,sc=SCHOOLS.find(s=>s.id===sid);
   if(!sc)return '<p class="empty-note">学校が見つかりません</p>';
-  const mode=ST.flowMode,cs=cats();
-  const totalTodo=schoolUnanswered(sid).length,totalAll=ST.questions.length;
+  const mode=ST.flowMode,myQs=schoolQuestions(sid);
+  const cs=cats().filter(c=>myQs.some(q=>q.category===c));
+  const totalTodo=schoolUnanswered(sid).length,totalAll=myQs.length;
   const bigN=mode==='all'?totalAll:totalTodo;
   const cards=cs.map(c=>{
-    const qs=ST.questions.filter(q=>q.category===c);
+    const qs=myQs.filter(q=>q.category===c);
     if(!qs.length)return '';
     const todo=qs.filter(q=>!getConfirmedAns(sid,q.id)).length;
     const n=mode==='all'?qs.length:todo;
@@ -677,44 +782,44 @@ function viewSearch(){
 }
 function setFilter(kind,val){const y=window.scrollY||0;if(kind==='cat')ST.s_cat=val;else if(kind==='status')ST.s_status=val;else if(kind==='sort')ST.s_sort=val;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 function searchList(){
-  let list=ST.questions.map(q=>{const a=ansCount(q.id);return {q,a,u:SCHOOLS.length-a}});const kw=ST.s_text.trim().toLowerCase();
+  let list=ST.questions.map(q=>{const a=ansCount(q.id),n=targetSchools(q.id).length;return {q,a,n,u:n-a}});const kw=ST.s_text.trim().toLowerCase();
   if(kw)list=list.filter(x=>x.q.text.toLowerCase().includes(kw)||x.q.category.toLowerCase().includes(kw));
   if(ST.s_cat!=='all')list=list.filter(x=>x.q.category===ST.s_cat);
-  if(ST.s_status==='todo')list=list.filter(x=>x.a>0&&x.a<SCHOOLS.length);else if(ST.s_status==='done')list=list.filter(x=>x.a===SCHOOLS.length);else if(ST.s_status==='empty')list=list.filter(x=>x.a===0);
+  if(ST.s_status==='todo')list=list.filter(x=>x.a>0&&x.a<x.n);else if(ST.s_status==='done')list=list.filter(x=>x.a===x.n);else if(ST.s_status==='empty')list=list.filter(x=>x.a===0);
   if(ST.s_sort==='todo')list.sort((a,b)=>b.u-a.u);else if(ST.s_sort==='new')list.sort((a,b)=>b.q.createdAt-a.q.createdAt);
   return list;
 }
 function renderRows(list){
   if(!list.length)return '<p class="empty-note">条件に合う質問が見つかりませんでした。</p>';
-  return list.map(({q,a,u})=>{const cls=a===SCHOOLS.length?'full':a===0?'none':'some';const t=qType(q.id);const w=Math.round(a*100/SCHOOLS.length);
-    return `<div class="qrow" onclick="openQ('${q.id}')"><div class="qbody"><div class="qt">${esc(q.text)}</div><div class="qsub"><span class="qcat">${esc(q.category)}</span>${t!=='empty'?`<span class="typetag" style="background:${TYPECOL[t]}">${TYPELABEL[t]}</span>`:''}<div class="mbar"><i style="width:${w}%;background:var(--teal)"></i><i style="width:${100-w}%;background:#e4ded2"></i></div></div></div><div style="text-align:right;white-space:nowrap"><span class="ans-pill ${cls}">${a}/${SCHOOLS.length}</span>${u>0?`<div class="tiny muted" style="margin-top:3px">未回答 ${u}校</div>`:`<div class="tiny" style="color:var(--teal-d);margin-top:3px">${I.check} 完了</div>`}</div></div>`}).join('');
+  return list.map(({q,a,u,n})=>{const cls=a===n?'full':a===0?'none':'some';const t=qType(q.id);const w=n?Math.round(a*100/n):0;const tg=qTarget(q.id);
+    return `<div class="qrow" onclick="openQ('${q.id}')"><div class="qbody"><div class="qt">${esc(q.text)}</div><div class="qsub"><span class="qcat">${esc(q.category)}</span>${(tg.sho&&tg.chu)?'':`<span class="typetag" style="background:var(--navy2)">${esc(targetLabel(q.id))}</span>`}${t!=='empty'?`<span class="typetag" style="background:${TYPECOL[t]}">${TYPELABEL[t]}</span>`:''}<div class="mbar"><i style="width:${w}%;background:var(--teal)"></i><i style="width:${100-w}%;background:#e4ded2"></i></div></div></div><div style="text-align:right;white-space:nowrap"><span class="ans-pill ${cls}">${a}/${n}</span>${u>0?`<div class="tiny muted" style="margin-top:3px">未回答 ${u}校</div>`:`<div class="tiny" style="color:var(--teal-d);margin-top:3px">${I.check} 完了</div>`}</div></div>`}).join('');
 }
 function rerenderSearch(){const l=searchList();const el=document.getElementById('searchList');if(el)el.innerHTML=renderRows(l);const c=document.getElementById('scount');if(c)c.textContent=l.length+'件の質問';}
 /* ---- DETAIL ---- */
 function viewDetail(){
   const q=ST.questions.find(x=>x.id===ST.q);if(!q)return '<p class="empty-note">質問が見つかりません</p>';
   const an=analyzeQ(q.id);const un=an.un;
-  const alert=un.length?`<div class="alert"><div class="at">${I.bell} 未回答の学校が ${un.length}校 あります</div><p class="tiny muted" style="margin-bottom:9px">学校名をタップするとその場で回答できます。</p><div class="chips">${un.map(s=>`<span class="chip warn" onclick="startEdit('${s.id}')">${esc(s.short)} に回答 ＋</span>`).join('')}</div></div>`:`<div class="alert done"><div class="at">${I.check} 全校から回答が集まっています</div></div>`;
+  const alert=un.length?`<div class="alert"><div class="at">${I.bell} 未回答の学校が ${un.length}校 あります（対象 ${targetSchools(q.id).length}校）</div>${canEdit()?'<p class="tiny muted" style="margin-bottom:9px">学校名をタップするとその場で回答できます。</p>':''}<div class="chips">${un.map(s=>`<span class="chip warn" onclick="startEdit('${s.id}')">${esc(s.short)} に回答 ＋</span>`).join('')}</div></div>`:`<div class="alert done"><div class="at">${I.check} 全校から回答が集まっています</div></div>`;
   const addby=q.addedSchool?`<div class="addby">${esc(q.addedSchool)}${q.addedName?'・'+esc(q.addedName):''} さんが追加</div>`:'';
   const bfb=ST.fromSchool?('school:'+ST.fromSchool):'search';
   const backBtn=`<button class="back" onclick="navBack('${bfb}')">${I.back} ${esc(navLabel(bfb))}</button>`;
   return `${backBtn}
     <div class="det-h"><span class="c">${esc(q.category)}</span><span class="c" style="background:${TYPECOL[an.type]};color:#fff">${TYPELABEL[an.type]}</span><h2>${esc(q.text)}</h2>${addby}</div>
-    ${hintHTML(q.id)}${alert}<div class="card">${renderViz(q,an)}</div>
+    ${targetNoteHTML(q.id)}${hintHTML(q.id)}${alert}<div class="card">${renderViz(q,an)}</div>
     ${renderEdit(q)}`;
 }
 function distHTML(groups,unN){const N=SCHOOLS.length;return `<div class="distwrap"><div class="distbar">${groups.map((g,i)=>`<div class="distseg" style="width:${g.n/N*100}%;background:${GCOL[i%GCOL.length]}" title="${g.n}校">${g.n/N>=.1?g.n:''}</div>`).join('')}${unN?`<div class="distseg un" style="width:${unN/N*100}%">${unN/N>=.1?unN:''}</div>`:''}</div><div class="distleg">${groups.map((g,i)=>`<span class="legi"><span class="legd" style="background:${GCOL[i%GCOL.length]}"></span>${esc(g.label.length>16?g.label.slice(0,16)+'…':g.label)}（${g.n}）</span>`).join('')}${unN?`<span class="legi"><span class="legd" style="background:#e4ded2"></span>未回答（${unN}）</span>`:''}</div></div>`}
 function memNotesHTML(members){const wn=members.filter(m=>m.note);return wn.length?`<div class="memnotes">${wn.map(m=>`<div class="memnote"><b>${esc(m.short)}</b>：${esc(m.note)}</div>`).join('')}</div>`:''}
 function renderViz(q,an){
   if(isChoice(q.id))return renderChoiceViz(q,an);
-  if(an.type==='empty')return `<div class="sec-h"><span class="ic">${I.chart}</span>回答状況</div><p class="muted tiny">まだ回答がありません。下の「回答を更新する」から記入できます。</p>`;
+  if(an.type==='empty')return `<div class="sec-h"><span class="ic">${I.chart}</span>回答状況</div><p class="muted tiny">まだ回答がありません。${canEdit()?'下の「回答を更新する」から記入できます。':'記入するには編集モードに切り替えてください。'}</p>${offGroupHTML(q.id)}`;
   if(an.type==='numeric'){
     const isPct=an.isPct;
     const nums=an.numeric.map(e=>e.num);
     if(!nums.length){
       // 数値が1つもない（全部テキスト）場合
       const txt=(an.textOnly||an.ent).map(e=>`<div class="numrow"><div class="numlab" onclick="startEdit('${e.id}')">${esc(e.short)}</div><div class="numval" style="text-align:left;flex:1">${esc(e.v)}${noteBadge(e)}</div></div>`).join('');
-      return `<div class="sec-h"><span class="ic">${I.chart}</span>各校の回答${q.unit?`（単位：${esc(q.unit)}）`:''}</div>${txt}${an.un.length?unGroup(an.un):''}`;
+      return `<div class="sec-h"><span class="ic">${I.chart}</span>各校の回答${q.unit?`（単位：${esc(q.unit)}）`:''}</div>${txt}${unGroup(an.un,q.id)}`;
     }
     const max=isPct?100:an.numeric[0].num;
     const avg=nums.reduce((a,b)=>a+b,0)/nums.length;
@@ -724,25 +829,29 @@ function renderViz(q,an){
     const txtRows=(isPct&&an.textOnly&&an.textOnly.length)?an.textOnly.map(e=>`<div class="numrow"><div class="numlab" onclick="startEdit('${e.id}')">${esc(e.short)}</div><div class="numval" style="text-align:left;flex:1;color:var(--ink3)">${esc(e.v)||'不明'}${e.note?` <span class="notebadge">備考: ${esc(e.note)}</span>`:''}</div></div>`).join(''):'';
     const statLabel=isPct?{min:'最低',avg:'平均',max:'最高'}:{min:'最小',avg:'平均',max:'最大'};
     return `<div class="sec-h"><span class="ic">${I.chart}</span>各校の比較${q.unit?`（単位：${esc(q.unit)}）`:''}</div>${numRows}${txtRows?`<div style="margin-top:6px;padding-top:8px;border-top:1px dashed var(--line)"><div class="tiny muted" style="margin-bottom:4px">数値以外の回答</div>${txtRows}</div>`:''}<div class="numstats"><div>${statLabel.min}<b>${fmt(Math.min(...nums))}</b></div><div>${statLabel.avg}<b>${fmt(isPct?Math.round(avg*10)/10:Math.round(avg))}</b></div><div>${statLabel.max}<b>${fmt(Math.max(...nums))}</b></div>${an.un.length?`<div>未回答<b>${an.un.length}校</b></div>`:''}</div>`;}
-  if(an.type==='list'||an.type==='contact'){const mono=an.type==='contact'?'mono':'';return `<div class="sec-h"><span class="ic">${I.table}</span>各校の回答</div><div class="listgrid">${SCHOOLS.map(s=>{const a=getAns(s.id,q.id);return `<div class="listrow"><span class="ls" onclick="startEdit('${s.id}')">${esc(s.short)}</span><span class="lv ${mono} ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</span></div>`}).join('')}</div>`;}
+  if(an.type==='list'||an.type==='contact'){const mono=an.type==='contact'?'mono':'';return `<div class="sec-h"><span class="ic">${I.table}</span>各校の回答</div><div class="listgrid">${SCHOOLS.map(s=>{const on=isTargetSchool(s.id,q.id);const a=on?getAns(s.id,q.id):null;return `<div class="listrow${on?'':' offrow'}"><span class="ls"${on?` onclick="startEdit('${s.id}')"`:''}>${esc(s.short)}</span><span class="lv ${mono} ${a?'':'empty'}">${on?(a?esc(a.v)+noteBadge(a):'— 未回答'):'— 対象外'}</span></div>`}).join('')}</div>`;}
   if(an.type==='categorical'){
     const groups=an.groups.map(g=>({label:g.label,n:g.members.length,members:g.members}));
     const cards=groups.map((g,i)=>{const col=GCOL[i%GCOL.length];const top=i===0&&g.n>1;return `<div class="gcard" style="border-left-color:${col}"><div class="gcard-h"><span class="gdot" style="background:${col}"></span><span class="glabel">${esc(g.label)}</span>${top?'<span class="gtag">最多</span>':''}<span class="gcount">${g.n}校</span></div><div class="gchips">${g.members.map(m=>`<span class="gch" onclick="startEdit('${m.id}')">${esc(m.short)}</span>`).join('')}</div>${memNotesHTML(g.members)}</div>`}).join('');
-    return `<div class="sec-h"><span class="ic">${I.chart}</span>回答の分布（選択式）</div>${distHTML(groups,an.un.length)}<div class="sec-h" style="margin-top:18px"><span class="ic">${I.group}</span>選択肢ごとのグループ</div>${cards}${an.un.length?unGroup(an.un):''}`;
+    return `<div class="sec-h"><span class="ic">${I.chart}</span>回答の分布（選択式）</div>${distHTML(groups,an.un.length)}<div class="sec-h" style="margin-top:18px"><span class="ic">${I.group}</span>選択肢ごとのグループ</div>${cards}${unGroup(an.un,q.id)}`;
   }
   const list=an.ent.map(e=>`<div class="gmem"><span class="gms" onclick="startEdit('${e.id}')">${esc(e.short)}</span><span class="gmv">${esc(e.v)}${noteBadge(e)}</span></div>`).join('');
   return `<div class="sec-h"><span class="ic">${I.group}</span>各校の回答（${an.ent.length}校）</div>
-    <div class="card" style="border:none;padding:0">${list}</div>${an.un.length?'<div style="margin-top:10px">'+unGroup(an.un)+'</div>':''}`;
+    <div class="card" style="border:none;padding:0">${list}</div><div style="margin-top:10px">${unGroup(an.un,q.id)}</div>`;
 }
-function unGroup(un){return `<div class="gcard" style="border-left-color:#cbc4b5"><div class="gcard-h"><span class="gdot" style="background:#cbc4b5"></span><span class="glabel" style="color:var(--ink3)">未回答</span><span class="gcount">${un.length}校</span></div><div class="gchips">${un.map(s=>`<span class="gch" onclick="startEdit('${s.id}')">${esc(s.short)} ＋</span>`).join('')}</div></div>`}
+function unGroup(un,qid){return (qid?offGroupHTML(qid):'')+((un&&un.length)? `<div class="gcard" style="border-left-color:#cbc4b5"><div class="gcard-h"><span class="gdot" style="background:#cbc4b5"></span><span class="glabel" style="color:var(--ink3)">未回答</span><span class="gcount">${un.length}校</span></div><div class="gchips">${un.map(s=>`<span class="gch" onclick="startEdit('${s.id}')">${esc(s.short)} ＋</span>`).join('')}</div></div>` : '')}
 function matchShort(sh){const f=SCHOOLS.find(s=>sh.includes(s.short)||s.short.includes(sh)||sh.includes(s.name));return f?f.id:null}
 function renderEdit(q){
-  const rows=SCHOOLS.map(s=>{const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${isChoice(q.id)?renderSel(s.id,q.id,a?a.v:''):`<textarea class="tx" id="ed-${s.id}" rows="2" placeholder="${esc(s.name)}の回答...">${esc(a?a.v:'')}</textarea>`}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
+  const rows=SCHOOLS.map(s=>{
+    if(!isTargetSchool(s.id,q.id))return `<div class="arow offrow"><div class="an">${esc(s.short)}</div><div class="av">— 対象外（${esc(targetLabel(q.id))}）</div><div class="aedit"></div></div>`;
+    const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${isChoice(q.id)?renderSel(s.id,q.id,a?a.v:''):`<textarea class="tx" id="ed-${s.id}" rows="2" placeholder="${esc(s.name)}の回答...">${esc(a?a.v:'')}</textarea>`}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
+  if(!canEdit())return `<div class="editsec">${roNotice('回答を入力・修正するには編集モードに切り替えてください。')}</div>`;
   return `<div class="editsec"><button class="btn edit-toggle" onclick="toggleShowEdit()"><span>${I.edit} 回答を更新する</span><span>${I.down}</span></button>${ST.showEdit?`<div class="card" style="margin-top:10px">${rows}</div>`:''}</div>`;
 }
-function startEdit(sid){const y=window.scrollY||0;ST.showEdit=true;ST.editing=sid;render({keepScroll:true});setTimeout(()=>{const el=document.getElementById('ed-'+sid);if(el)el.focus();else window.scrollTo(0,y)},20)}
+function startEdit(sid){
+  if(!requireEdit())return;const y=window.scrollY||0;ST.showEdit=true;ST.editing=sid;render({keepScroll:true});setTimeout(()=>{const el=document.getElementById('ed-'+sid);if(el)el.focus();else window.scrollTo(0,y)},20)}
 function cancelEdit(){const y=window.scrollY||0;ST.editing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
-function toggleShowEdit(){const y=window.scrollY||0;ST.showEdit=!ST.showEdit;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
+function toggleShowEdit(){if(!ST.showEdit&&!requireEdit())return;const y=window.scrollY||0;ST.showEdit=!ST.showEdit;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 async function saveEdit(sid){
   const y=window.scrollY||0;
   const v=isChoice(ST.q)?(readSel(sid)||''):((document.getElementById('ed-'+sid)||{}).value||'');
@@ -757,6 +866,7 @@ async function saveEdit(sid){
 function viewTable(){
   const rows=[];
   ST.questions.forEach(q=>SCHOOLS.forEach(s=>{
+    if(!isTargetSchool(s.id,q.id))return;
     const a=getAns(s.id,q.id);
     if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))
       rows.push({short:s.short,cat:q.category,q:q.text,v:a.v,note:a.note,t:a.t,
@@ -769,15 +879,20 @@ function viewTable(){
     <p class="muted tiny" style="margin-bottom:12px">各校が回答・更新するたびに1行ずつ記録されます（${ST.year}年度・${rows.length}件、カテゴリ→質問→学校順）。</p>
     <div style="overflow-x:auto"><table class="ttable"><thead><tr><th>学校</th><th>カテゴリ</th><th>質問</th><th>回答</th><th>備考</th><th>更新</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap;font-weight:500">${esc(r.short)}</td><td class="tc" style="white-space:nowrap">${esc(r.cat)}</td><td style="min-width:120px">${esc(r.q)}</td><td style="min-width:150px">${esc(r.v)}</td><td class="tc" style="min-width:90px">${esc(r.note||'')}</td><td class="tc" style="white-space:nowrap">${fmtDate(r.t)}</td></tr>`).join('')}</tbody></table></div>${rows.length?'':'<p class="empty-note">まだ回答がありません。</p>'}`;
 }
-function exportCSV(){const tmp=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))tmp.push({c:CATEGORIES.indexOf(q.category)<0?999:CATEGORIES.indexOf(q.category),q:parseInt(q.id.slice(1))||0,s:parseInt(s.id.slice(1))||0,row:[ST.year,s.name,q.category,q.text,a.v,a.note||'',new Date(a.t).toLocaleString('ja-JP')]})}));tmp.sort((a,b)=>a.c!==b.c?a.c-b.c:a.q!==b.q?a.q-b.q:a.s-b.s);const rows=[['年度','学校','カテゴリ','質問','回答','備考','更新'],...tmp.map(x=>x.row)];const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
+function exportCSV(){const tmp=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{if(!isTargetSchool(s.id,q.id))return;const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))tmp.push({c:CATEGORIES.indexOf(q.category)<0?999:CATEGORIES.indexOf(q.category),q:parseInt(q.id.slice(1))||0,s:parseInt(s.id.slice(1))||0,row:[ST.year,s.name,q.category,q.text,a.v,a.note||'',new Date(a.t).toLocaleString('ja-JP')]})}));tmp.sort((a,b)=>a.c!==b.c?a.c-b.c:a.q!==b.q?a.q-b.q:a.s-b.s);const rows=[['年度','学校','カテゴリ','質問','回答','備考','更新'],...tmp.map(x=>x.row)];const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
 /* ---- ADD ---- */
-function viewAdd(){const cs=cats();return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div><p class="muted tiny" style="margin-bottom:16px">追加した質問は全校で共有されます。だれが追加したか記録され、トップにも表示されます。</p>
+function viewAdd(){const cs=cats();
+  if(!canEdit())return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div>${roNotice('質問を追加するには編集モードに切り替えてください。')}</div>`;
+  return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div><p class="muted tiny" style="margin-bottom:16px">追加した質問は全校で共有されます。だれが追加したか記録され、トップにも表示されます。</p>
   <label class="lb">カテゴリ</label><select class="tx" id="addCat" onchange="toggleNewCat()" style="margin-bottom:12px">${cs.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}<option value="__new__">＋ 新しいカテゴリを作る</option></select>
   <div id="newCatWrap" style="display:none;margin-bottom:12px"><label class="lb">新しいカテゴリ名</label><input class="tx" id="newCatName" placeholder="例：登下校・安全"></div>
   <label class="lb">回答の種類</label><select class="tx" id="addType" onchange="toggleAddType()" style="margin-bottom:12px"><option value="記述">記述（自由記述）</option><option value="選択式">選択式（ボタンで選ぶ・複数選択可）</option><option value="数値">数値</option><option value="一覧">一覧（氏名など）</option><option value="連絡先">連絡先</option></select>
   <div id="addOptsWrap" style="display:none;margin-bottom:12px"><label class="lb">選択肢（「 / 」で区切る）</label><input class="tx" id="addOpts" placeholder="例：あり / なし　または　口座引落し / 振込 / 現金徴収"><p class="selmulti-hint">「あり / なし」だけにすると“今年度の方針で択一”の質問になります。それ以外は複数選択になります。選択肢はスプレッドシートに保存され、後からシート上で自由に編集できます。</p></div>
   <div id="addUnitWrap" style="display:none;margin-bottom:12px"><label class="lb">単位（数値の場合）</label><input class="tx" id="addUnit" placeholder="例：万円 ／ 人 ／ 回 ／ ％ ／ 家庭"></div>
   <label class="lb">質問の内容</label><input class="tx" id="addText" placeholder="例：登校班の編成方法は？" style="margin-bottom:12px">
+  <label class="lb">回答してもらう学校</label>
+  <div class="tgpick"><label class="selopt on" id="lb-tg-sho"><input type="checkbox" id="addTgSho" checked onchange="tgToggle(this)">小学校</label><label class="selopt on" id="lb-tg-chu"><input type="checkbox" id="addTgChu" checked onchange="tgToggle(this)">中学校</label></div>
+  <p class="selmulti-hint" style="margin-bottom:12px">交野みらい学園は小中一貫校のため、小学校・中学校のどちらにチェックしても回答対象に含まれます。</p>
   <label class="lb">補足説明（任意・回答画面に表示されます）</label><textarea class="tx" id="addHint" rows="2" placeholder="例：今年度当初の在籍数を記入してください。小中一貫校は小学生・中学生を分けて書いてください。" style="margin-bottom:12px"></textarea>
   <label class="lb">回答例（任意・「 / 」で区切ると複数出せます）</label><input class="tx" id="addExample" placeholder="例：4〜10人 / 定めなし"><p class="selmulti-hint" style="margin-bottom:14px">回答例は回答画面にチップで並び、タップすると入力欄に入ります。選択式は選択肢ボタンがあるため表示されません。</p>
   <div class="frow" style="gap:10px"><div style="flex:1"><label class="lb">追加した学校</label><select class="tx" id="addSchool">${SCHOOLS.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')}</select></div><div style="flex:1"><label class="lb">お名前</label><input class="tx" id="addName" placeholder="例：田中"></div></div>
@@ -793,12 +908,14 @@ function readAddForm(){
   const unit=(type==='数値')?((document.getElementById('addUnit')||{}).value||'').trim():'';
   const hint=((document.getElementById('addHint')||{}).value||'').trim();
   const example=((document.getElementById('addExample')||{}).value||'').trim();
-  return {category:cat,text:text,type:type,unit:unit,options:options,hint:hint,example:example};
+  const target=readTarget();
+  if(!target){toast('小学校・中学校のどちらかにチェックを入れてください');return null}
+  return {category:cat,text:text,type:type,unit:unit,options:options,hint:hint,example:example,target:target};
 }
 function previewCardHTML(q){
   const exChips=isChoice(q.id)?'':splitOpts(q.example).map(v=>`<span class="cand ex">例：${esc(v)}</span>`).join('');
   return `<div class="flow-card">
-    <span class="flow-cat">${esc(q.category)}・${esc(q.type||'記述')}</span>
+    <span class="flow-cat">${esc(q.category)}・${esc(q.type||'記述')}</span><span class="flow-cat" style="margin-left:6px">${esc(targetLabel(q.id))}</span>
     <div class="flow-q">${esc(q.text)}</div>
     ${q.hint?`<div class="qhint"><span class="qhi">${I.bell}</span><span>${esc(q.hint)}</span></div>`:''}
     ${exChips?`<div class="candwrap"><div class="cand-h">前年度・回答例・他校の回答（タップで入力できます）</div><div class="cand-chips">${exChips}</div></div>`:''}
@@ -819,9 +936,17 @@ function previewAdd(){
   el.innerHTML=`<div class="previewbox"><div class="pvh">${I.search} 回答画面のプレビュー（実際の「まとめて回答」と同じ表示です・保存はされません）</div>${html}</div>`;
   setTimeout(()=>{try{el.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}},30);
 }
+function tgToggle(el){const l=el.closest('.selopt');if(l)l.classList.toggle('on',el.checked)}
+function readTarget(){
+  const sho=(document.getElementById('addTgSho')||{}).checked!==false;
+  const chu=(document.getElementById('addTgChu')||{}).checked!==false;
+  if(!sho&&!chu)return null;
+  return (sho&&chu)?'小 / 中':(sho?'小':'中');
+}
 function toggleNewCat(){document.getElementById('newCatWrap').style.display=document.getElementById('addCat').value==='__new__'?'block':'none'}
 function toggleAddType(){const t=document.getElementById('addType').value;const w=document.getElementById('addOptsWrap');if(w)w.style.display=(t==='選択式')?'block':'none';const u=document.getElementById('addUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
 async function addQuestion(){
+  if(!requireEdit())return;
   const f=readAddForm();if(!f)return;
   const addedSchool=document.getElementById('addSchool').value;const addedName=(document.getElementById('addName').value||'').trim();
   const id='q'+Date.now().toString(36);
@@ -832,7 +957,7 @@ async function addQuestion(){
       if(!(r&&r.ok)){toast('追加に失敗: '+((r&&r.error)||''));return}
       q.createdAt=r.createdAt||q.createdAt;ST.questions.push(q);
     }catch(e){toast('追加に失敗しました（通信エラー）');return}
-  }else{ST.questions.push(q);await sSet('questions',ST.questions);}
+  }else{ST.questions.push(q);ST.allQuestions.push(q);await sSet('questions',ST.allQuestions);}
   toast('質問を追加しました');openQ(id);
 }
 (async function(){
