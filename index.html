@@ -15,15 +15,31 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .logo .mk{width:26px;height:26px;border-radius:8px;background:var(--amber);display:flex;align-items:center;justify-content:center}
 .yearsel{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:5px 9px;font-size:13px;font-family:inherit;cursor:pointer}.yearsel option{color:#222}
 .nav{background:#27405e}.nav-in{max-width:920px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
-.navbtn{background:none;border:none;color:#cdd7e4;font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;padding:11px 14px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px}.navbtn:hover{color:#fff}.navbtn.on{color:#fff;border-bottom-color:var(--amber)}
+.navbtn{background:none;border:none;color:#cdd7e4;font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;padding:13px 15px;min-height:46px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px}.navbtn:hover{color:#fff}.navbtn.on{color:#fff;border-bottom-color:var(--amber)}
 .pvbanner{background:var(--amber-soft);color:var(--amber-d);font-size:12.5px;text-align:center;padding:6px 12px;border-bottom:1px solid #f0d9b5}
 .page{padding:22px 0 70px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
 .muted{color:var(--ink2)}.tiny{font-size:12px}
 .sec-h{font-family:"Zen Maru Gothic";font-weight:700;font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:8px}.sec-h .ic{color:var(--amber);display:flex}
-.btn{font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;border-radius:9px;padding:8px 15px;cursor:pointer;border:1px solid var(--line2);background:#fff;color:var(--ink);transition:.12s;display:inline-flex;align-items:center;gap:6px}.btn:hover{background:#faf7f0;border-color:var(--ink3)}
+/* 押せる要素はすべて：文字選択させない・タップ時の遅延と青いハイライトを消す・指で押せる高さを確保 */
+.btn,.back,.chip,.cand,.gch,.gms,.catpill,.seg button,.qrow,.scard,.qmini,.fp-card,.sc-ans,.numlab,.ls,.modebtn,.cat-flow-btn,.qrow-ed,.selopt,.imp-drop,.tab,.yearsel,
+.navbtn,.sc-card,.sc-carry-btn,.chip.warn,.goarrow,.qm-t,.qm-cat,.qt,.qsub,.nm,.pc,.ct,.fp-nm,.fp-sub,.fp-n,.glabel,.gcount,.gtag,.gdot,.flow-nav button,.mdl-btns .btn,.edit-toggle,.selopt input{
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn *,.back *,.qrow *,.scard *,.qmini *,.fp-card *,.cat-flow-btn *{pointer-events:none}
+.btn{font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;border-radius:9px;padding:10px 17px;min-height:42px;cursor:pointer;border:1px solid var(--line2);background:#fff;color:var(--ink);transition:.12s;display:inline-flex;align-items:center;justify-content:center;gap:6px;position:relative}
+.btn:active{transform:scale(.97)}
+.btn.sm{min-height:36px;padding:7px 13px}
+/* 保存中の表示 */
+.btn.busy{pointer-events:none;opacity:.75}
+.btn.busy .bspin{display:inline-block}
+.bspin{display:none;width:13px;height:13px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:bspin .7s linear infinite;flex-shrink:0}
+@keyframes bspin{to{transform:rotate(360deg)}}
+/* 画面全体の保存待ち */
+.saving{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--navy);color:#fff;font-family:'Zen Maru Gothic';font-size:13px;padding:9px 16px;border-radius:22px;box-shadow:0 6px 20px rgba(0,0,0,.22);display:none;align-items:center;gap:9px;z-index:120}
+.saving.show{display:inline-flex}
+.saving .bspin{display:inline-block;border-color:#fff;border-right-color:transparent}.btn:hover{background:#faf7f0;border-color:var(--ink3)}
 .btn.pri{background:var(--amber);border-color:var(--amber);color:#fff}.btn.pri:hover{background:var(--amber-d)}.btn.nv{background:var(--navy);border-color:var(--navy);color:#fff}.btn.nv:hover{background:var(--navy2)}.btn.sm{font-size:12.5px;padding:5px 11px}.btn.lg{font-size:15px;padding:11px 20px}
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:3px 10px;border-radius:20px;background:var(--paper);border:1px solid var(--line2);color:var(--ink2)}.chip.warn{background:var(--red-soft);border-color:#f0c9bb;color:var(--red);cursor:pointer}.chip.warn:hover{background:#f6d9cd}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:6px 12px;border-radius:20px;background:var(--paper);border:1px solid var(--line2);color:var(--ink2)}.chip.warn{background:var(--red-soft);border-color:#f0c9bb;color:var(--red);cursor:pointer}.chip.warn:hover{background:#f6d9cd}
 .badge{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:6px;background:var(--amber);color:#fff}
 .pbar{height:6px;background:var(--paper);border-radius:4px;overflow:hidden;border:1px solid var(--line)}.pbar>i{display:block;height:100%;background:var(--teal);border-radius:4px}
 input.tx,textarea.tx,select.tx{width:100%;font-family:inherit;font-size:14px;border:1px solid var(--line2);border-radius:9px;padding:9px 11px;background:#fff;color:var(--ink);resize:vertical}
@@ -47,25 +63,25 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .filtersec{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:16px}
 .frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:11px}.frow:last-child{margin-bottom:0}
 .flabel{font-size:12px;font-weight:700;color:var(--ink3);font-family:"Zen Maru Gothic";width:62px;flex-shrink:0}
-.catpill{font-family:"Zen Maru Gothic";font-weight:500;font-size:12.5px;padding:5px 12px;border-radius:18px;border:1px solid var(--line2);background:#fff;cursor:pointer;color:var(--ink2)}.catpill:hover{border-color:var(--amber)}.catpill.on{background:var(--navy);border-color:var(--navy);color:#fff}
-.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line2);border-radius:9px;overflow:hidden}.seg button{border:none;background:none;font-family:"Zen Maru Gothic";font-size:12.5px;padding:6px 12px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}.seg button:last-child{border-right:none}.seg button.on{background:var(--navy);color:#fff}
+.catpill{font-family:"Zen Maru Gothic";font-weight:500;font-size:12.5px;padding:7px 13px;border-radius:18px;border:1px solid var(--line2);background:#fff;cursor:pointer;color:var(--ink2);min-height:34px}.catpill:hover{border-color:var(--amber)}.catpill.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line2);border-radius:9px;overflow:hidden}.seg button{border:none;background:none;font-family:"Zen Maru Gothic";font-size:12.5px;padding:9px 14px;min-height:38px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}.seg button:last-child{border-right:none}.seg button.on{background:var(--navy);color:#fff}
 .qrow{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r-s);padding:12px 15px;margin-bottom:9px;cursor:pointer;transition:.12s}.qrow:hover{border-color:var(--amber);transform:translateY(-1px)}.qrow .qbody{flex:1;min-width:0}.qrow .qt{font-weight:500;font-size:14.5px}.qrow .qsub{display:flex;align-items:center;gap:8px;margin-top:5px}.qrow .qcat{font-size:10.5px;color:var(--ink3);background:var(--paper);border-radius:5px;padding:1px 7px}
 .mbar{height:7px;border-radius:4px;overflow:hidden;display:flex;flex:1;max-width:150px;background:var(--paper);border:1px solid var(--line)}.mbar i{height:100%;display:block}
 .ans-pill{font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:14px;white-space:nowrap}.ans-pill.full{background:var(--teal-soft);color:var(--teal-d)}.ans-pill.some{background:var(--amber-soft);color:var(--amber-d)}.ans-pill.none{background:var(--red-soft);color:var(--red)}
 .typetag{font-size:10px;color:#fff;border-radius:5px;padding:1px 6px;font-weight:500}
-.back{background:none;border:none;color:var(--ink2);font-size:13.5px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-bottom:12px;font-family:"Zen Maru Gothic"}.back:hover{color:var(--ink)}
+.back{background:none;border:none;color:var(--ink2);font-size:13.5px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-bottom:12px;padding:8px 10px 8px 0;min-height:40px;font-family:"Zen Maru Gothic"}.back:hover{color:var(--ink)}
 .det-h{margin-bottom:16px}.det-h .c{font-size:12px;color:var(--ink3);background:var(--paper);border-radius:6px;padding:2px 9px;display:inline-block;margin-bottom:7px;margin-right:6px}.det-h h2{font-size:21px;line-height:1.4}.det-h .addby{font-size:11.5px;color:var(--ink3);margin-top:6px}
 .alert{background:var(--red-soft);border:1px solid #f0c9bb;border-radius:var(--r);padding:14px 16px;margin-bottom:16px}.alert.done{background:var(--teal-soft);border-color:#bfe2d3}.alert .at{font-family:"Zen Maru Gothic";font-weight:700;font-size:14.5px;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:7px}.alert.done .at{color:var(--teal-d);margin-bottom:0}.alert .chips{display:flex;gap:7px;flex-wrap:wrap}
 .distwrap{margin-bottom:6px}.distbar{height:30px;border-radius:9px;overflow:hidden;display:flex;border:1px solid var(--line)}.distseg{height:100%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;min-width:0}.distseg.un{background:repeating-linear-gradient(45deg,#e4ded2,#e4ded2 5px,#ece7dc 5px,#ece7dc 10px);color:var(--ink3)}
 .distleg{display:flex;gap:12px;flex-wrap:wrap;margin-top:11px}.legi{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)}.legd{width:11px;height:11px;border-radius:3px;flex-shrink:0}
 .gcard{border:1px solid var(--line);border-radius:var(--r-s);padding:12px 14px;margin-bottom:10px;border-left-width:4px}.gcard-h{display:flex;align-items:center;gap:9px;margin-bottom:9px}.gdot{width:12px;height:12px;border-radius:50%;flex-shrink:0}.glabel{flex:1;font-family:"Zen Maru Gothic";font-weight:700;font-size:14.5px;word-break:break-word}.gcount{font-size:12px;color:var(--ink2);white-space:nowrap;background:var(--paper);padding:2px 9px;border-radius:12px}.gtag{font-size:10px;font-weight:700;color:#fff;background:var(--amber);border-radius:5px;padding:1px 7px}.gnote{font-size:12.5px;color:var(--ink2);margin-bottom:8px;line-height:1.6}
-.gchips{display:flex;gap:6px;flex-wrap:wrap}.gch{font-size:11.5px;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:2px 9px;color:var(--ink2);cursor:pointer}.gch:hover{border-color:var(--amber);color:var(--amber-d)}
+.gchips{display:flex;gap:6px;flex-wrap:wrap}.gch{font-size:11.5px;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:5px 11px;color:var(--ink2);cursor:pointer;display:inline-block}.gch:hover{border-color:var(--amber);color:var(--amber-d)}
 .memnotes{margin-top:8px;display:flex;flex-direction:column;gap:3px}.memnote{font-size:11.5px;color:var(--ink2)}.memnote b{color:var(--navy);font-weight:500}
 .gmem{display:flex;gap:9px;padding:5px 0;border-top:1px dashed var(--line);font-size:13px}.gmem:first-child{border-top:none}.gmem .gms{width:80px;flex-shrink:0;color:var(--navy);font-weight:500;cursor:pointer}.gmem .gms:hover{color:var(--amber-d)}.gmem .gmv{flex:1;white-space:pre-wrap;word-break:break-word}
 .notebadge{font-size:11px;color:var(--amber-d);background:var(--amber-soft);border-radius:5px;padding:0 6px;margin-left:4px}
 .numrow{display:flex;align-items:center;gap:10px;padding:5px 0}.numlab{width:80px;flex-shrink:0;font-size:13px;font-weight:500;color:var(--navy);cursor:pointer}.numlab:hover{color:var(--amber-d)}.numtrack{flex:1;height:20px;background:var(--paper);border-radius:6px;overflow:hidden;border:1px solid var(--line)}.numtrack i{display:block;height:100%;background:linear-gradient(90deg,var(--navy2),var(--navy))}.numval{width:120px;flex-shrink:0;text-align:right;font-size:12.5px}
 .numstats{display:flex;gap:18px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}.numstats div{font-size:12px;color:var(--ink2)}.numstats b{display:block;font-family:"Zen Maru Gothic";font-size:16px;color:var(--navy)}
-.listgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}@media(max-width:600px){.listgrid{grid-template-columns:1fr}}.listrow{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}.listrow .ls{width:84px;flex-shrink:0;color:var(--navy);font-weight:500;cursor:pointer}.listrow .ls:hover{color:var(--amber-d)}.listrow .lv{flex:1;word-break:break-word}.listrow .lv.mono{font-family:ui-monospace,monospace;font-size:12.5px}.listrow .lv.empty{color:var(--ink3)}
+.listgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}@media(max-width:600px){.listgrid{grid-template-columns:1fr}}.listrow{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}.listrow .ls{width:84px;flex-shrink:0;color:var(--navy);font-weight:500;cursor:pointer;padding:3px 0}.listrow .ls:hover{color:var(--amber-d)}.listrow .lv{flex:1;word-break:break-word}.listrow .lv.mono{font-family:ui-monospace,monospace;font-size:12.5px}.listrow .lv.empty{color:var(--ink3)}
 .ai{background:linear-gradient(180deg,#fbf6ee,#fff);border:1px solid var(--amber-soft);border-radius:var(--r);padding:15px 17px;margin-top:16px}.ai .aih{font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;color:var(--amber-d);display:flex;align-items:center;gap:7px;margin-bottom:9px}.ai .aitxt{font-size:14.5px;line-height:1.85}.ai .aimeta{font-size:11px;color:var(--ink3);margin-top:9px}
 .spin{display:inline-block;width:15px;height:15px;border:2px solid var(--amber-soft);border-top-color:var(--amber);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}@keyframes sp{to{transform:rotate(360deg)}}
 .editsec{margin-top:16px}.edit-toggle{width:100%;text-align:left;justify-content:space-between}
@@ -87,7 +103,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .sc-card.sc-carried{border-color:#e8d4a8;background:linear-gradient(180deg,#fffdf7,#fff)}
 .sc-carry-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 10px 9px;border-top:1px dashed var(--line)}
 .sc-carry-badge{font-size:10.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:6px;padding:2px 7px}
-.sc-carry-btn{font-family:'Zen Maru Gothic';font-size:11px;font-weight:500;color:#fff;background:var(--teal);border:none;border-radius:7px;padding:4px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
+.sc-carry-btn{font-family:'Zen Maru Gothic';font-size:11px;font-weight:500;color:#fff;background:var(--teal);border:none;border-radius:7px;padding:7px 12px;min-height:32px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
 .sc-carry-btn:hover{background:var(--teal-d)}
 /* 一括取り込み */
 .imp-drop{border:2px dashed var(--line2);border-radius:12px;padding:22px 16px;text-align:center;background:#fdfbf6;cursor:pointer}
@@ -133,7 +149,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .qedit-warn{background:#fdf1e6;border:1px solid #f0c9a0;border-radius:9px;padding:9px 12px;font-size:12.5px;line-height:1.7;color:var(--amber-d);margin-bottom:12px}
 .qedit-warn b{color:#a9521a}
 .qedit-meta{font-size:11.5px;color:var(--ink3);font-family:ui-monospace,monospace;margin-bottom:14px}
-.qrow-ed{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--amber-soft);color:var(--amber-d);border:1px solid #f0d9b5;cursor:pointer;margin-top:5px}
+.qrow-ed{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;background:var(--amber-soft);color:var(--amber-d);border:1px solid #f0d9b5;cursor:pointer;margin-top:5px}
 .qrow-ed:hover{background:#f7e2c4}
 .hidbadge{font-size:10.5px;font-weight:700;color:#fff;background:#8b8578;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
 /* 閲覧モード / 編集モード */
@@ -175,7 +191,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .previewbox .pvh{font-family:'Zen Maru Gothic';font-weight:700;font-size:12.5px;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .pvdisabled{opacity:.5;pointer-events:none}
 /* category picker / category flow */
-.blockh .cat-flow-btn{margin-left:auto;font-family:'Zen Maru Gothic';font-size:11.5px;font-weight:500;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:7px;padding:3px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1.5}
+.blockh .cat-flow-btn{margin-left:auto;min-height:32px;font-family:'Zen Maru Gothic';font-size:11.5px;font-weight:500;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:7px;padding:3px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1.5}
 .blockh .cat-flow-btn:hover{background:#f7e2c4}
 .fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:600px){.fp-grid{grid-template-columns:1fr}}
@@ -198,7 +214,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .flow-q{font-family:"Zen Maru Gothic";font-weight:700;font-size:19px;line-height:1.45;margin-bottom:16px}
 .cand-h{font-size:12px;font-weight:700;color:var(--ink3);font-family:"Zen Maru Gothic";margin-bottom:7px}
 .cand-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
-.cand{font-size:13px;background:var(--teal-soft);border:1px solid #bfe2d3;color:var(--teal-d);border-radius:16px;padding:5px 12px;cursor:pointer;transition:.1s}.cand:hover{background:#cdeadd}
+.cand{font-size:13px;background:var(--teal-soft);border:1px solid #bfe2d3;color:var(--teal-d);border-radius:16px;padding:7px 13px;cursor:pointer;transition:.1s;display:inline-block}.cand:hover{background:#cdeadd}
 .flow-nav{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;align-items:center}
 .flow-done{text-align:center;padding:30px 16px}.flow-done .em{font-size:40px;margin-bottom:8px}
 /* selection UI */
@@ -224,6 +240,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 <div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div class="hd-act"><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button><select class="yearsel" id="yearSel"></select></div></div>
 <div id="pvbanner"></div><div class="nav"><div class="nav-in" id="nav"></div></div></div>
 <div class="wrap"><div class="page" id="page"></div></div><div class="toast" id="toast"></div>
+<div class="saving" id="saving"><span class="bspin"></span><span id="savingTxt">保存しています…</span></div>
 <div class="mask hide" id="mask"><div class="mdl" id="mdl"></div></div>
 <script>
 const SCHOOLS=[{id:"s1",name:"交野みらい学園",short:"みらい学園",block:"１ブロック",type:"小中"},{id:"s2",name:"郡津小学校",short:"郡津小",block:"２ブロック",type:"小"},{id:"s3",name:"倉治小学校",short:"倉治小",block:"２ブロック",type:"小"},{id:"s4",name:"第２中学校",short:"２中",block:"２ブロック",type:"中"},{id:"s5",name:"旭小学校",short:"旭小",block:"３ブロック",type:"小"},{id:"s6",name:"星田小学校",short:"星田小",block:"３ブロック",type:"小"},{id:"s7",name:"第３中学校",short:"３中",block:"３ブロック",type:"中"},{id:"s8",name:"岩船小学校",short:"岩船小",block:"４ブロック",type:"小"},{id:"s9",name:"私市小学校",short:"私市小",block:"４ブロック",type:"小"},{id:"s10",name:"藤が尾小学校",short:"藤が尾小",block:"４ブロック",type:"小"}];
@@ -420,7 +437,7 @@ async function setAns(sid,qid,val,note){
   if(!canEdit()){toast('閲覧モードでは保存できません');return}
   const k=sid+'__'+qid,v=(val||'').trim(),n=(note||'').trim();
   if(v)ST.answers[k]={v:v,note:n,t:Date.now()};else delete ST.answers[k];
-  if(USE_API){try{await gas('saveAnswer',{year:ST.year,school_id:sid,question_id:qid,value:v,note:n})}catch(e){toast('保存に失敗しました（通信エラー）')}return;}
+  if(USE_API){queueSave({year:ST.year,school_id:sid,question_id:qid,value:v,note:n});return;}
   await sSet('answers_'+ST.year,ST.answers);
 }
 /* ===== 質問ごとの回答対象（小学校 / 中学校） =====
@@ -516,6 +533,54 @@ function enterEditMode(){
 function restoreMode(){ST.mode=(ssGet('pta_mode')==='edit')?'edit':'view'}
 function roNotice(msg){
   return `<div class="rolock"><span>${I.bell}</span><div><b>閲覧モードです。</b>${esc(msg||'')}変更するには、右上の「閲覧モード」から編集モードに切り替えてください。</div></div>`;
+}
+/* ===== 保存中の表示と二重送信の防止 =====
+   通信を待つ処理は必ず busy() で包む。ボタンは押した瞬間に無効化＋回転表示になり、
+   画面下部にも「保存しています…」が出るため、押せたかどうかが必ず分かる。 */
+var BUSY=0;
+function showSaving(msg){
+  const el=document.getElementById('saving');if(!el)return;
+  const t=document.getElementById('savingTxt');if(t)t.textContent=msg||'保存しています…';
+  el.classList.add('show');
+}
+function hideSaving(){const el=document.getElementById('saving');if(el&&BUSY<=0)el.classList.remove('show')}
+async function busy(ev,msg,fn){
+  if(BUSY>0&&ev)return;               // 連打を無視
+  let btn=null;
+  try{btn=(ev&&(ev.currentTarget||ev.target))?(ev.currentTarget||ev.target).closest('.btn'):null}catch(e){}
+  BUSY++;showSaving(msg);
+  let html='';
+  if(btn){html=btn.innerHTML;btn.classList.add('busy');btn.innerHTML='<span class="bspin"></span>'+(msg||'保存しています…')}
+  try{return await fn()}
+  finally{
+    BUSY--;hideSaving();
+    if(btn&&document.body.contains(btn)){btn.classList.remove('busy');btn.innerHTML=html}
+  }
+}
+/* 回答保存は待たせずに済むよう、送信をキューに積んで裏で順に流す。
+   画面はすぐ更新し、送信が終わるまで下部に状況を出す。 */
+var SQ={items:[],running:false,fail:0};
+function queueSave(payload){
+  SQ.items.push(payload);
+  showSaving(SQ.items.length>1?('保存しています…（残り'+SQ.items.length+'件）'):'保存しています…');
+  if(!SQ.running)drainQueue();
+}
+async function drainQueue(){
+  SQ.running=true;
+  while(SQ.items.length){
+    const p=SQ.items[0];
+    try{
+      const r=await gas('saveAnswer',p);
+      if(!(r&&r.ok))throw new Error((r&&r.error)||'保存に失敗');
+      SQ.items.shift();SQ.fail=0;
+      if(SQ.items.length)showSaving('保存しています…（残り'+SQ.items.length+'件）');
+    }catch(e){
+      SQ.fail++;
+      if(SQ.fail>=3){SQ.items.shift();SQ.fail=0;toast('保存できなかった項目があります（通信エラー）');}
+      else{await new Promise(r=>setTimeout(r,700));}
+    }
+  }
+  SQ.running=false;hideSaving();
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
 function pnum(s){s=String(s).replace(/,/g,'');if(s.indexOf('@')>=0)return null;let m=s.match(/([0-9]+(?:\.[0-9]+)?)\s*万/);if(m)return parseFloat(m[1])*1e4;m=s.match(/([0-9]+(?:\.[0-9]+)?)/);return m?parseFloat(m[1]):null}
@@ -1000,7 +1065,7 @@ function viewQEdit(){
   <label class="lb">表示・非表示</label>
   <div class="tgpick"><label class="selopt ${q.hidden?'on':''}"><input type="checkbox" id="qeHidden" ${q.hidden?'checked':''} onchange="tgToggle(this)">この質問を非表示にする</label></div>
   <p class="selmulti-hint" style="margin-bottom:14px">非表示にすると一覧・回答画面から消えますが、これまでの回答は残ります。あとから戻せます。</p>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px"><button class="btn" onclick="previewQEdit()">${I.search} 回答画面をプレビュー</button><button class="btn pri" onclick="saveQEdit()">${I.check} 変更を保存する</button></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px"><button class="btn" onclick="previewQEdit()">${I.search} 回答画面をプレビュー</button><button class="btn pri" onclick="busy(event,'保存しています…',saveQEdit)">${I.check} 変更を保存する</button></div>
   <div id="qePreview"></div></div>`;
 }
 function qeToggleNewCat(){const w=document.getElementById('qeNewCatWrap');if(w)w.style.display=document.getElementById('qeCat').value==='__new__'?'block':'none'}
@@ -1266,7 +1331,7 @@ function viewImport(){
       <div class="imp-sum"><div class="imp-st add"><b>${add.length}</b><span>新規追加</span></div><div class="imp-st upd"><b>${upd.length}</b><span>更新</span></div><div class="imp-st"><b>${same.length}</b><span>変更なし</span></div></div>
       ${upd.some(r=>r.warn)?`<div class="qedit-warn">回答がすでに入っている質問で、<b>回答の種類や選択肢</b>が変わります。既存の回答の見え方が変わることがあります（回答自体は消えません）。</div>`:''}
       <div class="imp-list">${rowsH}</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="resetImport()">やめる</button><button class="btn pri" onclick="runImport()">${I.check} ${add.length+upd.length}件を取り込む</button></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="resetImport()">やめる</button><button class="btn pri" onclick="busy(event,'取り込んでいます…',runImport)">${I.check} ${add.length+upd.length}件を取り込む</button></div>
       ${(add.length+upd.length)?'':'<p class="tiny muted" style="margin-top:9px">変更のある行がありません。</p>'}`;
   }
   return `${back}<div class="card qedit-card"><div class="sec-h"><span class="ic">${I.plus}</span>CSVから一括で追加・更新</div>${body}</div>`;
@@ -1277,7 +1342,6 @@ async function runImport(){
   if(!IMP.rows||IMP.errors){toast('取り込める内容がありません');return}
   const targets=IMP.rows.filter(r=>r.mode!=='same');
   if(!targets.length){toast('変更のある行がありません');return}
-  toast('取り込み中です…');
   if(USE_API){
     try{
       const r=await gas('bulkQuestions',{items:JSON.stringify(targets.map(x=>({
@@ -1321,7 +1385,7 @@ function viewAdd(){const cs=cats();
   <label class="lb">補足説明（任意・回答画面に表示されます）</label><textarea class="tx" id="addHint" rows="2" placeholder="例：今年度当初の在籍数を記入してください。小中一貫校は小学生・中学生を分けて書いてください。" style="margin-bottom:12px"></textarea>
   <label class="lb">回答例（任意・「 / 」で区切ると複数出せます）</label><input class="tx" id="addExample" placeholder="例：4〜10人 / 定めなし"><p class="selmulti-hint" style="margin-bottom:14px">回答例は回答画面にチップで並び、タップすると入力欄に入ります。選択式は選択肢ボタンがあるため表示されません。</p>
   <div class="frow" style="gap:10px"><div style="flex:1"><label class="lb">追加した学校</label><select class="tx" id="addSchool">${SCHOOLS.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')}</select></div><div style="flex:1"><label class="lb">お名前</label><input class="tx" id="addName" placeholder="例：田中"></div></div>
-  <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="previewAdd()">${I.search} 回答画面をプレビュー</button><button class="btn pri" onclick="addQuestion()">${I.plus} この質問を追加する</button></div><div id="addPreview"></div></div>`}
+  <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="previewAdd()">${I.search} 回答画面をプレビュー</button><button class="btn pri" onclick="busy(event,'追加しています…',addQuestion)">${I.plus} この質問を追加する</button></div><div id="addPreview"></div></div>`}
 function readAddForm(){
   let cat=document.getElementById('addCat').value;
   if(cat==='__new__'){cat=(document.getElementById('newCatName').value||'').trim();if(!cat){toast('カテゴリ名を入力してください');return null}}
