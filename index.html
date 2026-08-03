@@ -89,6 +89,53 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .sc-carry-badge{font-size:10.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:6px;padding:2px 7px}
 .sc-carry-btn{font-family:'Zen Maru Gothic';font-size:11px;font-weight:500;color:#fff;background:var(--teal);border:none;border-radius:7px;padding:4px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
 .sc-carry-btn:hover{background:var(--teal-d)}
+/* 一括取り込み */
+.imp-drop{border:2px dashed var(--line2);border-radius:12px;padding:22px 16px;text-align:center;background:#fdfbf6;cursor:pointer}
+.imp-drop:hover{background:#f9f5ec;border-color:var(--amber)}
+.imp-drop .ic2{color:var(--navy2);margin-bottom:6px;display:block}
+.imp-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.imp-st{border:1px solid var(--line);border-radius:10px;padding:11px;text-align:center;background:#fff}
+.imp-st b{display:block;font-family:'Zen Maru Gothic';font-size:20px;line-height:1.3}
+.imp-st span{font-size:11.5px;color:var(--ink3)}
+.imp-st.add b{color:var(--teal-d)}.imp-st.upd b{color:var(--navy)}.imp-st.err b{color:#b5453a}
+.imp-err{background:#fdf0ee;border:1px solid #f0c4bd;border-radius:10px;padding:11px 13px;margin-bottom:12px}
+.imp-err .eh{font-family:'Zen Maru Gothic';font-weight:700;font-size:13px;color:#a33a2e;margin-bottom:7px}
+.imp-err ul{margin:0;padding-left:18px}
+.imp-err li{font-size:12.5px;line-height:1.9;color:var(--ink2)}
+.imp-list{border:1px solid var(--line);border-radius:10px;max-height:300px;overflow-y:auto;margin-bottom:12px}
+.imp-row{display:flex;gap:9px;align-items:flex-start;padding:8px 11px;border-bottom:1px solid var(--line);font-size:12.5px}
+.imp-row:last-child{border-bottom:none}
+.imp-tag{flex-shrink:0;font-size:10.5px;font-weight:700;color:#fff;border-radius:6px;padding:1px 7px;margin-top:2px}
+.imp-tag.add{background:var(--teal-d)}.imp-tag.upd{background:var(--navy2)}.imp-tag.same{background:#b3ada0}
+.imp-diff{color:var(--amber-d);font-size:11.5px}
+/* 質問一覧の出力 */
+.exportbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.exportbar .btn{flex-shrink:0}
+.qlist-print{display:none}
+@media print{
+  body{background:#fff}
+  .hd,.nav,.searchbox,.filtersec,.exportbar,.back,.toast,.mask,#searchList,#scount,.qedit-bar{display:none !important}
+  .wrap{max-width:none;padding:0}
+  .qlist-print{display:block}
+  .qlist-print h1{font-family:'Zen Maru Gothic';font-size:16pt;margin-bottom:2mm;color:#000}
+  .qlist-print .pmeta{font-size:8.5pt;color:#444;margin-bottom:4mm}
+  .qlist-print table{width:100%;border-collapse:collapse;font-size:8pt;table-layout:fixed}
+  .qlist-print th,.qlist-print td{border:.4pt solid #999;padding:1.6mm 1.8mm;vertical-align:top;word-wrap:break-word;color:#000}
+  .qlist-print th{background:#e8e8e8;font-weight:700;text-align:left}
+  .qlist-print tr{page-break-inside:avoid}
+  .qlist-print thead{display:table-header-group}
+  .qlist-print .pcat{background:#f2f2f2;font-weight:700}
+  @page{size:A4 landscape;margin:10mm}
+}
+/* 質問の設定を編集 */
+.qedit-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.qedit-card{max-width:620px;margin:0 auto}
+.qedit-warn{background:#fdf1e6;border:1px solid #f0c9a0;border-radius:9px;padding:9px 12px;font-size:12.5px;line-height:1.7;color:var(--amber-d);margin-bottom:12px}
+.qedit-warn b{color:#a9521a}
+.qedit-meta{font-size:11.5px;color:var(--ink3);font-family:ui-monospace,monospace;margin-bottom:14px}
+.qrow-ed{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--amber-soft);color:var(--amber-d);border:1px solid #f0d9b5;cursor:pointer;margin-top:5px}
+.qrow-ed:hover{background:#f7e2c4}
+.hidbadge{font-size:10.5px;font-weight:700;color:#fff;background:#8b8578;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
 /* 閲覧モード / 編集モード */
 .romode .gms,.romode .gch,.romode .ls,.romode .numlab,.romode .sc-ans,.romode .chip.warn,.romode .qcard-lab{cursor:default}
 .romode .gms,.romode .gch:hover,.romode .ls:hover,.romode .numlab:hover,.romode .sc-ans:hover,.romode .chip.warn:hover{background:inherit;color:inherit;border-color:inherit}
@@ -257,7 +304,7 @@ function buildYears(dataYears){
   YEARS.push({id:'R'+(mx+1),label:'令和'+(mx+1)+'年度'});
   if(!YEARS.find(y=>y.id===ST.year))ST.year=YEARS[Math.max(0,YEARS.length-2)].id;
 }
-const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[],allQuestions:[],mode:'view'};
+const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[],allQuestions:[],mode:'view',qEdit:null};
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
 function startSchoolEdit(qid){
   if(!requireEdit())return;
@@ -524,6 +571,7 @@ function pageKey(){
   if(ST.view==='school')return 'school:'+ST.school;
   if(ST.view==='detail')return 'detail:'+ST.q;
   if(ST.view==='flowpick')return 'flowpick:'+ST.flowPick;
+  if(ST.view==='qedit')return 'qedit:'+ST.qEdit;
   return ST.view;
 }
 function applyKey(k){
@@ -532,6 +580,7 @@ function applyKey(k){
   if(v==='school'){ST.school=arg;ST.view='school'}
   else if(v==='detail'){ST.q=arg;ST.view='detail';ST.showEdit=false}
   else if(v==='flowpick'){ST.flowPick=arg;ST.view='flowpick'}
+  else if(v==='qedit'){ST.qEdit=arg;ST.view='qedit'}
   else ST.view=v;
 }
 function navPush(){ST.navStack.push({k:pageKey(),y:curY()});if(ST.navStack.length>40)ST.navStack.shift()}
@@ -543,6 +592,8 @@ function navLabel(fb){
   if(v==='school'){const s=SCHOOLS.find(x=>x.id===arg);return (s?s.name:'学校ページ')+'へ戻る'}
   if(v==='detail'){const t=qOf(arg).text||'';return t?('「'+(t.length>12?t.slice(0,12)+'…':t)+'」へ戻る'):'前の画面へ戻る'}
   if(v==='flowpick')return 'カテゴリ選択へ戻る';
+  if(v==='qedit')return '質問の設定へ戻る';
+  if(v==='import')return '一括取り込みへ戻る';
   if(v==='home')return 'ホーム（学校一覧）へ戻る';
   if(v==='search')return '質問一覧へ戻る';
   if(v==='table')return '回答テーブルへ戻る';
@@ -559,7 +610,7 @@ function render(opt){
   opt=opt||{};
   if(ST.loading){renderShell();document.getElementById('page').innerHTML=viewLoading();return;}
   if(USE_API&&(ST.loadError||!ST.questions.length)){renderShell();document.getElementById('page').innerHTML=viewError();return;}
-  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,flowpick:viewFlowPick,school:viewSchool}[ST.view]||viewHome)();
+  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,flowpick:viewFlowPick,school:viewSchool,qedit:viewQEdit,import:viewImport}[ST.view]||viewHome)();
   if(ST.view==='search')setTimeout(rerenderSearch,0);
   if(ST.view==='flow')setTimeout(()=>{const el=document.getElementById('flowInput');if(el)el.focus()},40);
   // スクロール制御：keepScroll指定時は現在位置を維持、restoreScroll指定時は指定位置へ、それ以外は最上部
@@ -791,7 +842,9 @@ function viewSearch(){
   <div class="filtersec"><div class="frow"><span class="flabel">カテゴリ</span><button class="catpill ${ST.s_cat==='all'?'on':''}" onclick="setFilter('cat','all')">すべて</button>${cs.map(c=>`<button class="catpill ${ST.s_cat===c?'on':''}" onclick="setFilter('cat','${esc(c)}')">${esc(c)} <span style="opacity:.6">${ST.questions.filter(q=>q.category===c).length}</span></button>`).join('')}</div>
     <div class="frow"><span class="flabel">回答状況</span><div class="seg">${STATUS.map(([v,l])=>`<button class="${ST.s_status===v?'on':''}" onclick="setFilter('status','${v}')">${l}</button>`).join('')}</div></div>
     <div class="frow"><span class="flabel">並び替え</span><div class="seg">${SORT.map(([v,l])=>`<button class="${ST.s_sort===v?'on':''}" onclick="setFilter('sort','${v}')">${l}</button>`).join('')}</div></div></div>
-  <p class="muted tiny" style="margin-bottom:11px" id="scount"></p><div id="searchList"></div>`;
+  <div class="exportbar"><span class="flabel" style="width:auto">この一覧を出力</span><button class="btn sm" onclick="exportQuestionsCSV()">${I.table} CSV（Excelで開けます）</button><button class="btn sm" onclick="printQuestions()">${I.search} 印刷・PDF保存</button>${canEdit()?`<button class="btn sm" onclick="openImport()">${I.plus} CSVから一括で追加・更新</button>`:''}</div>
+  <p class="muted tiny" style="margin-bottom:11px" id="scount"></p><div id="searchList"></div>
+  <div class="qlist-print" id="qlistPrint"></div>`;
 }
 function setFilter(kind,val){const y=window.scrollY||0;if(kind==='cat')ST.s_cat=val;else if(kind==='status')ST.s_status=val;else if(kind==='sort')ST.s_sort=val;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 function searchList(){
@@ -805,12 +858,12 @@ function searchList(){
 function renderRows(list){
   if(!list.length)return '<p class="empty-note">条件に合う質問が見つかりませんでした。</p>';
   return list.map(({q,a,u,n,c})=>{const cls=a===n?'full':a===0?'none':'some';const t=qType(q.id);const w=n?Math.round(a*100/n):0;const tg=qTarget(q.id);
-    return `<div class="qrow" onclick="openQ('${q.id}')"><div class="qbody"><div class="qt">${esc(q.text)}</div><div class="qsub"><span class="qcat">${esc(q.category)}</span>${(tg.sho&&tg.chu)?'':`<span class="typetag" style="background:var(--navy2)">${esc(targetLabel(q.id))}</span>`}${t!=='empty'?`<span class="typetag" style="background:${TYPECOL[t]}">${TYPELABEL[t]}</span>`:''}<div class="mbar"><i style="width:${w}%;background:var(--teal)"></i><i style="width:${100-w}%;background:#e4ded2"></i></div></div></div><div style="text-align:right;white-space:nowrap"><span class="ans-pill ${cls}">${a}/${n}</span>${u>0?`<div class="tiny muted" style="margin-top:3px">${todoLabel(c.car,c.blank,'校')}</div>`:`<div class="tiny" style="color:var(--teal-d);margin-top:3px">${I.check} 完了</div>`}</div></div>`}).join('');
+    return `<div class="qrow" onclick="openQ('${q.id}')"><div class="qbody"><div class="qt">${esc(q.text)}</div><div class="qsub"><span class="qcat">${esc(q.category)}</span>${(tg.sho&&tg.chu)?'':`<span class="typetag" style="background:var(--navy2)">${esc(targetLabel(q.id))}</span>`}${t!=='empty'?`<span class="typetag" style="background:${TYPECOL[t]}">${TYPELABEL[t]}</span>`:''}<div class="mbar"><i style="width:${w}%;background:var(--teal)"></i><i style="width:${100-w}%;background:#e4ded2"></i></div></div></div><div style="text-align:right;white-space:nowrap"><span class="ans-pill ${cls}">${a}/${n}</span>${canEdit()?`<span class="qrow-ed" onclick="event.stopPropagation();openQEdit('${q.id}')" title="この質問の設定を編集">${I.edit}</span>`:''}${u>0?`<div class="tiny muted" style="margin-top:3px">${todoLabel(c.car,c.blank,'校')}</div>`:`<div class="tiny" style="color:var(--teal-d);margin-top:3px">${I.check} 完了</div>`}</div></div>`}).join('');
 }
 function rerenderSearch(){const l=searchList();const el=document.getElementById('searchList');if(el)el.innerHTML=renderRows(l);const c=document.getElementById('scount');if(c)c.textContent=l.length+'件の質問';}
 /* ---- DETAIL ---- */
 function viewDetail(){
-  const q=ST.questions.find(x=>x.id===ST.q);if(!q)return '<p class="empty-note">質問が見つかりません</p>';
+  const q=(ST.questions.find(x=>x.id===ST.q)||ST.allQuestions.find(x=>x.id===ST.q));if(!q)return '<p class="empty-note">質問が見つかりません</p>';
   const an=analyzeQ(q.id);
   const alert=statusAlertHTML(q.id,an);
   const addby=q.addedSchool?`<div class="addby">${esc(q.addedSchool)}${q.addedName?'・'+esc(q.addedName):''} さんが追加</div>`:'';
@@ -818,6 +871,7 @@ function viewDetail(){
   const backBtn=`<button class="back" onclick="navBack('${bfb}')">${I.back} ${esc(navLabel(bfb))}</button>`;
   return `${backBtn}
     <div class="det-h"><span class="c">${esc(q.category)}</span><span class="c" style="background:${TYPECOL[an.type]};color:#fff">${TYPELABEL[an.type]}</span><h2>${esc(q.text)}</h2>${addby}</div>
+    ${canEdit()?`<div class="qedit-bar"><button class="btn sm" onclick="openQEdit('${q.id}')">${I.edit} この質問の設定を編集</button>${q.hidden?'<span class="hidbadge">非表示中</span>':''}</div>`:''}
     ${targetNoteHTML(q.id)}${hintHTML(q.id)}${alert}<div class="card">${renderViz(q,an)}</div>
     ${renderEdit(q)}`;
 }
@@ -913,6 +967,344 @@ function viewTable(){
     <div style="overflow-x:auto"><table class="ttable"><thead><tr><th>学校</th><th>カテゴリ</th><th>質問</th><th>回答</th><th>備考</th><th>更新</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap;font-weight:500">${esc(r.short)}</td><td class="tc" style="white-space:nowrap">${esc(r.cat)}</td><td style="min-width:120px">${esc(r.q)}</td><td style="min-width:150px">${esc(r.v)}${r.carried?' <span class="notebadge" style="background:#fff3e0;color:var(--amber-d);border:1px solid #f0d9b5">前年度のまま</span>':''}</td><td class="tc" style="min-width:90px">${esc(r.note||'')}</td><td class="tc" style="white-space:nowrap">${fmtDate(r.t)}</td></tr>`).join('')}</tbody></table></div>${rows.length?'':'<p class="empty-note">まだ回答がありません。</p>'}`;
 }
 function exportCSV(){const tmp=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{if(!isTargetSchool(s.id,q.id))return;const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))tmp.push({c:CATEGORIES.indexOf(q.category)<0?999:CATEGORIES.indexOf(q.category),q:parseInt(q.id.slice(1))||0,s:parseInt(s.id.slice(1))||0,row:[ST.year,s.name,q.category,q.text,a.v,a.note||'',a.carried?'前年度のまま':'今年度確定',new Date(a.t).toLocaleString('ja-JP')]})}));tmp.sort((a,b)=>a.c!==b.c?a.c-b.c:a.q!==b.q?a.q-b.q:a.s-b.s);const rows=[['年度','学校','カテゴリ','質問','回答','備考','状態','更新'],...tmp.map(x=>x.row)];const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
+/* ===== 既存質問の設定を編集 =====
+   question_id は変更できません（回答データとの紐付けが切れるため）。
+   回答の種類を変えると既存回答の見え方が変わるため、変更時は警告を出します。 */
+function openQEdit(qid){
+  if(!requireEdit())return;
+  navPush();ST.qEdit=qid;ST.view='qedit';render();
+}
+function viewQEdit(){
+  const q=ST.allQuestions.find(x=>x.id===ST.qEdit);
+  if(!q)return '<p class="empty-note">質問が見つかりません</p>';
+  const cs=cats(),tg=qTarget(q.id),c=qCounts(q.id);
+  const inUse=c.conf+c.car;
+  const typeOpts=['記述','選択式','数値','一覧','連絡先'].map(t=>`<option value="${t}" ${(q.type||'記述')===t?'selected':''}>${t}</option>`).join('');
+  const catOpts=cs.map(x=>`<option value="${esc(x)}" ${x===q.category?'selected':''}>${esc(x)}</option>`).join('');
+  return `<button class="back" onclick="navBack('detail:${q.id}')">${I.back} ${esc(navLabel('detail:'+q.id))}</button>
+  <div class="card qedit-card"><div class="sec-h"><span class="ic">${I.edit}</span>質問の設定を編集</div>
+  <div class="qedit-meta">question_id: ${esc(q.id)}（変更できません）</div>
+  ${inUse?`<div class="qedit-warn">この質問には <b>${inUse}校</b> の回答が入っています。<b>回答の種類</b>や<b>選択肢</b>を変えると、すでに入っている回答の表示が変わることがあります（回答そのものは消えません）。</div>`:''}
+  <label class="lb">カテゴリ</label><select class="tx" id="qeCat" onchange="qeToggleNewCat()" style="margin-bottom:12px">${catOpts}<option value="__new__">＋ 新しいカテゴリを作る</option></select>
+  <div id="qeNewCatWrap" style="display:none;margin-bottom:12px"><label class="lb">新しいカテゴリ名</label><input class="tx" id="qeNewCat" placeholder="例：登下校・安全"></div>
+  <label class="lb">回答の種類</label><select class="tx" id="qeType" onchange="qeToggleType()" style="margin-bottom:12px">${typeOpts}</select>
+  <div id="qeOptsWrap" style="display:${(q.type==='選択式')?'block':'none'};margin-bottom:12px"><label class="lb">選択肢（「 / 」で区切る）</label><input class="tx" id="qeOpts" value="${esc(q.options||'')}" placeholder="例：あり / なし"><p class="selmulti-hint">選択肢名を変えると、その名前で答えていた学校の回答は「その他」に集計されます。表記をそろえたい場合は、各校の回答も更新してください。</p></div>
+  <div id="qeUnitWrap" style="display:${(q.type==='数値')?'block':'none'};margin-bottom:12px"><label class="lb">単位</label><input class="tx" id="qeUnit" value="${esc(q.unit||'')}" placeholder="例：万円 ／ 人 ／ ％"></div>
+  <label class="lb">質問の内容</label><input class="tx" id="qeText" value="${esc(q.text||'')}" style="margin-bottom:12px">
+  <label class="lb">回答してもらう学校</label>
+  <div class="tgpick"><label class="selopt ${tg.sho?'on':''}"><input type="checkbox" id="qeTgSho" ${tg.sho?'checked':''} onchange="tgToggle(this)">小学校</label><label class="selopt ${tg.chu?'on':''}"><input type="checkbox" id="qeTgChu" ${tg.chu?'checked':''} onchange="tgToggle(this)">中学校</label></div>
+  <p class="selmulti-hint" style="margin-bottom:12px">交野みらい学園は小中一貫校のため、小学校・中学校のどちらにチェックしても回答対象に含まれます。対象から外した学校の回答は、集計・グラフに含まれなくなります（データは残ります）。</p>
+  <label class="lb">補足説明（任意・回答画面に表示されます）</label><textarea class="tx" id="qeHint" rows="2" style="margin-bottom:12px">${esc(q.hint||'')}</textarea>
+  <label class="lb">回答例（任意・「 / 」で区切ると複数出せます）</label><input class="tx" id="qeExample" value="${esc(q.example||'')}"><p class="selmulti-hint" style="margin-bottom:12px">選択式は選択肢ボタンがあるため表示されません。</p>
+  <label class="lb">並び順</label><input class="tx" id="qeOrder" value="${esc(String(q.createdAt||''))}" inputmode="numeric" style="margin-bottom:6px"><p class="selmulti-hint" style="margin-bottom:12px">数字が小さいほど先に表示されます。</p>
+  <label class="lb">表示・非表示</label>
+  <div class="tgpick"><label class="selopt ${q.hidden?'on':''}"><input type="checkbox" id="qeHidden" ${q.hidden?'checked':''} onchange="tgToggle(this)">この質問を非表示にする</label></div>
+  <p class="selmulti-hint" style="margin-bottom:14px">非表示にすると一覧・回答画面から消えますが、これまでの回答は残ります。あとから戻せます。</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px"><button class="btn" onclick="previewQEdit()">${I.search} 回答画面をプレビュー</button><button class="btn pri" onclick="saveQEdit()">${I.check} 変更を保存する</button></div>
+  <div id="qePreview"></div></div>`;
+}
+function qeToggleNewCat(){const w=document.getElementById('qeNewCatWrap');if(w)w.style.display=document.getElementById('qeCat').value==='__new__'?'block':'none'}
+function qeToggleType(){const t=document.getElementById('qeType').value;
+  const o=document.getElementById('qeOptsWrap');if(o)o.style.display=(t==='選択式')?'block':'none';
+  const u=document.getElementById('qeUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
+function readQEditForm(){
+  let cat=document.getElementById('qeCat').value;
+  if(cat==='__new__'){cat=(document.getElementById('qeNewCat').value||'').trim();if(!cat){toast('カテゴリ名を入力してください');return null}}
+  const text=(document.getElementById('qeText').value||'').trim();
+  if(!text){toast('質問の内容を入力してください');return null}
+  const type=document.getElementById('qeType').value;
+  const options=(type==='選択式')?((document.getElementById('qeOpts')||{}).value||'').split('/').map(x=>x.trim()).filter(Boolean).join(' / '):'';
+  if(type==='選択式'&&!options){toast('選択肢を「 / 」区切りで入力してください');return null}
+  const sho=document.getElementById('qeTgSho').checked,chu=document.getElementById('qeTgChu').checked;
+  if(!sho&&!chu){toast('小学校・中学校のどちらかにチェックを入れてください');return null}
+  const ordRaw=((document.getElementById('qeOrder')||{}).value||'').trim();
+  const order=Number(ordRaw);
+  if(ordRaw!==''&&(!isFinite(order)||order<0)){toast('並び順は0以上の数字で入力してください');return null}
+  return {category:cat,text:text,type:type,
+    unit:(type==='数値')?(((document.getElementById('qeUnit')||{}).value||'').trim()):'',
+    options:options,
+    hint:((document.getElementById('qeHint')||{}).value||'').trim(),
+    example:((document.getElementById('qeExample')||{}).value||'').trim(),
+    target:(sho&&chu)?'小 / 中':(sho?'小':'中'),
+    hidden:!!document.getElementById('qeHidden').checked,
+    order:ordRaw===''?null:order};
+}
+function previewQEdit(){
+  const f=readQEditForm();if(!f)return;
+  const q=Object.assign({id:'__pv__'},f);
+  ST.questions=ST.questions.filter(x=>x.id!=='__pv__');ST.questions.push(q);
+  let html='';try{html=previewCardHTML(q)}finally{ST.questions=ST.questions.filter(x=>x.id!=='__pv__')}
+  const el=document.getElementById('qePreview');
+  el.innerHTML=`<div class="previewbox"><div class="pvh">${I.search} 回答画面のプレビュー（保存はされません）</div>${html}</div>`;
+  setTimeout(()=>{try{el.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}},30);
+}
+async function saveQEdit(){
+  if(!requireEdit())return;
+  const f=readQEditForm();if(!f)return;
+  const qid=ST.qEdit,q=ST.allQuestions.find(x=>x.id===qid);
+  if(!q){toast('質問が見つかりません');return}
+  if(USE_API){
+    try{
+      const r=await gas('updateQuestion',Object.assign({id:qid},f,{order:f.order==null?'':f.order,hidden:f.hidden?'TRUE':''}));
+      if(!(r&&r.ok)){toast('保存に失敗: '+((r&&r.error)||''));return}
+    }catch(e){toast('保存に失敗しました（通信エラー）');return}
+  }
+  q.category=f.category;q.text=f.text;q.type=f.type;q.unit=f.unit;q.options=f.options;
+  q.hint=f.hint;q.example=f.example;q.target=f.target;q.hidden=f.hidden;
+  if(f.order!=null)q.createdAt=f.order;
+  ST.questions=ST.allQuestions.filter(x=>!x.hidden);
+  if(!USE_API)await sSet('questions',ST.allQuestions);
+  toast(f.hidden?'非表示にしました（一覧には表示されません）':'質問の設定を保存しました');
+  ST.qEdit=null;
+  // 保存後は必ずその質問の詳細へ。以前その画面を見ていればスクロール位置も戻す。
+  const key='detail:'+qid,y=navBackTo(key);
+  ST.q=qid;applyKey(key);render(y!=null?{restoreScroll:y}:{});
+}
+/* ===== 質問一覧の出力（CSV / 印刷・PDF） =====
+   CSVは「一括取り込み」でそのまま読み込める列構成にしています。
+   絞り込み中の場合は、絞り込んだ結果だけが出力されます。 */
+var QCOLS=['question_id','カテゴリ','並び順','質問','回答の種類','単位','選択肢','補足説明','回答例','対象区分','非表示'];
+function questionRow(q){
+  return [q.id,q.category||'',(q.createdAt==null?'':q.createdAt),q.text||'',q.type||'記述',q.unit||'',
+          q.options||'',q.hint||'',q.example||'',q.target||'小 / 中',q.hidden?'TRUE':''];
+}
+// 出力対象：一覧の絞り込みを反映。非表示の質問も含める（取り込みで戻せるように）
+function exportTargets(){
+  const shown=searchList().map(x=>x.q.id);
+  const set={};shown.forEach(id=>set[id]=1);
+  const list=ST.allQuestions.filter(q=>set[q.id]||(q.hidden&&ST.s_cat==='all'&&!ST.s_text.trim()));
+  return list.slice().sort((a,b)=>{
+    const ca=CATEGORIES.indexOf(a.category),cb=CATEGORIES.indexOf(b.category);
+    const na=ca<0?999:ca,nb=cb<0?999:cb;
+    if(na!==nb)return na-nb;
+    return (Number(a.createdAt)||0)-(Number(b.createdAt)||0);
+  });
+}
+function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'}
+function downloadText(name,text,mime){
+  const b=new Blob([text],{type:mime||'text/plain;charset=utf-8'});
+  const u=URL.createObjectURL(b);const a=document.createElement('a');
+  a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);
+}
+function exportQuestionsCSV(){
+  const list=exportTargets();
+  if(!list.length){toast('出力する質問がありません');return}
+  const rows=[QCOLS].concat(list.map(questionRow));
+  const csv='\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+  downloadText('交野市PTA_質問一覧_'+ST.year+'.csv',csv,'text/csv;charset=utf-8');
+  toast(list.length+'問を書き出しました');
+}
+function printQuestions(){
+  const list=exportTargets();
+  if(!list.length){toast('出力する質問がありません');return}
+  const cond=[];
+  if(ST.s_cat!=='all')cond.push('カテゴリ：'+ST.s_cat);
+  if(ST.s_text.trim())cond.push('キーワード：'+ST.s_text.trim());
+  if(ST.s_status!=='all')cond.push('回答状況で絞り込み中');
+  const W=['7%','9%','4%','21%','7%','5%','14%','17%','12%','4%'];
+  const head=['ID','カテゴリ','順','質問','種類','単位','選択肢','補足説明','回答例','対象'];
+  let lastCat='',body='';
+  list.forEach(q=>{
+    if(q.category!==lastCat){lastCat=q.category;
+      body+=`<tr class="pcat"><td colspan="10">${esc(q.category||'（カテゴリなし）')}</td></tr>`}
+    const c=qCounts(q.id);
+    body+=`<tr><td>${esc(q.id)}${q.hidden?'<br>※非表示':''}</td><td>${esc(q.category||'')}</td><td>${esc(String(q.createdAt==null?'':q.createdAt))}</td><td>${esc(q.text||'')}</td><td>${esc(q.type||'記述')}</td><td>${esc(q.unit||'')}</td><td>${esc(q.options||'')}</td><td>${esc(q.hint||'')}</td><td>${esc(q.example||'')}</td><td>${esc(targetLabel(q.id))}<br><span style="font-size:7pt">回答${c.conf}/${c.n}校</span></td></tr>`;
+  });
+  const el=document.getElementById('qlistPrint');
+  el.innerHTML=`<h1>交野市PTA 実態共有ボード　質問一覧</h1>
+    <div class="pmeta">${YEARS.find(y=>y.id===ST.year).label}　全${list.length}問　出力日：${new Date().toLocaleDateString('ja-JP')}${cond.length?'　／　'+esc(cond.join('　')):''}</div>
+    <table><colgroup>${W.map(w=>`<col style="width:${w}">`).join('')}</colgroup>
+    <thead><tr>${head.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`;
+  setTimeout(()=>{window.print()},60);
+}
+/* ===== 質問CSVの一括取り込み =====
+   ・question_id が空の行 → 新規追加（IDは自動採番）
+   ・既存IDと一致する行   → その質問を更新
+   ・1件でもエラーがあれば1行も書き込みません（全件成功か、全件中止か）
+   ・CSVから消した行があっても質問は削除されません */
+var IMP={rows:null,errors:null,file:''};
+function openImport(){
+  if(!requireEdit())return;
+  navPush();ST.view='import';IMP={rows:null,errors:null,file:''};render();
+}
+// ---- CSVパーサ（引用符・改行・カンマを含むセルに対応）----
+function parseCSV(text){
+  text=String(text||'').replace(/^\ufeff/,'');
+  const rows=[];let row=[],cur='',q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++} else q=false }
+      else cur+=c;
+    }else{
+      if(c==='"')q=true;
+      else if(c===','){row.push(cur);cur=''}
+      else if(c==='\r'){}
+      else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur=''}
+      else cur+=c;
+    }
+  }
+  if(q)return {error:'引用符（"）の数が合いません。ファイルの途中で壊れている可能性があります。'};
+  if(cur!==''||row.length){row.push(cur);rows.push(row)}
+  return {rows:rows.filter(r=>r.some(c=>String(c).trim()!==''))};
+}
+var IMP_TYPES=['記述','選択式','数値','一覧','連絡先'];
+var IMP_TARGETS={'小 / 中':'小 / 中','小/中':'小 / 中','小・中':'小 / 中','小中':'小 / 中','両方':'小 / 中','小':'小','中':'中','小学校':'小','中学校':'中'};
+function validateImport(text){
+  const p=parseCSV(text);
+  if(p.error)return {errors:[p.error]};
+  const rows=p.rows;
+  if(!rows.length)return {errors:['ファイルが空です。']};
+  const head=rows[0].map(x=>String(x).trim());
+  const missing=QCOLS.filter(c=>head.indexOf(c)<0);
+  if(missing.length)return {errors:['列が足りません（または列名が違います）：'+missing.join('、')+'　／　「CSV（Excelで開けます）」で書き出したファイルをそのまま編集して取り込んでください。']};
+  const ix={};QCOLS.forEach(c=>ix[c]=head.indexOf(c));
+  const known={};ST.allQuestions.forEach(q=>known[q.id]=q);
+  const errors=[],items=[],seen={};
+  let auto=0;ST.allQuestions.forEach(q=>{const m=/^q(\d+)$/.exec(q.id);if(m)auto=Math.max(auto,parseInt(m[1],10))});
+  let maxOrder=0;ST.allQuestions.forEach(q=>{const o=Number(q.createdAt);if(isFinite(o))maxOrder=Math.max(maxOrder,o)});
+  function E(ln,msg){errors.push((ln+1)+'行目：'+msg)}
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i],get=c=>String(r[ix[c]]==null?'':r[ix[c]]).trim();
+    if(r.length!==head.length)E(i,'列数が'+r.length+'個です（見出しは'+head.length+'個）。カンマや改行の入ったセルが壊れている可能性があります。');
+    const id=get('question_id'),cat=get('カテゴリ'),text2=get('質問');
+    let type=get('回答の種類')||'記述',opts=get('選択肢'),tgRaw=get('対象区分')||'小 / 中',ordRaw=get('並び順');
+    if(!cat)E(i,'カテゴリが空です。');
+    if(!text2)E(i,'質問が空です。');
+    if(text2.length>200)E(i,'質問が長すぎます（'+text2.length+'文字。200文字まで）。');
+    if(IMP_TYPES.indexOf(type)<0)E(i,'回答の種類「'+type+'」は使えません（'+IMP_TYPES.join('・')+'のいずれか）。');
+    if(type==='選択式'){
+      opts=opts.split('/').map(x=>x.trim()).filter(Boolean).join(' / ');
+      if(!opts)E(i,'回答の種類が「選択式」ですが、選択肢が空です。');
+    }else opts='';
+    const tg=IMP_TARGETS[tgRaw.replace(/\s+/g,'')]||IMP_TARGETS[tgRaw];
+    if(!tg)E(i,'対象区分「'+tgRaw+'」は使えません（「小 / 中」「小」「中」のいずれか）。');
+    let order=null;
+    if(ordRaw!==''){order=Number(ordRaw);if(!isFinite(order)||order<0)E(i,'並び順「'+ordRaw+'」は0以上の数字で入力してください。')}
+    if(id){
+      if(!known[id])E(i,'question_id「'+id+'」は存在しません。新しく追加する場合は question_id を空にしてください。');
+      if(seen[id])E(i,'question_id「'+id+'」がファイル内で重複しています（'+(seen[id]+1)+'行目と重複）。');
+      seen[id]=i;
+    }
+    const hid=get('非表示'),hidden=/^(true|1|yes|非表示|○|x)$/i.test(hid);
+    if(hid&&!hidden&&!/^(false|0|no)$/i.test(hid))E(i,'非表示「'+hid+'」は使えません（空欄にするか TRUE と入力してください）。');
+    const newId=id||('q'+String(auto+1+items.filter(x=>!x.id).length).padStart(3,'0'));
+    const item={id:id||'',newId:newId,category:cat,text:text2,type:type,
+      unit:(type==='数値')?get('単位'):'',options:opts,hint:get('補足説明'),example:get('回答例'),
+      target:tg||'小 / 中',hidden:hidden,order:order,line:i+1,
+      mode:id?'update':'add'};
+    if(id&&known[id]){
+      const o=known[id],d=[];
+      if(o.category!==item.category)d.push('カテゴリ');
+      if((o.text||'')!==item.text)d.push('質問');
+      if((o.type||'記述')!==item.type)d.push('種類');
+      if((o.unit||'')!==item.unit)d.push('単位');
+      if((o.options||'')!==item.options)d.push('選択肢');
+      if((o.hint||'')!==item.hint)d.push('補足説明');
+      if((o.example||'')!==item.example)d.push('回答例');
+      if((o.target||'小 / 中')!==item.target)d.push('対象区分');
+      if(!!o.hidden!==item.hidden)d.push('表示/非表示');
+      if(item.order!=null&&Number(o.createdAt)!==item.order)d.push('並び順');
+      item.diff=d;if(!d.length)item.mode='same';
+      // 回答済みの質問で意味が変わる変更に注意を促す
+      const c=qCounts(id);
+      if((c.conf+c.car)>0&&(d.indexOf('種類')>=0||d.indexOf('選択肢')>=0))
+        item.warn=(c.conf+c.car)+'校の回答あり';
+    }
+    if(item.order==null)item.order=(item.mode==='add')?(++maxOrder):null;
+    items.push(item);
+  }
+  if(!items.length)errors.push('取り込める行がありません（見出し行だけのようです）。');
+  return {items:items,errors:errors,head:head};
+}
+function onImportFile(input){
+  const f=input&&input.files&&input.files[0];
+  if(!f){return}
+  IMP.file=f.name;
+  const rd=new FileReader();
+  rd.onload=()=>{handleImportText(String(rd.result||''))};
+  rd.onerror=()=>{IMP.errors=['ファイルを読み込めませんでした。'];IMP.rows=null;render()};
+  rd.readAsText(f,'UTF-8');
+}
+function handleImportText(text){
+  const v=validateImport(text);
+  IMP.rows=v.items||null;IMP.errors=v.errors&&v.errors.length?v.errors:null;
+  render();
+}
+function viewImport(){
+  if(!canEdit())return `<div class="card"><div class="sec-h"><span class="ic">${I.plus}</span>CSVから一括で追加・更新</div>${roNotice('取り込むには編集モードに切り替えてください。')}</div>`;
+  const back=`<button class="back" onclick="navBack('search')">${I.back} ${esc(navLabel('search'))}</button>`;
+  let body='';
+  if(!IMP.rows&&!IMP.errors){
+    body=`<div class="imp-drop" onclick="document.getElementById('impFile').click()">
+      <span class="ic2">${I.table}</span>
+      <div style="font-family:'Zen Maru Gothic';font-weight:700;font-size:14.5px;color:var(--navy)">CSVファイルを選ぶ</div>
+      <p class="muted tiny" style="margin-top:6px">「CSV（Excelで開けます）」で書き出したファイルを編集して読み込みます</p></div>
+      <input type="file" id="impFile" accept=".csv,text/csv" style="display:none" onchange="onImportFile(this)">
+      <div class="qhint" style="margin-top:14px"><span class="qhi">${I.bell}</span><span>
+      <b>使い方</b><br>
+      ① 質問一覧の「CSV（Excelで開けます）」で書き出す<br>
+      ② Excelで開いて編集する。<b>行を増やして質問を追加する場合は question_id を空欄</b>にしてください（IDは自動で振られます）<br>
+      ③ CSV形式（UTF-8）のまま保存して、ここで読み込む<br><br>
+      ・question_id が入っている行は、その質問の<b>更新</b>になります<br>
+      ・CSVから行を削除しても、質問は消えません（非表示にしたい場合は「非表示」列に TRUE と入力してください）<br>
+      ・エラーが1件でもあると、<b>1行も書き込まずに中止</b>します</span></div>`;
+  }else if(IMP.errors){
+    body=`<div class="imp-err"><div class="eh">${I.bell} 取り込めませんでした（${IMP.errors.length}件のエラー）</div>
+      <ul>${IMP.errors.slice(0,40).map(e=>`<li>${esc(e)}</li>`).join('')}</ul>
+      ${IMP.errors.length>40?`<p class="tiny muted" style="margin-top:7px">ほか ${IMP.errors.length-40} 件</p>`:''}</div>
+      <p class="muted tiny" style="margin-bottom:12px">ファイルを直してから、もう一度読み込んでください。データは一切変更されていません。</p>
+      <button class="btn" onclick="resetImport()">別のファイルを選ぶ</button>`;
+  }else{
+    const add=IMP.rows.filter(r=>r.mode==='add'),upd=IMP.rows.filter(r=>r.mode==='update'),same=IMP.rows.filter(r=>r.mode==='same');
+    const rowsH=IMP.rows.map(r=>{
+      const tag=r.mode==='add'?'<span class="imp-tag add">新規</span>':r.mode==='update'?'<span class="imp-tag upd">更新</span>':'<span class="imp-tag same">変更なし</span>';
+      const d=r.mode==='update'?`<span class="imp-diff">（${esc(r.diff.join('・'))}を変更${r.warn?'／'+esc(r.warn):''}）</span>`:'';
+      return `<div class="imp-row">${tag}<div><b>${esc(r.mode==='add'?r.newId:r.id)}</b>　${esc(r.category)}／${esc(r.text.length>36?r.text.slice(0,36)+'…':r.text)}${r.hidden?' <span class="hidbadge">非表示</span>':''}<br>${d}</div></div>`;
+    }).join('');
+    body=`<p class="muted tiny">${esc(IMP.file)} を読み込みました。内容を確認して「取り込む」を押してください。</p>
+      <div class="imp-sum"><div class="imp-st add"><b>${add.length}</b><span>新規追加</span></div><div class="imp-st upd"><b>${upd.length}</b><span>更新</span></div><div class="imp-st"><b>${same.length}</b><span>変更なし</span></div></div>
+      ${upd.some(r=>r.warn)?`<div class="qedit-warn">回答がすでに入っている質問で、<b>回答の種類や選択肢</b>が変わります。既存の回答の見え方が変わることがあります（回答自体は消えません）。</div>`:''}
+      <div class="imp-list">${rowsH}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="resetImport()">やめる</button><button class="btn pri" onclick="runImport()">${I.check} ${add.length+upd.length}件を取り込む</button></div>
+      ${(add.length+upd.length)?'':'<p class="tiny muted" style="margin-top:9px">変更のある行がありません。</p>'}`;
+  }
+  return `${back}<div class="card qedit-card"><div class="sec-h"><span class="ic">${I.plus}</span>CSVから一括で追加・更新</div>${body}</div>`;
+}
+function resetImport(){IMP={rows:null,errors:null,file:''};render()}
+async function runImport(){
+  if(!requireEdit())return;
+  if(!IMP.rows||IMP.errors){toast('取り込める内容がありません');return}
+  const targets=IMP.rows.filter(r=>r.mode!=='same');
+  if(!targets.length){toast('変更のある行がありません');return}
+  toast('取り込み中です…');
+  if(USE_API){
+    try{
+      const r=await gas('bulkQuestions',{items:JSON.stringify(targets.map(x=>({
+        id:x.id,newId:x.newId,category:x.category,text:x.text,type:x.type,unit:x.unit,
+        options:x.options,hint:x.hint,example:x.example,target:x.target,
+        hidden:x.hidden?'TRUE':'',order:x.order==null?'':x.order})))});
+      if(!(r&&r.ok)){IMP.errors=['サーバー側で取り込めませんでした：'+((r&&r.error)||'原因不明')];IMP.rows=null;render();return}
+    }catch(e){IMP.errors=['通信エラーで取り込めませんでした。データは変更されていません。'];IMP.rows=null;render();return}
+  }
+  targets.forEach(x=>{
+    if(x.mode==='add'){
+      ST.allQuestions.push({id:x.newId,category:x.category,text:x.text,type:x.type,unit:x.unit,
+        options:x.options,hint:x.hint,example:x.example,target:x.target,hidden:x.hidden,createdAt:x.order});
+    }else{
+      const q=ST.allQuestions.find(y=>y.id===x.id);if(!q)return;
+      q.category=x.category;q.text=x.text;q.type=x.type;q.unit=x.unit;q.options=x.options;
+      q.hint=x.hint;q.example=x.example;q.target=x.target;q.hidden=x.hidden;
+      if(x.order!=null)q.createdAt=x.order;
+    }
+  });
+  ST.questions=ST.allQuestions.filter(q=>!q.hidden);
+  if(!USE_API)await sSet('questions',ST.allQuestions);
+  const nAdd=targets.filter(x=>x.mode==='add').length,nUpd=targets.length-nAdd;
+  IMP={rows:null,errors:null,file:''};
+  toast('取り込みました（新規'+nAdd+'件・更新'+nUpd+'件）');
+  navBack('search');
+}
 /* ---- ADD ---- */
 function viewAdd(){const cs=cats();
   if(!canEdit())return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div>${roNotice('質問を追加するには編集モードに切り替えてください。')}</div>`;
