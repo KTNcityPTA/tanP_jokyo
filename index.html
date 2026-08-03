@@ -124,6 +124,17 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .imp-tag{flex-shrink:0;font-size:10.5px;font-weight:700;color:#fff;border-radius:6px;padding:1px 7px;margin-top:2px}
 .imp-tag.add{background:var(--teal-d)}.imp-tag.upd{background:var(--navy2)}.imp-tag.same{background:#b3ada0}
 .imp-diff{color:var(--amber-d);font-size:11.5px}
+/* 複数選択式 */
+.mulbox{margin-bottom:2px}
+.mchips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.mchip{font-size:12.5px;background:#fff;border:1px solid var(--line2);color:var(--ink2);border-radius:16px;padding:7px 13px;cursor:pointer;transition:.1s;display:inline-block;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.mchip:hover{border-color:var(--teal);color:var(--teal-d)}
+.mchip.on{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-d);font-weight:500}
+.multa{font-family:inherit;line-height:1.9}
+.mulcell{white-space:pre-line}
+/* バージョン表示 */
+.verfoot{text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:#b8b1a3;padding:18px 12px 26px;letter-spacing:.03em;user-select:text}
+.verfoot .vwarn{color:var(--amber-d);font-weight:700}
 /* 質問一覧の出力 */
 .exportbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .exportbar .btn{flex-shrink:0}
@@ -240,6 +251,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 <div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div class="hd-act"><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button><select class="yearsel" id="yearSel"></select></div></div>
 <div id="pvbanner"></div><div class="nav"><div class="nav-in" id="nav"></div></div></div>
 <div class="wrap"><div class="page" id="page"></div></div><div class="toast" id="toast"></div>
+<div class="verfoot" id="verfoot"></div>
 <div class="saving" id="saving"><span class="bspin"></span><span id="savingTxt">保存しています…</span></div>
 <div class="mask hide" id="mask"><div class="mdl" id="mdl"></div></div>
 <script>
@@ -247,9 +259,17 @@ const SCHOOLS=[{id:"s1",name:"交野みらい学園",short:"みらい学園",blo
 const CATEGORIES=["基本情報", "会計", "役員・委員", "フェスタ", "会議", "情報・連絡ツール", "広報・個人情報", "加入・行事", "その他・特色"];
 const GCOL=['#30496a','#3a9d7e','#e0883b','#7a6ca8','#c75f6b','#4a8db5','#8a9a3c','#b5773a','#5a8a7a','#9a5a8a'];
 const CATCOL={'基本情報':'#30496a','会計':'#3a9d7e','役員・委員':'#e0883b','フェスタ':'#7a6ca8','会議':'#c75f6b','情報・連絡ツール':'#4a8db5','広報・個人情報':'#8a9a3c','加入・行事':'#b5773a','その他・特色':'#5a8a7a'};
-const TYPE_KEY={'数値':'numeric','選択式':'categorical','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
-const TYPELABEL={numeric:'数値',categorical:'選択式',text:'記述',list:'一覧',contact:'連絡先',empty:'未回答'};
-const TYPECOL={numeric:'#4a8db5',categorical:'#3a9d7e',text:'#7a6ca8',list:'#8a9a3c',contact:'#b5773a',empty:'#c0b9aa'};
+/* ===== バージョン =====
+   APP_VERSION : このHTMLの版。更新のたびに上げます。
+   EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
+   実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
+   食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
+const APP_VERSION='1.14';
+const EXPECT_GAS='09';
+let GAS_VERSION=null;
+const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
+const TYPELABEL={numeric:'数値',categorical:'選択式',multi:'複数選択式',text:'記述',list:'一覧',contact:'連絡先',empty:'未回答'};
+const TYPECOL={numeric:'#4a8db5',categorical:'#3a9d7e',multi:'#2f7f9d',text:'#7a6ca8',list:'#8a9a3c',contact:'#b5773a',empty:'#c0b9aa'};
 const SHORT2ID={};SCHOOLS.forEach(s=>SHORT2ID[s.short]=s.id);
 const I={home:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',search:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',table:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>',plus:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',back:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',spark:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>',bell:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',chart:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>',down:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',group:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="12" cy="17" r="3"/></svg>',edit:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>'};
 /* ===== バックエンド設定 =====
@@ -278,7 +298,82 @@ async function showDiag(){
 function splitOpts(s){return String(s||'').split('/').map(x=>x.trim()).filter(Boolean)}
 function optsOf(qid){const q=ST.questions.find(x=>x.id===qid);if(q&&q.options&&String(q.options).trim())return splitOpts(q.options);return []}
 function isBinary(qid){const o=optsOf(qid).map(nrm);return o.length===2&&o.indexOf('あり')>=0&&o.indexOf('なし')>=0}
-function isChoice(qid){const q=ST.questions.find(x=>x.id===qid);return !!(q&&q.type==='選択式'&&optsOf(qid).length)}
+function isChoice(qid){const q=qOf(qid);return !!(q&&q.type==='選択式'&&optsOf(qid).length)}
+/* ===== 複数選択式 =====
+   値は「・項目」を改行でつないだ形で保存します。
+     ・会計
+     ・広報
+   候補（回答例・前年度・他校の回答）をタップすると1項目ずつ足し引きできるので、
+   表記ゆれが起きません。候補にないものは自由入力欄から足せます。 */
+function isMulti(qid){const q=qOf(qid);return !!(q&&q.type==='複数選択式')}
+function bulletVals(v){
+  return String(v==null?'':v)
+    .split(/\r?\n|[、,]|\s*\/\s*/)
+    .map(x=>x.replace(/^\s*[・\-•*]\s*/,'').trim())
+    .filter(Boolean);
+}
+function bulletJoin(arr){
+  const seen={},out=[];
+  arr.forEach(v=>{v=String(v||'').trim();if(!v)return;const k=nrm(v);if(seen[k])return;seen[k]=1;out.push(v)});
+  return out.map(v=>'・'+v).join('\n');
+}
+// この質問で選べる候補（回答例＋他校＋前年度の回答を項目単位でばらして重複排除）
+function multiCands(qid,sid){
+  const q=qOf(qid),seen={},out=[];
+  function add(v){v=String(v||'').trim();if(!v)return;const k=nrm(v);if(seen[k])return;seen[k]=1;out.push(v)}
+  optsOf(qid).forEach(add);
+  splitOpts(q.example).forEach(add);
+  const prev=ST.prevAnswers[sid+'__'+qid];if(prev)bulletVals(prev.v).forEach(add);
+  targetSchools(qid).forEach(s=>{const a=getAns(s.id,qid);if(a)bulletVals(a.v).forEach(add)});
+  return out;
+}
+function renderMulti(prefix,qid,curVal,sid){
+  const cur=bulletVals(curVal),cands=multiCands(qid,sid),known={};
+  cur.forEach(v=>known[nrm(v)]=1);
+  const chips=cands.map((c,i)=>`<span class="mchip${known[nrm(c)]?' on':''}" onclick="multiToggle('${esc(jsq(prefix))}',${i})">${known[nrm(c)]?'✓ ':'＋ '}${esc(c)}</span>`).join('');
+  window._MC=window._MC||{};window._MC[prefix]=cands;
+  return `<div class="mulbox" id="mulbox-${esc(prefix)}">
+    ${cands.length?`<div class="cand-h">候補をタップして足し引きできます（表記をそろえられます）</div><div class="mchips">${chips}</div>`:''}
+    <textarea class="tx multa" id="mul-${esc(prefix)}" rows="${Math.max(3,cur.length+1)}" placeholder="1行に1つずつ書いてください（候補にないものはここに直接入力できます）" oninput="multiSync('${esc(jsq(prefix))}')">${esc(cur.map(v=>'・'+v).join('\n'))}</textarea>
+    <p class="selmulti-hint">当てはまるものをすべて選んでください。並べ替えや削除は、上の入力欄を直接編集してもできます。</p></div>`;
+}
+function readMulti(prefix){
+  const el=document.getElementById('mul-'+prefix);if(!el)return null;
+  return bulletJoin(bulletVals(el.value));
+}
+function multiToggle(prefix,i){
+  const el=document.getElementById('mul-'+prefix);if(!el)return;
+  const cands=(window._MC||{})[prefix]||[];const v=cands[i];if(!v)return;
+  let cur=bulletVals(el.value);
+  const k=nrm(v),at=cur.findIndex(x=>nrm(x)===k);
+  if(at>=0)cur.splice(at,1);else cur.push(v);
+  el.value=bulletJoin(cur);
+  multiSync(prefix);
+}
+// 入力欄と候補チップの選択状態を合わせる（再描画せずその場で更新）
+function multiSync(prefix){
+  const el=document.getElementById('mul-'+prefix),box=document.getElementById('mulbox-'+prefix);
+  if(!el||!box)return;
+  const cur={};bulletVals(el.value).forEach(v=>cur[nrm(v)]=1);
+  const cands=(window._MC||{})[prefix]||[];
+  const chips=box.querySelectorAll('.mchip');
+  for(let i=0;i<chips.length;i++){
+    const on=!!cur[nrm(cands[i]||'')];
+    chips[i].classList.toggle('on',on);
+    chips[i].textContent=(on?'✓ ':'＋ ')+(cands[i]||'');
+  }
+}
+/* 回答欄の描画・読み取りをこの2つに集約（選択式／複数選択式／自由記入） */
+function renderAnsInput(prefix,qid,val,sid,taId,rows){
+  if(isChoice(qid))return renderSel(prefix,qid,val||'');
+  if(isMulti(qid))return renderMulti(prefix,qid,val||'',sid);
+  return `<textarea class="tx" id="${taId}" rows="${rows||2}" placeholder="回答を入力（候補をタップしてもOK）">${esc(val||'')}</textarea>`;
+}
+function readAnsInput(prefix,qid,taId){
+  if(isChoice(qid))return readSel(prefix)||'';
+  if(isMulti(qid))return readMulti(prefix)||'';
+  return (document.getElementById(taId)||{}).value||'';
+}
 function selVals(v){return String(v==null?'':v).split(/\s*\/\s*/).map(x=>x.trim()).filter(Boolean)}
 function renderSel(prefix,qid,curVal){
   const opts=optsOf(qid),bin=isBinary(qid),cur=selVals(curVal),known=opts.map(nrm);
@@ -347,7 +442,7 @@ async function confirmCarry(ev,sid,qid){
 }
 async function saveSchoolEdit(sid,qid){
   const y=window.scrollY||0;
-  const v=isChoice(qid)?(readSel('sch_'+qid)||''):((document.getElementById('sch-ed-'+qid)||{}).value||'');
+  const v=readAnsInput('sch_'+qid,qid,'sch-ed-'+qid);
   const n=(document.getElementById('sch-edn-'+qid)||{}).value||'';
   setAns(sid,qid,v,n);ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);toast(v.trim()?'回答を保存しました':'回答を削除しました');
 }
@@ -361,6 +456,7 @@ async function loadYear(){
     try{
       const d=await gasGet({action:'get',year:ST.year});
       if(d&&d.ok){
+        if(d.gasVersion!=null)GAS_VERSION=String(d.gasVersion);
         restoreMode();
         ST.allQuestions=d.questions||[];
         ST.questions=ST.allQuestions.filter(q=>!q.hidden);
@@ -484,7 +580,7 @@ function offGroupHTML(qid){
 function hintHTML(qid){const q=qOf(qid);return q.hint?`<div class="qhint"><span class="qhi">${I.bell}</span><span>${esc(q.hint)}</span></div>`:''}
 window._CANDS={};
 function candsHTML(sid,qid,inputId){
-  if(isChoice(qid))return '';
+  if(isChoice(qid)||isMulti(qid))return '';
   const q=qOf(qid),seen={},items=[];
   function add(v,cls,lab){v=String(v==null?'':v).trim();if(!v)return;const k=nrm(v);if(seen[k])return;seen[k]=1;items.push({v:v,cls:cls,lab:lab||v})}
   const prev=ST.prevAnswers[sid+'__'+qid];
@@ -617,11 +713,21 @@ function analyzeQ(qid){
 }
 function carryTag(a){return (a&&a.carried)?` <span class="notebadge" style="background:#fff3e0;color:var(--amber-d);border:1px solid #f0d9b5">前年度のまま</span>`:''}
 function noteBadge(a){return (a&&a.note?` <span class="notebadge">備考: ${esc(a.note)}</span>`:'')+carryTag(a)}
+function renderVersion(){
+  const el=document.getElementById('verfoot');if(!el)return;
+  const g=GAS_VERSION;
+  let gs;
+  if(g==null)gs='<span class="vwarn">GAS —（未取得）</span>';
+  else if(String(g)!==EXPECT_GAS)gs='<span class="vwarn">GAS '+esc(String(g))+'（想定 '+EXPECT_GAS+'・要再デプロイ）</span>';
+  else gs='GAS '+esc(String(g));
+  el.innerHTML='交野市PTA 実態共有ボード　app v'+APP_VERSION+'　/　'+gs;
+}
 function renderShell(){
   document.getElementById('pvbanner').outerHTML=(USE_API||HASSTORE)?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
   const ys=document.getElementById('yearSel');ys.innerHTML=YEARS.map(y=>`<option value="${y.id}" ${y.id===ST.year?'selected':''}>${y.label}</option>`).join('');
   ys.onchange=async e=>{ST.year=e.target.value;navReset();ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render()};
   const pg=document.getElementById('page');if(pg)pg.className='page'+(canEdit()?'':' romode');
+  renderVersion();
   const mb=document.getElementById('modeBtn');
   if(mb){mb.className='modebtn'+(canEdit()?' on':'');mb.innerHTML=canEdit()?(I.edit+' 編集モード'):(I.bell+' 閲覧モード');mb.title=canEdit()?'編集モード — タップで閲覧モードに戻ります':'タップすると編集モードに切り替えできます';}
   const nav=[['home','ホーム',I.home],['search','質問をさがす',I.search],['table','回答テーブル',I.table],['add','質問を追加',I.plus]];
@@ -781,7 +887,7 @@ function viewSchool(){
           <div class="sc-qlabel" style="background:var(--navy)">${esc(q.text)}${q.unit?`<span class="sc-unit"> (${esc(q.unit)})</span>`:''}</div>
           <div style="padding:10px">
             ${hintHTML(q.id)}${candsHTML(sid,q.id,'sch-ed-'+q.id)}
-            ${isChoice(q.id)?renderSel('sch_'+q.id,q.id,a?a.v:''):`<textarea class="tx" id="sch-ed-${q.id}" rows="2" style="font-size:13px">${esc(a?a.v:'')}</textarea>`}
+            ${renderAnsInput('sch_'+q.id,q.id,a?a.v:'',sid,'sch-ed-'+q.id,2)}
             <input class="tx" id="sch-edn-${q.id}" style="margin:8px 0 8px;font-size:13px" placeholder="備考（任意）" value="${esc(a?a.note:'')}">
             <div style="display:flex;gap:8px">
               <button class="btn pri sm" onclick="saveSchoolEdit('${sid}','${q.id}')">${I.check} 保存</button>
@@ -872,7 +978,7 @@ function viewFlow(){
       <div class="flow-q">${esc(q.text)}</div>
       ${hintHTML(qid)}${candsHTML(fl.sid,qid,'flowInput')}
       <label class="lb">回答${q.unit?`（単位：${esc(q.unit)}）`:''}</label>
-      ${isChoice(qid)?renderSel('flow',qid,cur?cur.v:''):`<textarea class="tx" id="flowInput" rows="2" placeholder="回答を入力（他校の候補をタップしてもOK）">${esc(cur?cur.v:'')}</textarea>`}
+      ${renderAnsInput('flow',qid,cur?cur.v:'',fl.sid,'flowInput',2)}
       <label class="lb" style="margin-top:10px">備考（任意・伝えたい補足があれば）</label>
       <input class="tx" id="flowNote" placeholder="例：令和8年度から変更予定 など" value="${esc(cur?cur.note:'')}">
       <div class="flow-nav">
@@ -885,7 +991,7 @@ function viewFlow(){
     <p class="tiny muted" style="text-align:center;margin-top:12px">残り ${total-fl.idx} 問・いつでも中断できます　<a href="javascript:void(0)" style="color:var(--amber-d)" onclick="openFlowPickerFromFlow()">別のカテゴリに切り替える</a></p></div>`;
 }
 function pickCand(key,i,inputId){const el=document.getElementById(inputId||'flowInput');const arr=window._CANDS[key];if(el&&arr){el.value=arr[i];el.focus()}}
-function readFlowInputs(){const qid=ST.flow.queue[ST.flow.idx];const v=isChoice(qid)?(readSel('flow')||''):((document.getElementById('flowInput')||{}).value||'');const n=(document.getElementById('flowNote')||{}).value||'';return {v:v,n:n}}
+function readFlowInputs(){const qid=ST.flow.queue[ST.flow.idx];const v=readAnsInput('flow',qid,'flowInput');const n=(document.getElementById('flowNote')||{}).value||'';return {v:v,n:n}}
 async function flowSave(){const {v,n}=readFlowInputs();const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n);ST.flow.idx++;render();if(ST.flow&&ST.flow.idx>=ST.flow.queue.length){} }
 function flowSkip(){const {v,n}=readFlowInputs();if(v.trim()){flowSave();return}ST.flow.idx++;render()}
 function flowPrev(){const {v,n}=readFlowInputs();if(v.trim()){const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n)}ST.flow.idx=Math.max(0,ST.flow.idx-1);render()}
@@ -942,8 +1048,23 @@ function viewDetail(){
 }
 function distHTML(groups,unN,total){const N=total||(groups.reduce((a,g)=>a+g.n,0)+(unN||0))||1;return `<div class="distwrap"><div class="distbar">${groups.map((g,i)=>`<div class="distseg" style="width:${g.n/N*100}%;background:${GCOL[i%GCOL.length]}" title="${g.n}校">${g.n/N>=.1?g.n:''}</div>`).join('')}${unN?`<div class="distseg un" style="width:${unN/N*100}%">${unN/N>=.1?unN:''}</div>`:''}</div><div class="distleg">${groups.map((g,i)=>`<span class="legi"><span class="legd" style="background:${GCOL[i%GCOL.length]}"></span>${esc(g.label.length>16?g.label.slice(0,16)+'…':g.label)}（${g.n}）</span>`).join('')}${unN?`<span class="legi"><span class="legd" style="background:#e4ded2"></span>未回答（${unN}）</span>`:''}</div></div>`}
 function memNotesHTML(members){const wn=members.filter(m=>m.note);return wn.length?`<div class="memnotes">${wn.map(m=>`<div class="memnote"><b>${esc(m.short)}</b>：${esc(m.note)}</div>`).join('')}</div>`:''}
+function renderMultiViz(q,an){
+  const ent=an.ent,seen={},items=[];
+  ent.forEach(e=>bulletVals(e.v).forEach(v=>{const k=nrm(v);if(!seen[k]){seen[k]={label:v,members:[]};items.push(seen[k])}
+    if(!seen[k].members.some(m=>m.id===e.id))seen[k].members.push(e)}));
+  items.sort((a,b)=>b.members.length-a.members.length);
+  const maxN=Math.max(1,...items.map(g=>g.members.length));
+  const cards=items.map((g,i)=>{const col=GCOL[i%GCOL.length];const top=i===0&&g.members.length>1;
+    return `<div class="gcard" style="border-left-color:${col}"><div class="gcard-h"><span class="gdot" style="background:${col}"></span><span class="glabel">${esc(g.label)}</span>${top?'<span class="gtag">最多</span>':''}<span class="gcount">${g.members.length}校</span></div><div class="numtrack" style="margin-bottom:9px"><i style="width:${Math.max(4,Math.round(g.members.length/maxN*100))}%"></i></div><div class="gchips">${g.members.map(m=>`<span class="gch"${edClick("startEdit('"+m.id+"')")}>${esc(m.short)}</span>`).join('')}</div></div>`}).join('');
+  const list=ent.map(e=>`<div class="numrow"><div class="numlab"${edClick("startEdit('"+e.id+"')")}>${esc(e.short)}</div><div class="numval mulcell" style="text-align:left;flex:1">${esc(bulletVals(e.v).map(v=>'・'+v).join('\n'))}${noteBadge(e)}</div></div>`).join('');
+  return `<div class="sec-h"><span class="ic">${I.chart}</span>挙がった項目（${items.length}種類・複数選択式）</div>
+    ${cards||'<p class="muted tiny">まだ回答がありません。</p>'}
+    ${list?`<div class="sec-h" style="margin-top:18px"><span class="ic">${I.table}</span>学校ごとの回答</div><div class="card" style="border:none;padding:0">${list}</div>`:''}
+    ${unGroup(an.blank,q.id)}`;
+}
 function renderViz(q,an){
   if(isChoice(q.id))return renderChoiceViz(q,an);
+  if(isMulti(q.id))return renderMultiViz(q,an);
   if(an.type==='empty')return `<div class="sec-h"><span class="ic">${I.chart}</span>回答状況</div><p class="muted tiny">まだ回答がありません。${canEdit()?'下の「回答を更新する」から記入できます。':'記入するには編集モードに切り替えてください。'}</p>${offGroupHTML(q.id)}`;
   if(an.type==='numeric'){
     const isPct=an.isPct;
@@ -996,7 +1117,7 @@ function matchShort(sh){const f=SCHOOLS.find(s=>sh.includes(s.short)||s.short.in
 function renderEdit(q){
   const rows=SCHOOLS.map(s=>{
     if(!isTargetSchool(s.id,q.id))return `<div class="arow offrow"><div class="an">${esc(s.short)}</div><div class="av">— 対象外（${esc(targetLabel(q.id))}）</div><div class="aedit"></div></div>`;
-    const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${isChoice(q.id)?renderSel(s.id,q.id,a?a.v:''):`<textarea class="tx" id="ed-${s.id}" rows="2" placeholder="${esc(s.name)}の回答...">${esc(a?a.v:'')}</textarea>`}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
+    const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${renderAnsInput(s.id,q.id,a?a.v:'',s.id,'ed-'+s.id,2)}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
   if(!canEdit())return `<div class="editsec">${roNotice('回答を入力・修正するには編集モードに切り替えてください。')}</div>`;
   return `<div class="editsec"><button class="btn edit-toggle" onclick="toggleShowEdit()"><span>${I.edit} 回答を更新する</span><span>${I.down}</span></button>${ST.showEdit?`<div class="card" style="margin-top:10px">${rows}</div>`:''}</div>`;
 }
@@ -1006,7 +1127,7 @@ function cancelEdit(){const y=window.scrollY||0;ST.editing=null;render({keepScro
 function toggleShowEdit(){if(!ST.showEdit&&!requireEdit())return;const y=window.scrollY||0;ST.showEdit=!ST.showEdit;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20)}
 async function saveEdit(sid){
   const y=window.scrollY||0;
-  const v=isChoice(ST.q)?(readSel(sid)||''):((document.getElementById('ed-'+sid)||{}).value||'');
+  const v=readAnsInput(sid,ST.q,'ed-'+sid);
   const n=(document.getElementById('edn-'+sid)||{}).value||'';
   setAns(sid,ST.q,v,n);
   ST.editing=null;
@@ -1029,7 +1150,7 @@ function viewTable(){
   rows.sort((a,b)=>a._c!==b._c?a._c-b._c:a._q!==b._q?a._q-b._q:a._s-b._s);
   return `<div class="toolbar"><div class="sec-h" style="margin:0">${I.table} 回答テーブル</div><div style="flex:1"></div><select class="tx" style="width:auto" onchange="ST.tFilter=this.value;render()"><option value="all" ${ST.tFilter==='all'?'selected':''}>全校</option>${SCHOOLS.map(s=>`<option value="${s.id}" ${ST.tFilter===s.id?'selected':''}>${esc(s.short)}</option>`).join('')}</select><button class="btn sm" onclick="exportCSV()">CSVで書き出し</button></div>
     <p class="muted tiny" style="margin-bottom:12px">各校が回答・更新するたびに1行ずつ記録されます（${ST.year}年度・${rows.length}件、カテゴリ→質問→学校順）。</p>
-    <div style="overflow-x:auto"><table class="ttable"><thead><tr><th>学校</th><th>カテゴリ</th><th>質問</th><th>回答</th><th>備考</th><th>更新</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap;font-weight:500">${esc(r.short)}</td><td class="tc" style="white-space:nowrap">${esc(r.cat)}</td><td style="min-width:120px">${esc(r.q)}</td><td style="min-width:150px">${esc(r.v)}${r.carried?' <span class="notebadge" style="background:#fff3e0;color:var(--amber-d);border:1px solid #f0d9b5">前年度のまま</span>':''}</td><td class="tc" style="min-width:90px">${esc(r.note||'')}</td><td class="tc" style="white-space:nowrap">${fmtDate(r.t)}</td></tr>`).join('')}</tbody></table></div>${rows.length?'':'<p class="empty-note">まだ回答がありません。</p>'}`;
+    <div style="overflow-x:auto"><table class="ttable"><thead><tr><th>学校</th><th>カテゴリ</th><th>質問</th><th>回答</th><th>備考</th><th>更新</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap;font-weight:500">${esc(r.short)}</td><td class="tc" style="white-space:nowrap">${esc(r.cat)}</td><td style="min-width:120px">${esc(r.q)}</td><td style="min-width:150px" class="mulcell">${esc(r.v)}${r.carried?' <span class="notebadge" style="background:#fff3e0;color:var(--amber-d);border:1px solid #f0d9b5">前年度のまま</span>':''}</td><td class="tc" style="min-width:90px">${esc(r.note||'')}</td><td class="tc" style="white-space:nowrap">${fmtDate(r.t)}</td></tr>`).join('')}</tbody></table></div>${rows.length?'':'<p class="empty-note">まだ回答がありません。</p>'}`;
 }
 function exportCSV(){const tmp=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{if(!isTargetSchool(s.id,q.id))return;const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))tmp.push({c:CATEGORIES.indexOf(q.category)<0?999:CATEGORIES.indexOf(q.category),q:parseInt(q.id.slice(1))||0,s:parseInt(s.id.slice(1))||0,row:[ST.year,s.name,q.category,q.text,a.v,a.note||'',a.carried?'前年度のまま':'今年度確定',new Date(a.t).toLocaleString('ja-JP')]})}));tmp.sort((a,b)=>a.c!==b.c?a.c-b.c:a.q!==b.q?a.q-b.q:a.s-b.s);const rows=[['年度','学校','カテゴリ','質問','回答','備考','状態','更新'],...tmp.map(x=>x.row)];const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
 /* ===== 既存質問の設定を編集 =====
@@ -1044,7 +1165,7 @@ function viewQEdit(){
   if(!q)return '<p class="empty-note">質問が見つかりません</p>';
   const cs=cats(),tg=qTarget(q.id),c=qCounts(q.id);
   const inUse=c.conf+c.car;
-  const typeOpts=['記述','選択式','数値','一覧','連絡先'].map(t=>`<option value="${t}" ${(q.type||'記述')===t?'selected':''}>${t}</option>`).join('');
+  const typeOpts=['記述','選択式','複数選択式','数値','一覧','連絡先'].map(t=>`<option value="${t}" ${(q.type||'記述')===t?'selected':''}>${t}</option>`).join('');
   const catOpts=cs.map(x=>`<option value="${esc(x)}" ${x===q.category?'selected':''}>${esc(x)}</option>`).join('');
   return `<button class="back" onclick="navBack('detail:${q.id}')">${I.back} ${esc(navLabel('detail:'+q.id))}</button>
   <div class="card qedit-card"><div class="sec-h"><span class="ic">${I.edit}</span>質問の設定を編集</div>
@@ -1053,7 +1174,7 @@ function viewQEdit(){
   <label class="lb">カテゴリ</label><select class="tx" id="qeCat" onchange="qeToggleNewCat()" style="margin-bottom:12px">${catOpts}<option value="__new__">＋ 新しいカテゴリを作る</option></select>
   <div id="qeNewCatWrap" style="display:none;margin-bottom:12px"><label class="lb">新しいカテゴリ名</label><input class="tx" id="qeNewCat" placeholder="例：登下校・安全"></div>
   <label class="lb">回答の種類</label><select class="tx" id="qeType" onchange="qeToggleType()" style="margin-bottom:12px">${typeOpts}</select>
-  <div id="qeOptsWrap" style="display:${(q.type==='選択式')?'block':'none'};margin-bottom:12px"><label class="lb">選択肢（「 / 」で区切る）</label><input class="tx" id="qeOpts" value="${esc(q.options||'')}" placeholder="例：あり / なし"><p class="selmulti-hint">選択肢名を変えると、その名前で答えていた学校の回答は「その他」に集計されます。表記をそろえたい場合は、各校の回答も更新してください。</p></div>
+  <div id="qeOptsWrap" style="display:${usesOptions(q.type)?'block':'none'};margin-bottom:12px"><label class="lb" id="qeOptsLabel">${(q.type==='複数選択式')?'候補（任意・「 / 」で区切る）':'選択肢（「 / 」で区切る）'}</label><input class="tx" id="qeOpts" value="${esc(q.options||'')}" placeholder="例：あり / なし"><p class="selmulti-hint">選択肢名を変えると、その名前で答えていた学校の回答は「その他」に集計されます。表記をそろえたい場合は、各校の回答も更新してください。</p></div>
   <div id="qeUnitWrap" style="display:${(q.type==='数値')?'block':'none'};margin-bottom:12px"><label class="lb">単位</label><input class="tx" id="qeUnit" value="${esc(q.unit||'')}" placeholder="例：万円 ／ 人 ／ ％"></div>
   <label class="lb">質問の内容</label><input class="tx" id="qeText" value="${esc(q.text||'')}" style="margin-bottom:12px">
   <label class="lb">回答してもらう学校</label>
@@ -1070,7 +1191,8 @@ function viewQEdit(){
 }
 function qeToggleNewCat(){const w=document.getElementById('qeNewCatWrap');if(w)w.style.display=document.getElementById('qeCat').value==='__new__'?'block':'none'}
 function qeToggleType(){const t=document.getElementById('qeType').value;
-  const o=document.getElementById('qeOptsWrap');if(o)o.style.display=(t==='選択式')?'block':'none';
+  const o=document.getElementById('qeOptsWrap');if(o)o.style.display=usesOptions(t)?'block':'none';
+  const lb=document.getElementById('qeOptsLabel');if(lb)lb.textContent=(t==='複数選択式')?'候補（任意・「 / 」で区切る）':'選択肢（「 / 」で区切る）';
   const u=document.getElementById('qeUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
 function readQEditForm(){
   let cat=document.getElementById('qeCat').value;
@@ -1078,7 +1200,7 @@ function readQEditForm(){
   const text=(document.getElementById('qeText').value||'').trim();
   if(!text){toast('質問の内容を入力してください');return null}
   const type=document.getElementById('qeType').value;
-  const options=(type==='選択式')?((document.getElementById('qeOpts')||{}).value||'').split('/').map(x=>x.trim()).filter(Boolean).join(' / '):'';
+  const options=usesOptions(type)?((document.getElementById('qeOpts')||{}).value||'').split('/').map(x=>x.trim()).filter(Boolean).join(' / '):'';
   if(type==='選択式'&&!options){toast('選択肢を「 / 」区切りで入力してください');return null}
   const sho=document.getElementById('qeTgSho').checked,chu=document.getElementById('qeTgChu').checked;
   if(!sho&&!chu){toast('小学校・中学校のどちらかにチェックを入れてください');return null}
@@ -1213,7 +1335,7 @@ function parseCSV(text){
   if(cur!==''||row.length){row.push(cur);rows.push(row)}
   return {rows:rows.filter(r=>r.some(c=>String(c).trim()!==''))};
 }
-var IMP_TYPES=['記述','選択式','数値','一覧','連絡先'];
+var IMP_TYPES=['記述','選択式','複数選択式','数値','一覧','連絡先'];
 var IMP_TARGETS={'小 / 中':'小 / 中','小/中':'小 / 中','小・中':'小 / 中','小中':'小 / 中','両方':'小 / 中','小':'小','中':'中','小学校':'小','中学校':'中'};
 function validateImport(text){
   const p=parseCSV(text);
@@ -1238,9 +1360,9 @@ function validateImport(text){
     if(!text2)E(i,'質問が空です。');
     if(text2.length>200)E(i,'質問が長すぎます（'+text2.length+'文字。200文字まで）。');
     if(IMP_TYPES.indexOf(type)<0)E(i,'回答の種類「'+type+'」は使えません（'+IMP_TYPES.join('・')+'のいずれか）。');
-    if(type==='選択式'){
+    if(type==='選択式'||type==='複数選択式'){
       opts=opts.split('/').map(x=>x.trim()).filter(Boolean).join(' / ');
-      if(!opts)E(i,'回答の種類が「選択式」ですが、選択肢が空です。');
+      if(type==='選択式'&&!opts)E(i,'回答の種類が「選択式」ですが、選択肢が空です。');
     }else opts='';
     const tg=IMP_TARGETS[tgRaw.replace(/\s+/g,'')]||IMP_TARGETS[tgRaw];
     if(!tg)E(i,'対象区分「'+tgRaw+'」は使えません（「小 / 中」「小」「中」のいずれか）。');
@@ -1375,8 +1497,8 @@ function viewAdd(){const cs=cats();
   return `<div class="card" style="max-width:560px;margin:0 auto"><div class="sec-h"><span class="ic">${I.plus}</span>新しい質問を追加</div><p class="muted tiny" style="margin-bottom:16px">追加した質問は全校で共有されます。だれが追加したか記録され、トップにも表示されます。</p>
   <label class="lb">カテゴリ</label><select class="tx" id="addCat" onchange="toggleNewCat()" style="margin-bottom:12px">${cs.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}<option value="__new__">＋ 新しいカテゴリを作る</option></select>
   <div id="newCatWrap" style="display:none;margin-bottom:12px"><label class="lb">新しいカテゴリ名</label><input class="tx" id="newCatName" placeholder="例：登下校・安全"></div>
-  <label class="lb">回答の種類</label><select class="tx" id="addType" onchange="toggleAddType()" style="margin-bottom:12px"><option value="記述">記述（自由記述）</option><option value="選択式">選択式（ボタンで選ぶ・複数選択可）</option><option value="数値">数値</option><option value="一覧">一覧（氏名など）</option><option value="連絡先">連絡先</option></select>
-  <div id="addOptsWrap" style="display:none;margin-bottom:12px"><label class="lb">選択肢（「 / 」で区切る）</label><input class="tx" id="addOpts" placeholder="例：あり / なし　または　口座引落し / 振込 / 現金徴収"><p class="selmulti-hint">「あり / なし」だけにすると“今年度の方針で択一”の質問になります。それ以外は複数選択になります。選択肢はスプレッドシートに保存され、後からシート上で自由に編集できます。</p></div>
+  <label class="lb">回答の種類</label><select class="tx" id="addType" onchange="toggleAddType()" style="margin-bottom:12px"><option value="記述">記述（自由記述）</option><option value="選択式">選択式（ボタンで選ぶ・複数選択可）</option><option value="複数選択式">複数選択式（候補をタップして箇条書きで積む）</option><option value="数値">数値</option><option value="一覧">一覧（氏名など）</option><option value="連絡先">連絡先</option></select>
+  <div id="addOptsWrap" style="display:none;margin-bottom:12px"><label class="lb" id="addOptsLabel">選択肢（「 / 」で区切る）</label><input class="tx" id="addOpts" placeholder="例：あり / なし　または　口座引落し / 振込 / 現金徴収"><p class="selmulti-hint">「あり / なし」だけにすると“今年度の方針で択一”の質問になります。それ以外は複数選択になります。選択肢はスプレッドシートに保存され、後からシート上で自由に編集できます。</p></div>
   <div id="addUnitWrap" style="display:none;margin-bottom:12px"><label class="lb">単位（数値の場合）</label><input class="tx" id="addUnit" placeholder="例：万円 ／ 人 ／ 回 ／ ％ ／ 家庭"></div>
   <label class="lb">質問の内容</label><input class="tx" id="addText" placeholder="例：登校班の編成方法は？" style="margin-bottom:12px">
   <label class="lb">回答してもらう学校</label>
@@ -1392,7 +1514,7 @@ function readAddForm(){
   const text=(document.getElementById('addText').value||'').trim();if(!text){toast('質問の内容を入力してください');return null}
   const type=document.getElementById('addType').value;
   const optsRaw=(document.getElementById('addOpts')||{}).value||'';
-  const options=(type==='選択式')?optsRaw.split('/').map(x=>x.trim()).filter(Boolean).join(' / '):'';
+  const options=usesOptions(type)?optsRaw.split('/').map(x=>x.trim()).filter(Boolean).join(' / '):'';
   if(type==='選択式'&&!options){toast('選択肢を「 / 」区切りで入力してください');return null}
   const unit=(type==='数値')?((document.getElementById('addUnit')||{}).value||'').trim():'';
   const hint=((document.getElementById('addHint')||{}).value||'').trim();
@@ -1409,7 +1531,7 @@ function previewCardHTML(q){
     ${q.hint?`<div class="qhint"><span class="qhi">${I.bell}</span><span>${esc(q.hint)}</span></div>`:''}
     ${exChips?`<div class="candwrap"><div class="cand-h">前年度・回答例・他校の回答（タップで入力できます）</div><div class="cand-chips">${exChips}</div></div>`:''}
     <label class="lb">回答${q.unit?`（単位：${esc(q.unit)}）`:''}</label>
-    ${isChoice(q.id)?renderSel('pv',q.id,''):'<textarea class="tx" rows="2" placeholder="回答を入力（他校の候補をタップしてもOK）"></textarea>'}
+    ${renderAnsInput('pv',q.id,'','__pv__','pv-ta',2)}
     <label class="lb" style="margin-top:10px">備考（任意・伝えたい補足があれば）</label>
     <input class="tx" placeholder="例：令和8年度から変更予定 など">
     <div class="flow-nav pvdisabled"><button class="btn sm">スキップ</button><div style="flex:1"></div><button class="btn pri">保存して次へ ${I.check}</button></div>
@@ -1433,7 +1555,11 @@ function readTarget(){
   return (sho&&chu)?'小 / 中':(sho?'小':'中');
 }
 function toggleNewCat(){document.getElementById('newCatWrap').style.display=document.getElementById('addCat').value==='__new__'?'block':'none'}
-function toggleAddType(){const t=document.getElementById('addType').value;const w=document.getElementById('addOptsWrap');if(w)w.style.display=(t==='選択式')?'block':'none';const u=document.getElementById('addUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
+function usesOptions(t){return t==='選択式'||t==='複数選択式'}
+function toggleAddType(){const t=document.getElementById('addType').value;
+  const w=document.getElementById('addOptsWrap');if(w)w.style.display=usesOptions(t)?'block':'none';
+  const lb=document.getElementById('addOptsLabel');if(lb)lb.textContent=(t==='複数選択式')?'候補（任意・「 / 」で区切る）':'選択肢（「 / 」で区切る）';
+  const u=document.getElementById('addUnitWrap');if(u)u.style.display=(t==='数値')?'block':'none'}
 async function addQuestion(){
   if(!requireEdit())return;
   const f=readAddForm();if(!f)return;
