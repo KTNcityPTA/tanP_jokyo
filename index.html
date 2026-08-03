@@ -132,6 +132,8 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .mchip.on{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-d);font-weight:500}
 .multa{font-family:inherit;line-height:1.9}
 .mulcell{white-space:pre-line}
+.btn.danger{color:#a33a2e;border-color:#f0c9bb;background:#fdf0ee}
+.btn.danger:hover{background:#fbe3df}
 /* バージョン表示 */
 .verfoot{text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:#b8b1a3;padding:18px 12px 26px;letter-spacing:.03em;user-select:text}
 .verfoot .vwarn{color:var(--amber-d);font-weight:700}
@@ -264,7 +266,7 @@ const CATCOL={'基本情報':'#30496a','会計':'#3a9d7e','役員・委員':'#e0
    EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
    実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
    食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
-const APP_VERSION='1.14';
+const APP_VERSION='1.15';
 const EXPECT_GAS='09';
 let GAS_VERSION=null;
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
@@ -445,6 +447,14 @@ async function saveSchoolEdit(sid,qid){
   const v=readAnsInput('sch_'+qid,qid,'sch-ed-'+qid);
   const n=(document.getElementById('sch-edn-'+qid)||{}).value||'';
   setAns(sid,qid,v,n);ST.schoolEditing=null;render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);toast(v.trim()?'回答を保存しました':'回答を削除しました');
+}
+function clearSchoolAnswer(sid,qid){
+  if(!requireEdit())return;
+  const y=window.scrollY||0;
+  setAns(sid,qid,'','');
+  ST.schoolEditing=null;
+  render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);
+  toast('回答を削除し、未回答に戻しました');
 }
 async function seedIfNeeded(){
   // スプレッドシート（GAS）が唯一の正データ。直書きシードは廃止したため何もしない。
@@ -889,9 +899,10 @@ function viewSchool(){
             ${hintHTML(q.id)}${candsHTML(sid,q.id,'sch-ed-'+q.id)}
             ${renderAnsInput('sch_'+q.id,q.id,a?a.v:'',sid,'sch-ed-'+q.id,2)}
             <input class="tx" id="sch-edn-${q.id}" style="margin:8px 0 8px;font-size:13px" placeholder="備考（任意）" value="${esc(a?a.note:'')}">
-            <div style="display:flex;gap:8px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
               <button class="btn pri sm" onclick="saveSchoolEdit('${sid}','${q.id}')">${I.check} 保存</button>
               <button class="btn sm" onclick="cancelSchoolEdit()">キャンセル</button>
+              ${a?`<button class="btn sm danger" onclick="clearSchoolAnswer('${sid}','${q.id}')">${I.bell} 回答を削除して未回答に戻す</button>`:''}
             </div>
           </div>
         </div>`;
@@ -981,6 +992,7 @@ function viewFlow(){
       ${renderAnsInput('flow',qid,cur?cur.v:'',fl.sid,'flowInput',2)}
       <label class="lb" style="margin-top:10px">備考（任意・伝えたい補足があれば）</label>
       <input class="tx" id="flowNote" placeholder="例：令和8年度から変更予定 など" value="${esc(cur?cur.note:'')}">
+      ${cur?`<div style="margin-bottom:9px"><button class="btn sm danger" onclick="flowClear()">${I.bell} この回答を削除して未回答に戻す</button></div>`:''}
       <div class="flow-nav">
         ${fl.idx>0?`<button class="btn sm" onclick="flowPrev()">${I.back} 前へ</button>`:''}
         <button class="btn sm" onclick="flowSkip()">スキップ</button>
@@ -994,6 +1006,12 @@ function pickCand(key,i,inputId){const el=document.getElementById(inputId||'flow
 function readFlowInputs(){const qid=ST.flow.queue[ST.flow.idx];const v=readAnsInput('flow',qid,'flowInput');const n=(document.getElementById('flowNote')||{}).value||'';return {v:v,n:n}}
 async function flowSave(){const {v,n}=readFlowInputs();const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n);ST.flow.idx++;render();if(ST.flow&&ST.flow.idx>=ST.flow.queue.length){} }
 function flowSkip(){const {v,n}=readFlowInputs();if(v.trim()){flowSave();return}ST.flow.idx++;render()}
+function flowClear(){
+  const qid=ST.flow.queue[ST.flow.idx];
+  setAns(ST.flow.sid,qid,'','');
+  toast('回答を削除し、未回答に戻しました');
+  render();
+}
 function flowPrev(){const {v,n}=readFlowInputs();if(v.trim()){const qid=ST.flow.queue[ST.flow.idx];setAns(ST.flow.sid,qid,v,n)}ST.flow.idx=Math.max(0,ST.flow.idx-1);render()}
 function flowDoneHTML(sc){
   const cat=ST.flow&&ST.flow.cat;
@@ -1117,9 +1135,17 @@ function matchShort(sh){const f=SCHOOLS.find(s=>sh.includes(s.short)||s.short.in
 function renderEdit(q){
   const rows=SCHOOLS.map(s=>{
     if(!isTargetSchool(s.id,q.id))return `<div class="arow offrow"><div class="an">${esc(s.short)}</div><div class="av">— 対象外（${esc(targetLabel(q.id))}）</div><div class="aedit"></div></div>`;
-    const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${renderAnsInput(s.id,q.id,a?a.v:'',s.id,'ed-'+s.id,2)}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow"><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button><button class="btn sm" onclick="cancelEdit()">キャンセル</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
+    const a=getAns(s.id,q.id);if(ST.editing===s.id)return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="edbox">${candsHTML(s.id,q.id,'ed-'+s.id)}${renderAnsInput(s.id,q.id,a?a.v:'',s.id,'ed-'+s.id,2)}<input class="tx" id="edn-${s.id}" style="margin:9px 0 8px" placeholder="備考（任意）" value="${esc(a?a.note:'')}"><div class="edrow">${a?`<button class="btn sm danger" onclick="clearDetailAnswer('${s.id}')">${I.bell} 削除</button>`:''}<div style="flex:1"></div><button class="btn sm" onclick="cancelEdit()">キャンセル</button><button class="btn pri sm" onclick="saveEdit('${s.id}')">${I.check} 保存</button></div></div></div>`;return `<div class="arow" id="row-${s.id}"><div class="an">${esc(s.short)}</div><div class="av ${a?'':'empty'}">${a?esc(a.v)+noteBadge(a):'— 未回答'}</div><div class="aedit"><button class="btn sm" onclick="startEdit('${s.id}')">${a?'編集':'回答'}</button></div></div>`}).join('');
   if(!canEdit())return `<div class="editsec">${roNotice('回答を入力・修正するには編集モードに切り替えてください。')}</div>`;
   return `<div class="editsec"><button class="btn edit-toggle" onclick="toggleShowEdit()"><span>${I.edit} 回答を更新する</span><span>${I.down}</span></button>${ST.showEdit?`<div class="card" style="margin-top:10px">${rows}</div>`:''}</div>`;
+}
+function clearDetailAnswer(sid){
+  if(!requireEdit())return;
+  const y=window.scrollY||0;
+  setAns(sid,ST.q,'','');
+  ST.editing=null;
+  render({keepScroll:true});setTimeout(()=>window.scrollTo(0,y),20);
+  toast('回答を削除し、未回答に戻しました');
 }
 function startEdit(sid){
   if(!requireEdit())return;const y=window.scrollY||0;ST.showEdit=true;ST.editing=sid;render({keepScroll:true});setTimeout(()=>{const el=document.getElementById('ed-'+sid);if(el)el.focus();else window.scrollTo(0,y)},20)}
