@@ -9,8 +9,8 @@
   （別ファイル Code.gs）とGoogleスプレッドシートです。
 
 【現在のバージョン】
-  APP_VERSION = 1.15
-  最終更新日　: 2026-08-03
+  APP_VERSION = 2.0
+  最終更新日　: 2026-08-04
   （画面右下のフッターに「app v1.15 / GAS ??」として薄く表示されます。
     GAS側のバージョンと数字が食い違う場合は、Code.gsの再デプロイ忘れ、
     またはこのHTMLをGitHubへ反映し忘れている可能性があります）
@@ -42,6 +42,12 @@
   ・閲覧モード（既定）と編集モード（確認ダイアログ＋操作ログ記録）の切替
   ・質問の追加・既存質問の設定変更（カテゴリ・選択肢・補足説明・回答例等）
   ・質問一覧のCSV/PDF出力と、編集済みCSVからの一括反映（追加/更新）
+  ・フッターの「問合せ」＝使い方・不具合の確認と、開発者への連絡フォーム
+  ・「くらべる」＝カテゴリ別レポート（v1.16で追加）
+    　カテゴリを選ぶと、その分野の質問が縦に並び、1問ごとに10校の回答が
+    　学校名1文字チップ（み・郡・倉・２・旭・星・３・岩・私・藤）で一覧できます。
+    　スマホの縦スクロールを主軸に設計し、そのままA4縦のPDF印刷と、
+    　Excel向けの横持ちCSV（行＝質問／列＝各校）に出力できます。
 ======================================================================
 -->
 <!DOCTYPE html>
@@ -183,6 +189,18 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 /* バージョン表示 */
 .verfoot{text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:#b8b1a3;padding:18px 12px 26px;letter-spacing:.03em;user-select:text}
 .verfoot .vwarn{color:var(--amber-d);font-weight:700}
+.verfoot .footlink{color:var(--navy2);cursor:pointer;text-decoration:underline;margin-left:10px;font-family:'Zen Maru Gothic';font-size:11.5px;-webkit-tap-highlight-color:transparent}
+.verfoot .footlink:hover{color:var(--amber-d)}
+/* 問合せ画面 */
+.help-q{border-top:1px solid var(--line);padding:11px 0}
+.help-q:first-of-type{border-top:none}
+.help-q b{display:block;font-family:'Zen Maru Gothic';font-size:14px;color:var(--navy);margin-bottom:4px}
+.help-q span{font-size:13.5px;color:var(--ink2);line-height:1.8}
+.help-mail{display:inline-flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:10px;padding:9px 13px;font-size:14px;color:var(--amber-d);font-weight:500;word-break:break-all;text-decoration:none}
+.help-dev{margin-top:22px;padding-top:14px;border-top:1px dashed var(--line2);text-align:center}
+.help-dev .devbtn{font-family:'Zen Maru Gothic';font-size:11.5px;color:var(--ink3);background:none;border:1px solid var(--line2);border-radius:8px;padding:6px 13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.help-dev .devbtn:hover{color:var(--ink2);border-color:var(--ink3)}
+.help-form{margin-top:14px;text-align:left;background:#fbf9f4;border:1px solid var(--line);border-radius:12px;padding:14px}
 /* 質問一覧の出力 */
 .exportbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .exportbar .btn{flex-shrink:0}
@@ -294,9 +312,86 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .vschip{font-size:12.5px;border-radius:9px;padding:6px 11px;border:1px solid var(--line2);word-break:break-word}
 .vschip.mine{background:var(--amber-soft);border-color:#f0d9b5;color:var(--amber-d);font-weight:700}
 .vschip.maj{background:var(--paper);color:var(--ink2)}
+
+/* ===== くらべる（カテゴリ別レポート） =====
+   スマホの縦スクロールを主軸に設計。学校は1文字チップで表し、
+   凡例を上部に固定表示します。印刷時は1文字ではなく略称に自動で戻ります。 */
+.rep-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.rep-head{margin-bottom:12px}
+.rep-head h2{font-size:20px;line-height:1.4}
+.rep-head .rsub{font-size:12.5px;color:var(--ink3);margin-top:3px}
+.rep-leg{position:sticky;top:var(--hdh,92px);z-index:30;background:rgba(246,243,236,.95);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-bottom:14px}
+.rep-leg .lgh{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink3);font-family:'Zen Maru Gothic';font-weight:700}
+.rep-leg .lgh .lgt{margin-left:auto;font-weight:500;color:var(--navy2);cursor:pointer;background:#fff;border:1px solid var(--line2);border-radius:7px;padding:3px 9px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.rep-leg .lgbody{display:flex;gap:5px 7px;flex-wrap:wrap;margin-top:7px}
+.legpair{display:inline-flex;align-items:center;gap:4px}
+.legpair .legnm{font-size:11px;color:var(--ink2)}
+.sch1{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 6px;border-radius:9px;font-family:'Zen Maru Gothic';font-weight:700;font-size:15px;border:1px solid;line-height:1;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer}
+.sch1 .cfull{display:none;font-style:normal;font-size:12px;font-weight:500;white-space:nowrap}
+.sch1.ts{background:var(--amber-soft);border-color:#f0d9b5;color:var(--amber-d)}
+.sch1.tc{background:#e6ecf4;border-color:#ccd8e6;color:var(--navy)}
+.sch1.tb{background:var(--teal-soft);border-color:#bfe2d3;color:var(--teal-d)}
+.sch1.off{background:#f2efe8;border-color:var(--line2);border-style:dashed;color:var(--ink3)}
+.sch1.me{background:var(--amber);border-color:var(--amber-d);color:#fff;font-weight:700;box-shadow:0 0 0 2px rgba(224,136,59,.32)}
+.sch1.me .cfull{font-weight:700}
+.sch1.car::after{content:"";position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--amber);border:1px solid #fff}
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;margin-bottom:12px}
+.rc-h{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
+.rc-t{flex:1;font-family:'Zen Maru Gothic';font-weight:700;font-size:15px;line-height:1.5;word-break:break-word}
+.rc-n{flex-shrink:0;font-size:11.5px;color:var(--ink2);background:var(--paper);border-radius:12px;padding:2px 9px;white-space:nowrap}
+.rc-tg{font-size:10.5px;font-weight:700;color:#fff;background:var(--navy2);border-radius:5px;padding:1px 7px;margin-right:5px;vertical-align:2px}
+.rc-f{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
+.rc-more{font-size:12px;color:var(--navy2);cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.rc-more:hover{color:var(--amber-d)}
+.rc-un{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--ink3)}
+.ropt{margin-bottom:11px}
+.ropt:last-child{margin-bottom:0}
+.ropt-h{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.ropt-l{flex:1;font-size:13.5px;font-weight:500;word-break:break-word}
+.ropt-n{font-size:11.5px;color:var(--ink2);white-space:nowrap}
+.ropt-bar{height:8px;border-radius:5px;background:var(--paper);border:1px solid var(--line);overflow:hidden;margin-bottom:7px}
+.ropt-bar i{display:block;height:100%}
+.ropt-chips{display:flex;gap:5px;flex-wrap:wrap}
+.rnum{display:flex;align-items:center;gap:8px;padding:3px 0}
+.rn-bar{flex:1;height:16px;background:var(--paper);border:1px solid var(--line);border-radius:5px;overflow:hidden;min-width:40px}
+.rn-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--navy2),var(--navy))}
+.rn-v{width:96px;flex-shrink:0;text-align:right;font-size:12.5px}
+.rtxt{display:block;padding:9px 0;border-top:1px dashed var(--line)}
+.rtxt:first-child{border-top:none}
+.rt-h{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.rt-chips{display:inline-flex;gap:5px;flex-wrap:wrap}
+.rt-h .ropt-n{margin-left:auto}
+.rt-b{flex:1;min-width:0}
+.rt-v{font-size:13.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word;cursor:pointer}
+.rt-v.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rt-v.open{display:block;overflow:visible}
+.rt-more{font-size:11px;color:var(--navy2);margin-top:2px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.rt-note{font-size:11.5px;color:var(--ink2);background:var(--paper);border-radius:7px;padding:3px 8px;margin-top:5px;display:inline-block}
+.rep-cathead{font-family:'Zen Maru Gothic';font-weight:700;font-size:17px;color:var(--navy);margin:22px 0 12px;padding-left:10px;border-left:5px solid var(--amber)}
+.rep-cathead:first-of-type{margin-top:0}
+.rep-stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+.rep-stats div{font-size:11.5px;color:var(--ink2)}
+.rep-stats b{display:block;font-family:'Zen Maru Gothic';font-size:15px;color:var(--navy)}
+@media(max-width:480px){.rn-v{width:78px;font-size:12px}.rc-t{font-size:14.5px}}
+@media print{
+  body.printrep .hd,body.printrep .nav,body.printrep .rep-bar,body.printrep .rep-leg,
+  body.printrep .back,body.printrep .rc-f,body.printrep .verfoot,body.printrep .toast,
+  body.printrep .qlist-print,body.printrep .saving,body.printrep .mask{display:none !important}
+  body.printrep .page{padding:0}
+  body.printrep .rcard{page-break-inside:avoid;border:.4pt solid #999;margin-bottom:4mm;padding:3mm 4mm}
+  body.printrep .rep-cathead{page-break-before:always;font-size:13pt}
+  body.printrep .rep-cathead:first-of-type{page-break-before:auto}
+  body.printrep .sch1{min-width:0;height:auto;padding:.5mm 1.5mm;font-size:8pt;border-radius:2mm}
+  body.printrep .sch1 .c1{display:none}
+  body.printrep .sch1 .cfull{display:inline}
+  body.printrep .rt-v{display:block !important;overflow:visible !important;-webkit-line-clamp:unset !important}
+  body.printrep .rt-more{display:none}
+  body.printrep .rc-t{font-size:10.5pt}
+  body.printrep .sch1.me{background:#fff !important;color:#000 !important;border:.8pt solid #000 !important;font-weight:700}
+}
 </style></head>
 <body>
-<div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div class="hd-act"><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button><select class="yearsel" id="yearSel"></select></div></div>
+<div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div class="hd-act"><select class="yearsel" id="mySel" title="自校を選ぶと、くらべる画面で自校が強調表示されます"></select><select class="yearsel" id="yearSel"></select><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button></div></div>
 <div id="pvbanner"></div><div class="nav"><div class="nav-in" id="nav"></div></div></div>
 <div class="wrap"><div class="page" id="page"></div></div><div class="toast" id="toast"></div>
 <div class="verfoot" id="verfoot"></div>
@@ -312,13 +407,20 @@ const CATCOL={'基本情報':'#30496a','会計':'#3a9d7e','役員・委員':'#e0
    EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
    実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
    食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
-const APP_VERSION='1.15';
+const APP_VERSION='2.0';
 const EXPECT_GAS='09';
 let GAS_VERSION=null;
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
 const TYPELABEL={numeric:'数値',categorical:'選択式',multi:'複数選択式',text:'記述',list:'一覧',contact:'連絡先',empty:'未回答'};
 const TYPECOL={numeric:'#4a8db5',categorical:'#3a9d7e',multi:'#2f7f9d',text:'#7a6ca8',list:'#8a9a3c',contact:'#b5773a',empty:'#c0b9aa'};
 const SHORT2ID={};SCHOOLS.forEach(s=>SHORT2ID[s.short]=s.id);
+/* ===== 学校名1文字チップ =====
+   「くらべる」画面で10校を横一列に並べるための1文字表記です。
+   第２中・第３中は頭文字が「第」で重なるため数字を使います。
+   交野みらい学園は「交」だと交野市全体と紛らわしいため「み」を使います。 */
+const CHIP1={s1:'み',s2:'郡',s3:'倉',s4:'２',s5:'旭',s6:'星',s7:'３',s8:'岩',s9:'私',s10:'藤'};
+function chip1(sid){const s=SCHOOLS.find(x=>x.id===sid);return CHIP1[sid]||(s?String(s.short).slice(0,1):'?')}
+function chipCls(sid){const s=SCHOOLS.find(x=>x.id===sid);const t=s?s.type:'小';return t==='小中'?'tb':(t==='中'?'tc':'ts')}
 const I={home:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',search:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',table:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>',plus:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',back:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',spark:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>',bell:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',chart:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>',down:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',group:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="12" cy="17" r="3"/></svg>',edit:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>'};
 /* ===== バックエンド設定 =====
    GitHubに上げてみんなで共有する場合は、GASのウェブアプリURLを下の API_URL に貼ってください。
@@ -464,7 +566,8 @@ function buildYears(dataYears){
   YEARS.push({id:'R'+(mx+1),label:'令和'+(mx+1)+'年度'});
   if(!YEARS.find(y=>y.id===ST.year))ST.year=YEARS[Math.max(0,YEARS.length-2)].id;
 }
-const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[],allQuestions:[],mode:'view',qEdit:null};
+const ST={year:'R8',questions:[],answers:{},prevAnswers:{},prevYear:null,view:'home',q:null,school:null,editing:null,showEdit:false,s_text:'',s_cat:'all',s_status:'all',s_sort:'cat',tFilter:'all',flow:null,loading:true,fromSchool:null,schoolEditing:null,loadError:null,flowPick:null,flowMode:'todo',navStack:[],allQuestions:[],mode:'view',qEdit:null,repCat:null,repLeg:true,mys:'',helpDev:false,helpSent:false};
+ST.mys=(function(){try{return localStorage.getItem('pta_myschool')||''}catch(e){return ''}})();
 // 学校ビュー用インライン編集関数（ST定義直後に配置）
 function startSchoolEdit(qid){
   if(!requireEdit())return;
@@ -776,7 +879,7 @@ function renderVersion(){
   if(g==null)gs='<span class="vwarn">GAS —（未取得）</span>';
   else if(String(g)!==EXPECT_GAS)gs='<span class="vwarn">GAS '+esc(String(g))+'（想定 '+EXPECT_GAS+'・要再デプロイ）</span>';
   else gs='GAS '+esc(String(g));
-  el.innerHTML='交野市PTA 実態共有ボード　app v'+APP_VERSION+'　/　'+gs;
+  el.innerHTML='交野市PTA 実態共有ボード　app v'+APP_VERSION+'　/　'+gs+'<span class="footlink" onclick="go(\'help\')">問合せ</span>';
 }
 function renderShell(){
   document.getElementById('pvbanner').outerHTML=(USE_API||HASSTORE)?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
@@ -786,7 +889,11 @@ function renderShell(){
   renderVersion();
   const mb=document.getElementById('modeBtn');
   if(mb){mb.className='modebtn'+(canEdit()?' on':'');mb.innerHTML=canEdit()?(I.edit+' 編集モード'):(I.bell+' 閲覧モード');mb.title=canEdit()?'編集モード — タップで閲覧モードに戻ります':'タップすると編集モードに切り替えできます';}
-  const nav=[['home','ホーム',I.home],['search','質問をさがす',I.search],['table','回答テーブル',I.table],['add','質問を追加',I.plus]];
+  const ms=document.getElementById('mySel');
+  if(ms){ms.innerHTML='<option value="">自校を選ぶ</option>'+SCHOOLS.map(s=>`<option value="${s.id}" ${s.id===ST.mys?'selected':''}>${esc(s.short)}</option>`).join('');ms.onchange=e=>setMySchool(e.target.value);}
+  const hdEl=document.querySelector('.hd');
+  if(hdEl&&hdEl.offsetHeight)document.documentElement.style.setProperty('--hdh',hdEl.offsetHeight+'px');
+  const nav=[['home','ホーム',I.home],['report','くらべる',I.chart],['search','質問をさがす',I.search],['table','回答テーブル',I.table],['add','質問を追加',I.plus]];
   document.getElementById('nav').innerHTML=nav.map(([v,l,ic])=>`<button class="navbtn ${ST.view===v||(v==='search'&&ST.view==='detail')?'on':''}" onclick="go('${v}')">${ic}${l}</button>`).join('');
 }
 /* ===== 画面遷移とスクロール位置の記憶 =====
@@ -799,6 +906,7 @@ function pageKey(){
   if(ST.view==='detail')return 'detail:'+ST.q;
   if(ST.view==='flowpick')return 'flowpick:'+ST.flowPick;
   if(ST.view==='qedit')return 'qedit:'+ST.qEdit;
+  if(ST.view==='report')return 'report:'+(ST.repCat||'');
   return ST.view;
 }
 function applyKey(k){
@@ -808,6 +916,7 @@ function applyKey(k){
   else if(v==='detail'){ST.q=arg;ST.view='detail';ST.showEdit=false}
   else if(v==='flowpick'){ST.flowPick=arg;ST.view='flowpick'}
   else if(v==='qedit'){ST.qEdit=arg;ST.view='qedit'}
+  else if(v==='report'){ST.repCat=arg||null;ST.view='report'}
   else ST.view=v;
 }
 function navPush(){ST.navStack.push({k:pageKey(),y:curY()});if(ST.navStack.length>40)ST.navStack.shift()}
@@ -819,6 +928,8 @@ function navLabel(fb){
   if(v==='school'){const s=SCHOOLS.find(x=>x.id===arg);return (s?s.name:'学校ページ')+'へ戻る'}
   if(v==='detail'){const t=qOf(arg).text||'';return t?('「'+(t.length>12?t.slice(0,12)+'…':t)+'」へ戻る'):'前の画面へ戻る'}
   if(v==='flowpick')return 'カテゴリ選択へ戻る';
+  if(v==='report')return arg?'くらべる（'+esc(arg)+'）へ戻る':'くらべる（カテゴリ選択）へ戻る';
+  if(v==='help')return '問合せへ戻る';
   if(v==='qedit')return '質問の設定へ戻る';
   if(v==='import')return '一括取り込みへ戻る';
   if(v==='home')return 'ホーム（学校一覧）へ戻る';
@@ -831,13 +942,13 @@ function navBack(fb){
   if(ST.navStack.length){const e=ST.navStack.pop();applyKey(e.k);render({restoreScroll:e.y});return}
   applyKey(fb||'home');render();
 }
-function go(v){navReset();ST.view=v;ST.editing=null;ST.flow=null;render()}
+function go(v){navReset();ST.view=v;ST.editing=null;ST.flow=null;if(v==='report')ST.repCat=null;render()}
 function openQ(qid,fromSchool){navPush();ST.q=qid;ST.view='detail';ST.editing=null;ST.showEdit=false;ST.fromSchool=fromSchool||null;render()}
 function render(opt){
   opt=opt||{};
   if(ST.loading){renderShell();document.getElementById('page').innerHTML=viewLoading();return;}
   if(USE_API&&(ST.loadError||!ST.questions.length)){renderShell();document.getElementById('page').innerHTML=viewError();return;}
-  renderShell();document.getElementById('page').innerHTML=({home:viewHome,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,flowpick:viewFlowPick,school:viewSchool,qedit:viewQEdit,import:viewImport}[ST.view]||viewHome)();
+  renderShell();document.getElementById('page').innerHTML=({home:viewHome,report:viewReport,help:viewHelp,search:viewSearch,detail:viewDetail,table:viewTable,add:viewAdd,flow:viewFlow,flowpick:viewFlowPick,school:viewSchool,qedit:viewQEdit,import:viewImport}[ST.view]||viewHome)();
   if(ST.view==='search')setTimeout(rerenderSearch,0);
   if(ST.view==='flow')setTimeout(()=>{const el=document.getElementById('flowInput');if(el)el.focus()},40);
   // スクロール制御：keepScroll指定時は現在位置を維持、restoreScroll指定時は指定位置へ、それ以外は最上部
@@ -1225,6 +1336,275 @@ function viewTable(){
     <div style="overflow-x:auto"><table class="ttable"><thead><tr><th>学校</th><th>カテゴリ</th><th>質問</th><th>回答</th><th>備考</th><th>更新</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap;font-weight:500">${esc(r.short)}</td><td class="tc" style="white-space:nowrap">${esc(r.cat)}</td><td style="min-width:120px">${esc(r.q)}</td><td style="min-width:150px" class="mulcell">${esc(r.v)}${r.carried?' <span class="notebadge" style="background:#fff3e0;color:var(--amber-d);border:1px solid #f0d9b5">前年度のまま</span>':''}</td><td class="tc" style="min-width:90px">${esc(r.note||'')}</td><td class="tc" style="white-space:nowrap">${fmtDate(r.t)}</td></tr>`).join('')}</tbody></table></div>${rows.length?'':'<p class="empty-note">まだ回答がありません。</p>'}`;
 }
 function exportCSV(){const tmp=[];ST.questions.forEach(q=>SCHOOLS.forEach(s=>{if(!isTargetSchool(s.id,q.id))return;const a=getAns(s.id,q.id);if(a&&(ST.tFilter==='all'||ST.tFilter===s.id))tmp.push({c:CATEGORIES.indexOf(q.category)<0?999:CATEGORIES.indexOf(q.category),q:parseInt(q.id.slice(1))||0,s:parseInt(s.id.slice(1))||0,row:[ST.year,s.name,q.category,q.text,a.v,a.note||'',a.carried?'前年度のまま':'今年度確定',new Date(a.t).toLocaleString('ja-JP')]})}));tmp.sort((a,b)=>a.c!==b.c?a.c-b.c:a.q!==b.q?a.q-b.q:a.s-b.s);const rows=[['年度','学校','カテゴリ','質問','回答','備考','状態','更新'],...tmp.map(x=>x.row)];const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='交野市PTA_'+ST.year+'.csv';a.click();URL.revokeObjectURL(u)}
+
+/* ======================================================================
+   くらべる（カテゴリ別レポート）
+   ----------------------------------------------------------------------
+   目的：1問ずつ開かなくても、カテゴリ単位で10校の回答を一望できるようにする。
+   設計：スマホの縦スクロールが主軸。1問＝1カード、学校は1文字チップで表す。
+         そのままA4縦で印刷（PDF保存）でき、Excel向けには横持ちCSVを出す。
+   画面：カテゴリ選択 → レポート（ST.repCat にカテゴリ名／'__all' で全カテゴリ）
+   ====================================================================== */
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function setMySchool(v){
+  ST.mys=v||'';lsSet('pta_myschool',ST.mys);
+  const s=SCHOOLS.find(x=>x.id===ST.mys);
+  renderShell();render({keepScroll:true});
+  toast(s?('自校を「'+s.short+'」に設定しました'):'自校の設定を解除しました');
+}
+function repWho(sid){const s=SCHOOLS.find(x=>x.id===sid);if(s)toast(s.name+(s.id===ST.mys?'（自校）':''))}
+function repEx(el){el.classList.toggle('open');el.classList.toggle('clamp')}
+function repLegToggle(){ST.repLeg=!ST.repLeg;render({keepScroll:true})}
+function openReport(cat){navPush();ST.repCat=cat;ST.view='report';render()}
+// 1文字チップ1個ぶんのHTML（印刷時は略称に切り替わる）
+function schChip(sid,extra){
+  const s=SCHOOLS.find(x=>x.id===sid);if(!s)return '';
+  const cls=['sch1',chipCls(sid)];
+  if(extra&&extra.off)cls.push('off');
+  if(extra&&extra.carried)cls.push('car');
+  if(sid===ST.mys)cls.push('me');
+  const tt=s.name+(extra&&extra.carried?'（前年度のまま）':'')+(extra&&extra.off?'（未回答）':'');
+  return `<span class="${cls.join(' ')}" title="${esc(tt)}" onclick="repWho('${sid}')"><b class="c1">${esc(chip1(sid))}</b><i class="cfull">${esc(s.short)}</i></span>`;
+}
+function repLegend(){
+  const body=ST.repLeg?`<div class="lgbody">${SCHOOLS.map(s=>`<span class="legpair">${schChip(s.id)}<span class="legnm">${esc(s.short)}</span></span>`).join('')}</div>`:'';
+  return `<div class="rep-leg"><div class="lgh"><span>学校の記号（${SCHOOLS.length}校）</span><span class="legnm" style="color:var(--ink3)">●＝前年度のまま${ST.mys?'／オレンジ地＝自校':''}</span><span class="lgt" onclick="repLegToggle()">${ST.repLeg?'凡例を隠す':'凡例を出す'}</span></div>${body}</div>`;
+}
+// 回答している学校の一覧（前年度からの引き継ぎを含む）
+function repEnt(qid){
+  return targetSchools(qid).map(s=>{const a=getAns(s.id,qid);
+    return a?{id:s.id,short:s.short,name:s.name,v:a.v,note:a.note||'',carried:!!a.carried}:null}).filter(Boolean);
+}
+// 選択式・複数選択式・選択式相当（同じ回答が並ぶもの）を選択肢ごとにまとめる
+function repGroups(q,ent){
+  const multi=isMulti(q.id),opts=optsOf(q.id),map={},order=[];
+  function push(k,label){if(!map[k]){map[k]={label:label,members:[]};order.push(k)}return map[k]}
+  opts.forEach(o=>push(nrm(o),o));
+  ent.forEach(e=>{
+    const vs=multi?bulletVals(e.v):selVals(e.v);
+    (vs.length?vs:[e.v]).forEach(v=>{const g=push(nrm(v),v);if(!g.members.some(m=>m.id===e.id))g.members.push(e)});
+  });
+  return order.map(k=>map[k]).filter(g=>g.members.length).sort((a,b)=>b.members.length-a.members.length);
+}
+function repNotes(members){
+  const wn=members.filter(m=>m.note);
+  return wn.length?`<div class="memnotes">${wn.map(m=>`<div class="memnote"><b>${esc(m.short)}</b>：${esc(m.note)}</div>`).join('')}</div>`:'';
+}
+function repBodyGroups(q,ent){
+  const gs=repGroups(q,ent);
+  if(!gs.length)return '<p class="muted tiny">まだ回答がありません。</p>';
+  const mx=Math.max(1,...gs.map(g=>g.members.length));
+  return gs.map((g,i)=>{
+    const col=GCOL[i%GCOL.length];
+    return `<div class="ropt"><div class="ropt-h"><span class="ropt-l">${esc(g.label)}</span><span class="ropt-n">${g.members.length}校</span></div>`+
+      `<div class="ropt-bar"><i style="width:${Math.max(4,Math.round(g.members.length/mx*100))}%;background:${col}"></i></div>`+
+      `<div class="ropt-chips">${g.members.map(m=>schChip(m.id,{carried:m.carried})).join('')}</div>${repNotes(g.members)}</div>`;
+  }).join('');
+}
+// 数値は「同じ値の学校」をひとつにまとめ、選択式カードと同じ見た目（バー＋校数＋校名チップ）で出す。
+function repBodyNumeric(q,ent){
+  const isPct=isPercentQ(q.id),pf=isPct?pctNum:pnum;
+  const fmt=n=>isPct?fmtPct(Math.round(n*10)/10):(Math.round(n).toLocaleString()+(q.unit||''));
+  const nums=ent.map(e=>Object.assign({},e,{num:pf(e.v)})).filter(e=>e.num!=null);
+  const rest=ent.filter(e=>pf(e.v)==null);
+  if(!nums.length)return repBodyText(q,ent);
+  // 表示値（fmt後の文字列）が同じ学校を1グループにまとめる
+  const map={},order=[];
+  nums.forEach(e=>{const k=fmt(e.num);if(!map[k]){map[k]={label:k,num:e.num,members:[]};order.push(k)}map[k].members.push(e)});
+  const groups=order.map(k=>map[k]).sort((a,b)=>b.num-a.num);
+  const mx=Math.max(...groups.map(g=>g.num))||1;
+  const sum=nums.reduce((a,e)=>a+e.num,0),avg=sum/nums.length;
+  const sorted=nums.map(e=>e.num).slice().sort((a,b)=>a-b);
+  const mid=sorted.length%2?sorted[(sorted.length-1)/2]:(sorted[sorted.length/2-1]+sorted[sorted.length/2])/2;
+  const rows=groups.map((g,i)=>{
+    const col=GCOL[i%GCOL.length];
+    return `<div class="ropt"><div class="ropt-h"><span class="ropt-l">${esc(g.label)}</span><span class="ropt-n">${g.members.length}校</span></div>`+
+      `<div class="ropt-bar"><i style="width:${Math.max(4,Math.round(g.num/mx*100))}%;background:${col}"></i></div>`+
+      `<div class="ropt-chips">${g.members.map(m=>schChip(m.id,{carried:m.carried})).join('')}</div></div>`;
+  }).join('');
+  const other=rest.length?`<div class="rc-un">数値以外の回答：${rest.map(e=>schChip(e.id,{carried:e.carried})+'<span class="legnm">'+esc(e.v)+'</span>').join(' ')}</div>`:'';
+  const notes=repNotes(ent);
+  return rows+other+`<div class="rep-stats"><div><b>${esc(fmt(avg))}</b>平均</div><div><b>${esc(fmt(mid))}</b>中央値</div><div><b>${esc(fmt(sorted[sorted.length-1]))}</b>最大</div><div><b>${esc(fmt(sorted[0]))}</b>最小</div></div>`+notes;
+}
+// 記述・一覧・連絡先も、まったく同じ回答をしている学校はひとつにまとめる。
+// （例：「年3,600円/家庭」と答えた学校が複数あれば1行にまとめ、チップを横に並べる）
+function repBodyText(q,ent){
+  if(!ent.length)return '<p class="muted tiny">まだ回答がありません。</p>';
+  const map={},order=[];
+  ent.forEach(e=>{const k=nrm(e.v);if(!map[k]){map[k]={label:e.v,members:[]};order.push(k)}map[k].members.push(e)});
+  const groups=order.map(k=>map[k]).sort((a,b)=>b.members.length-a.members.length);
+  return groups.map(g=>{
+    const chips=g.members.map(m=>schChip(m.id,{carried:m.carried})).join('');
+    const cnt=g.members.length>1?`<span class="ropt-n">${g.members.length}校が同じ回答</span>`:'';
+    const more=String(g.label).length>60?'<div class="rt-more" onclick="repEx(this.previousElementSibling)">タップで全文</div>':'';
+    return `<div class="rtxt"><div class="rt-h"><span class="rt-chips">${chips}</span>${cnt}</div>`+
+      `<div class="rt-v clamp" onclick="repEx(this)">${esc(g.label)}</div>${more}${repNotes(g.members)}</div>`;
+  }).join('');
+}
+function repCard(q){
+  const ent=repEnt(q.id),ts=targetSchools(q.id);
+  const blank=ts.filter(s=>!ent.some(e=>e.id===s.id));
+  const t=qType(q.id);
+  let body;
+  if(isChoice(q.id)||isMulti(q.id)||t==='categorical')body=repBodyGroups(q,ent);
+  else if(t==='numeric')body=repBodyNumeric(q,ent);
+  else body=repBodyText(q,ent);
+  const un=blank.length?`<div class="rc-un"><span>未回答 ${blank.length}校</span>${blank.map(s=>schChip(s.id,{off:true})).join('')}</div>`:'';
+  return `<div class="rcard"><div class="rc-h"><span class="rc-t">${esc(q.text)}</span><span class="rc-n">${ent.length}/${ts.length}</span></div>${body}${un}
+    <div class="rc-f"><span class="rc-more" onclick="openQ('${q.id}')">この質問を詳しく見る・回答する →</span></div></div>`;
+}
+function repQuestions(cat){return ST.questions.filter(q=>q.category===cat)}
+function repCatsInView(){return ST.repCat==='__all'?cats():[ST.repCat]}
+function viewReport(){
+  if(!ST.repCat)return viewReportPick();
+  const cs=repCatsInView();
+  const all=cs.reduce((a,c)=>a.concat(repQuestions(c)),[]);
+  const title=ST.repCat==='__all'?'すべてのカテゴリ':ST.repCat;
+  let done=0,tot=0;
+  all.forEach(q=>{const c=qCounts(q.id);done+=c.conf+c.car;tot+=c.n});
+  const rate=tot?Math.round(done*100/tot):0;
+  const bodies=cs.map(c=>{
+    const qs=repQuestions(c);
+    if(!qs.length)return '';
+    const head=(ST.repCat==='__all')?`<div class="rep-cathead">${esc(c)}（${qs.length}問）</div>`:'';
+    return head+qs.map(repCard).join('');
+  }).join('');
+  return `<button class="back" onclick="navBack('report:')">${I.back} カテゴリ選択へ戻る</button>
+    <div class="rep-head"><h2>${esc(title)}</h2><div class="rsub">${YEARS.find(y=>y.id===ST.year).label}・${all.length}問・回答済み ${rate}%${ST.mys?'　自校：'+esc((SCHOOLS.find(s=>s.id===ST.mys)||{}).short):''}</div></div>
+    <div class="rep-bar"><button class="btn sm" onclick="printReport()">🖨 印刷・PDFで保存（A4縦）</button><button class="btn sm" onclick="exportReportCSV()">${I.down} Excel用CSV（横持ち）</button></div>
+    ${repLegend()}
+    ${bodies||'<p class="empty-note">このカテゴリにはまだ質問がありません。</p>'}`;
+}
+function viewReportPick(){
+  const cs=cats();
+  const cards=cs.map(c=>{
+    const qs=repQuestions(c);
+    let done=0,tot=0;qs.forEach(q=>{const x=qCounts(q.id);done+=x.conf+x.car;tot+=x.n});
+    const pc=tot?Math.round(done*100/tot):0;
+    const col=CATCOL[c]||'#8a8578';
+    return `<button class="fp-card" style="border-left-color:${col}" onclick="openReport('${jsq(c)}')"><span class="fp-body"><span class="fp-nm">${esc(c)}</span><span class="fp-sub">${qs.length}問・回答済み ${pc}%</span></span><span class="fp-n">見る</span></button>`;
+  }).join('');
+  return `<div class="hero"><h2 style="margin-bottom:6px">くらべる（カテゴリ別レポート）</h2>
+    <p class="muted tiny">カテゴリを選ぶと、その分野の質問が縦に並び、10校の回答をまとめて見られます。そのままA4縦で印刷（PDF保存）でき、Excel用のCSVも出せます。</p>
+    ${ST.mys?'':'<p class="muted tiny" style="margin-top:6px">画面右上の「自校を選ぶ」を設定すると、自校の記号が強調表示されます。</p>'}</div>
+    <div class="card"><div class="sec-h"><span class="ic">${I.chart}</span>カテゴリを選ぶ</div>
+    <div class="fp-grid">${cards}</div>
+    <div style="margin-top:12px"><button class="btn sm" onclick="openReport('__all')">${I.table} すべてのカテゴリをまとめて見る（印刷向け）</button></div></div>`;
+}
+/* 印刷（PDF保存）：A4縦。既定のA4横指定を一時的に上書きし、終了後に元へ戻す。 */
+function printReport(){
+  document.body.classList.add('printrep');
+  const st=document.createElement('style');st.id='repPrintCSS';
+  st.textContent='@media print{@page{size:A4 portrait;margin:12mm}}';
+  document.head.appendChild(st);
+  const done=function(){
+    document.body.classList.remove('printrep');
+    const e=document.getElementById('repPrintCSS');if(e&&e.parentNode)e.parentNode.removeChild(e);
+    window.removeEventListener('afterprint',done);
+  };
+  window.addEventListener('afterprint',done);
+  setTimeout(function(){window.print();setTimeout(done,3000)},80);
+}
+/* Excel用CSV（横持ち）：1行＝1質問、各校について「回答」「備考」の2列を書き出す。 */
+function exportReportCSV(){
+  const cs=repCatsInView();
+  const head=['年度','カテゴリ','質問ID','質問','単位','回答校数'];
+  SCHOOLS.forEach(s=>{head.push(s.short);head.push(s.short+'_備考')});
+  const rows=[head];
+  cs.forEach(c=>repQuestions(c).forEach(q=>{
+    const ts=targetSchools(q.id);
+    const r=[ST.year,q.category,q.id,q.text,q.unit||'',repEnt(q.id).length+'/'+ts.length];
+    SCHOOLS.forEach(s=>{
+      if(!isTargetSchool(s.id,q.id)){r.push('対象外');r.push('');return}
+      const a=getAns(s.id,q.id);
+      if(!a){r.push('');r.push('');return}
+      r.push(a.v);
+      r.push((a.note||'')+(a.carried?(a.note?' / ':'')+'（前年度のまま）':''));
+    });
+    rows.push(r);
+  }));
+  const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);
+  const a=document.createElement('a');a.href=u;
+  a.download='交野市PTA_くらべる_'+ST.year+'_'+(ST.repCat==='__all'?'全カテゴリ':ST.repCat)+'.csv';
+  a.click();URL.revokeObjectURL(u);
+  toast('CSVを書き出しました');
+}
+
+/* ======================================================================
+   問合せ
+   ----------------------------------------------------------------------
+   使い方・不具合の確認を先に案内し、それでも解決しない場合だけ
+   開発者へ連絡できるようにしています（開発者への連絡は控えめに配置）。
+   送信はGASの sendErrorMail アクション（to指定）を使うため、
+   Code.gs 側の変更は不要です。送信に失敗したときはメールアプリを開きます。
+   ====================================================================== */
+const CONTACT_EMAIL=ERROR_NOTIFY_EMAIL;            // 交野市PTA協議会の窓口
+const DEV_EMAIL='g.isami1214@gmail.com';           // 開発者
+function toggleHelpDev(){ST.helpDev=!ST.helpDev;render({keepScroll:true})}
+function devMailto(){
+  const b=encodeURIComponent('（お困りの内容をご記入ください）\n\n---\napp v'+APP_VERSION+' / GAS '+(GAS_VERSION==null?'—':GAS_VERSION)+'\n'+(typeof navigator!=='undefined'?navigator.userAgent:''));
+  return 'mailto:'+DEV_EMAIL+'?subject='+encodeURIComponent('【PTAボード】お問い合わせ')+'&body='+b;
+}
+async function sendDevMail(ev){
+  const g1=id=>(document.getElementById(id)||{}).value||'';
+  const sc=g1('devSchool'),nm=g1('devName'),msg=g1('devMsg');
+  if(!msg.trim()){toast('内容を入力してください');return}
+  const body=[
+    '交野市PTA実態共有ボードのお問い合わせです。','',
+    '【学校】'+(sc||'（未記入）'),
+    '【お名前】'+(nm||'（未記入）'),
+    '【内容】',''+msg,'',
+    '--- 環境情報 ---',
+    '日時: '+new Date().toLocaleString('ja-JP'),
+    '年度: '+ST.year,
+    'app: v'+APP_VERSION+' / GAS: '+(GAS_VERSION==null?'—':GAS_VERSION),
+    'URL: '+(typeof location!=='undefined'?location.href:'(不明)'),
+    'UA: '+(typeof navigator!=='undefined'?navigator.userAgent:'(不明)')
+  ].join('\n');
+  await busy(ev,'送信しています…',async()=>{
+    try{
+      if(!USE_API)throw new Error('プレビューでは送信できません');
+      const r=await gas('sendErrorMail',{to:DEV_EMAIL,subject:'【PTAボード】お問い合わせ（'+(sc||'学校未記入')+'）',body:body});
+      if(!(r&&r.ok))throw new Error((r&&r.error)||'送信に失敗しました');
+      ST.helpSent=true;render({keepScroll:true});toast('送信しました。ありがとうございます');
+    }catch(e){
+      toast('送信できませんでした。メールアプリを開きます');
+      try{location.href=devMailto()}catch(_){}
+    }
+  });
+}
+function viewHelp(){
+  const qa=[
+    ['読み込めない・「データを読み込めませんでした」と出る','通信が一時的に不安定なときに出ます。画面を再読み込みするか、ホーム画面の「最新を取得」を押してください。'],
+    ['入力しても保存されない','画面右上が「閲覧モード」になっていませんか。編集するには「閲覧モード」を押して編集モードに切り替えてください。'],
+    ['他校の回答が古い気がする','ホーム画面の「最新を取得」を押すと、スプレッドシートから読み直します。'],
+    ['「前年度のまま」と出ている','昨年度の回答をそのまま表示している状態です。内容が今年も同じなら「今年度の回答として確定」を押してください。'],
+    ['他校の状況をまとめて見たい','上のメニューの「くらべる」からカテゴリを選ぶと、その分野の質問が10校ぶんまとめて並びます。印刷（PDF保存）やExcel用CSVの書き出しもできます。'],
+    ['学校の記号（み・郡・倉…）が分からない','「くらべる」画面の上部に凡例が固定表示されます。記号をタップすると学校名が表示されます。'],
+    ['自校を目立たせたい','画面右上の「自校を選ぶ」で学校を選ぶと、その学校の記号がオレンジ地に白文字で強調されます。']
+  ];
+  const form=ST.helpDev?`<div class="help-form">
+      ${ST.helpSent?'<div class="alert done" style="margin-bottom:12px"><div class="at">'+I.check+' 送信しました。ありがとうございます。</div></div>':''}
+      <div class="mrow"><div><label class="lb">学校名</label><input class="tx" id="devSchool" placeholder="例：倉治小学校"></div><div><label class="lb">お名前（任意）</label><input class="tx" id="devName" placeholder="例：三宅"></div></div>
+      <label class="lb">内容</label>
+      <textarea class="tx" id="devMsg" rows="5" placeholder="どの画面で、何をしたときに、どうなったかをお書きください。"></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn pri" onclick="sendDevMail(event)">送信する</button><a class="btn" href="${devMailto()}">メールアプリで送る</a></div>
+      <p class="tiny muted" style="margin-top:9px">送信先：${esc(DEV_EMAIL)}　※送信時に、動作環境（年度・バージョン・ブラウザ）を自動で添えます。</p>
+    </div>`:'';
+  return `<button class="back" onclick="go('home')">${I.back} ホームへ戻る</button>
+    <div class="hero"><h2 style="margin-bottom:6px">問合せ</h2><p class="muted tiny">不具合や使い方について、まず下の内容をご確認ください。</p></div>
+    <div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.bell}</span>よくあるご質問</div>
+      ${qa.map(([q,a])=>`<div class="help-q"><b>${esc(q)}</b><span>${esc(a)}</span></div>`).join('')}</div>
+    <div class="card"><div class="sec-h"><span class="ic">${I.group}</span>解決しないときのご連絡先</div>
+      <p class="muted tiny" style="margin-bottom:10px">運用・内容についてのお問い合わせは、交野市PTA協議会までお願いします。</p>
+      <a class="help-mail" href="mailto:${esc(CONTACT_EMAIL)}?subject=${encodeURIComponent('【PTAボード】お問い合わせ')}">✉ ${esc(CONTACT_EMAIL)}</a>
+      <div class="help-dev">
+        <button class="devbtn" onclick="toggleHelpDev()">${ST.helpDev?'閉じる':'それでも解決しない場合：開発者へ連絡する'}</button>
+        ${form}
+      </div>
+    </div>`;
+}
 /* ===== 既存質問の設定を編集 =====
    question_id は変更できません（回答データとの紐付けが切れるため）。
    回答の種類を変えると既存回答の見え方が変わるため、変更時は警告を出します。 */
@@ -1647,6 +2027,10 @@ async function addQuestion(){
   }else{ST.questions.push(q);ST.allQuestions.push(q);await sSet('questions',ST.allQuestions);}
   toast('質問を追加しました');openQ(id);
 }
+window.addEventListener('resize',function(){
+  const h=document.querySelector('.hd');
+  if(h&&h.offsetHeight)document.documentElement.style.setProperty('--hdh',h.offsetHeight+'px');
+});
 (async function(){
   render();
   await seedIfNeeded();await loadYear();
