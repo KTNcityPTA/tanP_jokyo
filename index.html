@@ -1586,7 +1586,7 @@ function viewHelp(){
   ];
   const form=ST.helpDev?`<div class="help-form">
       ${ST.helpSent?'<div class="alert done" style="margin-bottom:12px"><div class="at">'+I.check+' 送信しました。ありがとうございます。</div></div>':''}
-      <div class="mrow"><div><label class="lb">学校名</label><input class="tx" id="devSchool" placeholder="例：倉治小学校"></div><div><label class="lb">お名前（任意）</label><input class="tx" id="devName" placeholder="例：三宅"></div></div>
+      <div class="mrow"><div><label class="lb">学校名</label><input class="tx" id="devSchool" placeholder="例：岩船小学校"></div><div><label class="lb">お名前（任意）</label><input class="tx" id="devName" placeholder="例：いさみ"></div></div>
       <label class="lb">内容</label>
       <textarea class="tx" id="devMsg" rows="5" placeholder="どの画面で、何をしたときに、どうなったかをお書きください。"></textarea>
       <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn pri" onclick="sendDevMail(event)">送信する</button><a class="btn" href="${devMailto()}">メールアプリで送る</a></div>
