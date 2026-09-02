@@ -155,6 +155,174 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .toast.show{opacity:1}
 .empty-note{text-align:center;color:var(--ink3);padding:34px 10px;font-size:14px}
 @media(max-width:560px){.dsch{width:78px}.hero h2{font-size:19px}}
+
+table.mx{border-collapse:collapse;font-size:13px;min-width:640px}
+table.mx th,table.mx td{border:1px solid var(--line);padding:7px 9px;text-align:center;white-space:nowrap}
+table.mx th{background:#f3efe6;font-weight:700;font-size:12px}
+table.mx th .req{display:block;font-style:normal;font-size:10px;color:#b4472f;font-weight:600}
+table.mx td.sticky,table.mx th.sticky{position:sticky;left:0;background:#fff;text-align:left}
+table.mx th.sticky{background:#f3efe6}
+table.mx tr.ax td{background:#fdf6f3}
+table.mx tr.ax td.sticky{background:#fdf6f3}
+table.mx td.ok{color:#3a9d7e;font-weight:700}
+table.mx td.ng{color:#b4472f;font-weight:700;background:#fbf0ed}
+table.mx td.na{color:#c9c2b4}
+table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
+.misslist{display:flex;flex-direction:column;gap:8px}
+.missrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.misstags i{display:inline-block;font-style:normal;font-size:12px;background:#fbf0ed;color:#b4472f;border:1px solid #eeddd8;border-radius:11px;padding:2px 9px;margin:2px 4px 2px 0}
+.todos{display:flex;flex-direction:column;gap:12px}
+.todo{border-left:3px solid #d98a3c;padding:2px 0 2px 11px}
+.todo .tt{display:flex;align-items:center;gap:8px;font-size:14px}
+.todo .tt .st{font-style:normal;font-size:11px;color:#8a7f6d;background:#f3efe6;border-radius:9px;padding:1px 8px}
+.todo .td{font-size:13px;color:var(--ink2);margin-top:2px}
+.todo .tw{font-size:12px;color:var(--ink3);margin-top:2px}
+.schblk{margin-bottom:16px}
+.schh{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.schh i{margin-left:auto;font-style:normal;font-size:12px;color:var(--ink3)}
+.filelist{display:flex;flex-direction:column}
+.filerow{display:flex;align-items:center;gap:8px;padding:7px 2px;border-bottom:1px dotted var(--line);text-decoration:none;color:inherit;font-size:13px}
+.filerow:hover{background:#faf7f1}
+.filerow .fk{font-weight:600;min-width:72px}
+.filerow .fn{color:var(--ink2);flex:1}
+.filerow .fy{color:var(--ink3);font-size:12px}
+.filerow .refmark{font-style:normal;font-size:11px;color:#d98a3c;background:#fdf7ee;border-radius:9px;padding:1px 7px}
+
+.pnoteline{font-size:11px;color:#8a7a5c;background:#fbf7ee;border-radius:6px;padding:5px 8px;margin-top:6px;display:flex;gap:6px;align-items:flex-start}
+.pnoteline svg{flex:none;margin-top:2px}
+.porig{margin-left:auto;font-size:10.5px;color:var(--ink3);border:1px solid var(--line2);border-radius:5px;padding:1px 6px;text-decoration:none;flex:none}
+.porig:hover{background:#faf7f0;color:var(--ink)}
+.fsec{margin-top:12px}
+.fsh{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:.04em;margin:0 0 6px}
+.frow{margin-bottom:8px}
+.frow .pdf-btn{display:inline-flex;max-width:100%}
+.fry{font-size:10.5px;color:var(--ink3);margin-left:4px}
+.frdocs{font-size:11px;color:var(--ink3);line-height:1.6;margin:4px 0 0 2px;display:flex;gap:5px;align-items:flex-start}
+.frdocs svg{flex:none;margin-top:2px}
+.frnote{font-size:11px;color:#9a7b3f;background:#fdf7e8;border-radius:6px;padding:5px 8px;margin:4px 0 0}
+.doctabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.doctab{font-family:inherit;font-size:11.5px;border:1px solid var(--line2);background:#fff;border-radius:8px;padding:6px 9px;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--ink)}
+.doctab.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.dtk{font-size:10px;border-radius:4px;padding:1px 4px;background:#eaf3ee;color:#2f7a62}
+.dtk.sai{background:#fbf0e2;color:#a2661f}
+.doctab.on .dtk{background:rgba(255,255,255,.2);color:#fff}
+.dtn{font-size:10px;opacity:.6}
+.anh{font-weight:400;font-size:12px;color:var(--ink3);margin-left:4px}
+
+.allbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:14px;display:flex;flex-direction:column;gap:9px}
+.allq{width:100%;box-sizing:border-box;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-family:inherit;background:#fdfcf9}
+.allq:focus{outline:2px solid #c9b9a2;outline-offset:-1px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:inherit;font-size:12px;padding:4px 11px;border-radius:13px;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.gapchk{font-size:13px;color:var(--ink2);display:flex;align-items:center;gap:6px;cursor:pointer}
+.schrow{display:flex;flex-direction:column;gap:5px;margin:9px 0 7px}
+.srow{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.slab{font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap;margin-top:2px}
+.slab.kai{background:#e8f3ee;color:#2f7d64}
+.slab.sai{background:#fbf0e2;color:#a8672a}
+.slab.non{background:#f0eee9;color:#8a8175}
+.slab.mik{background:#f3eee4;color:#8a6d3b}
+.stbox{background:#faf7f1;border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin:10px 0 4px}
+.stlead{font-size:13px;line-height:1.85;color:var(--ink2);margin-bottom:9px}
+.stlist{display:flex;flex-direction:column;gap:7px}
+.stance2{display:flex;align-items:flex-start;gap:8px}
+.stance2 .sdot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:none}
+.stance2 .sbody{flex:1}
+.stance2 .slabel{font-size:13px;line-height:1.6}
+.stance2 .badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.stance2 .scount{font-size:12px;color:var(--ink3);white-space:nowrap;margin-top:3px}
+.bdg.mik{border-color:#ded0b8;background:#faf5ec}
+.bdg.mik.ax{background:var(--seal);color:#fff;border-color:var(--seal)}
+.mark.mikm{background:#f6efe2;color:#8a6d3b}
+.sch{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.bdg.kai{border-color:#bcdcd0;background:#f2faf6}
+.bdg.sai{border-color:#eed9bd;background:#fdf7ee}
+.bdg.non{opacity:.45}
+.bdg.kai.ax,.bdg.sai.ax,.bdg.non.ax{background:var(--seal);color:#fff;border-color:var(--seal);opacity:1;box-shadow:0 1px 4px rgba(180,71,47,.3)}
+.mark.gapm{background:#fbf0ed;color:#b4472f}
+.prow{padding:11px 0;border-bottom:1px dotted var(--line)}
+.prow.ax{background:#fdf6f3;margin:0 -12px;padding:11px 12px;border-radius:8px}
+.phead{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:13px;margin-bottom:5px}
+.phead b{font-size:13px}
+.pdoc{font-size:11px;color:#8a7f6d;background:#f3efe6;border-radius:9px;padding:1px 8px}
+.part{font-size:12px;color:var(--ink2);font-weight:600}
+.phd{font-size:12px;color:var(--ink3)}
+.prole{font-size:11px;color:#a8672a;background:#fbf0e2;border-radius:9px;padding:1px 8px}
+.ptext{font-size:13.5px;line-height:1.85;color:var(--ink2)}
+.pgrp{border-radius:11px;padding:9px 12px 4px;margin-bottom:11px;border:1px solid var(--line)}
+.pgrp.kai{background:#f6fbf8;border-color:#dcece4}
+.pgrp.sai{background:#fdf9f3;border-color:#f0e2cd}
+.pgrp.mik{background:#faf6ee;border-color:#e6dcc8}
+.pgrp.non{background:#f7f6f3;border-color:#e8e4dc}
+.pgrp.st{background:#fff;border-color:var(--line)}
+.pgrp.st.k-common{background:#f6fbf8;border-color:#dcece4}
+.pgrp.st.k-variant,.pgrp.st.k-minor{background:#fdf9f3;border-color:#f0e2cd}
+.pgrp.st.k-uniq{background:#fdf5f2;border-color:#eeddd8}
+.pgh .sdot{width:9px;height:9px;border-radius:50%;flex:none}
+.pglabel{font-size:13px;font-weight:700;line-height:1.5}
+.pgh{display:flex;align-items:center;gap:8px;padding-bottom:7px;margin-bottom:4px;border-bottom:1px solid rgba(0,0,0,.06)}
+.pgn{font-size:12px;color:var(--ink3);margin-left:auto}
+.pgrp .prow:last-child{border-bottom:none}
+.pgrp .prow.ax{margin:0 -6px;padding:11px 6px}
+.pnote{font-size:12.5px;color:var(--ink3);line-height:1.8;padding:2px 0 6px}
+.pgchips{display:flex;flex-wrap:wrap;gap:5px 12px;padding-bottom:8px;align-items:center}
+.pgnm{font-size:12.5px;color:var(--ink2);margin-right:6px}
+
+/* 診断 */
+.diacard{padding:0;overflow:hidden;margin-bottom:14px}
+.diah{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer}
+.diah:hover{background:#faf7f0}
+.diat{font-family:"Zen Maru Gothic";font-size:16px;font-weight:700;display:flex;align-items:center;gap:9px}
+.dmark{font-size:12.5px;border-radius:8px;padding:2px 9px;color:#fff}
+.dmark.warn{background:#b4472f}.dmark.mid{background:#d98a3c}.dmark.good{background:#3a9d7e}.dmark.mik{background:#a5967c}
+.dial{font-size:12.5px;color:var(--ink3);margin-top:5px;line-height:1.7}
+.diachev{margin-left:auto;color:var(--ink3)}
+.diabody{border-top:1px solid var(--line);padding:6px 20px 18px}
+.dirow{padding:14px 0;border-bottom:1px dashed var(--line)}
+.dirow:last-child{border-bottom:0}
+.dirow-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.dirow-h b{font-family:"Zen Maru Gothic";font-size:14.5px}
+.dicount{font-size:11.5px;color:var(--ink3);margin-left:auto}
+.didesc{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-top:5px}
+.dichips{font-size:11.5px;color:var(--ink3);margin-top:7px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.diex{margin-top:8px;background:#faf8f3;border-radius:9px;padding:10px 12px}
+.diexh{font-size:11.5px;color:var(--ink3);margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.direc{font-size:10.5px;color:#2f7a62;background:#e6efe9;border-radius:6px;padding:1px 7px}
+.diex2{font-size:10.5px;color:var(--ink3);background:#efeade;border-radius:6px;padding:1px 7px}
+.diext{font-size:12.5px;line-height:1.9}
+.dinote{font-size:11.5px;color:#8a7a5c;background:#fbf7ee;border-radius:7px;padding:7px 10px;margin-top:7px}
+.dicmp{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.dicmp1{display:flex;align-items:center;gap:8px;font-size:12.5px;background:#faf8f3;border-radius:8px;padding:8px 11px}
+.dlab{font-size:11px;border-radius:6px;padding:2px 7px;flex:none}
+.dlab.me{background:#f6e3dc;color:#b4472f}.dlab.ot{background:#e6efe9;color:#2f7a62}
+.dicmp1 .dn{margin-left:auto;font-size:11px;color:var(--ink3);flex:none}
+.dchips{display:flex;gap:3px;flex:none}
+/* よい条文 */
+.axhead{display:flex;align-items:baseline;gap:12px;margin:26px 2px 12px;flex-wrap:wrap}
+.axname{font-family:"Zen Maru Gothic";font-size:16px;font-weight:700}
+.axtx{font-size:12px;color:var(--ink3)}
+.axdesc{font-size:12.5px;color:var(--ink3);line-height:1.8;margin:0 2px 14px;display:flex;gap:7px;align-items:flex-start}
+.axdesc svg{flex:none;margin-top:3px}
+.ycard .tmeta{flex-wrap:wrap}
+.ysch{font-size:12px;display:flex;align-items:center;gap:5px;color:var(--ink2)}
+.yart{font-size:11.5px;color:var(--ink3)}
+.chchip.ax-もめない{background:#e9eef5;color:#3b5c86}
+.chchip.ax-実態に合う{background:#eef1e5;color:#5f7038}
+.chchip.ax-負担が軽い{background:#f6ecdf;color:#a2661f}
+.yuse{margin-top:11px;background:#f7f4ec;border-radius:9px;padding:10px 12px;font-size:12.5px;line-height:1.85;display:flex;gap:9px;align-items:flex-start}
+.yul{font-weight:700;color:#6b5c3e;flex:none;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.chn{font-size:10.5px;opacity:.6;margin-left:5px}
+/* ひな形 */
+.hcard .tmeta{gap:9px}
+.hneed{font-size:11px;border-radius:6px;padding:2px 8px}
+.hneed.n-必須{background:#f6e3dc;color:#b4472f}
+.hneed.n-推奨{background:#f6ecdf;color:#a2661f}
+.hneed.n-任意{background:#eee9de;color:#7a6f5c}
+.hart{font-family:"Zen Maru Gothic";font-size:12.5px;font-weight:700;color:var(--ink2)}
+.hsrc{font-size:11.5px;color:var(--ink3);margin-left:auto}
+.hnew{font-size:11px;color:#8a6d2f;background:#fbf3e2;border-radius:6px;padding:2px 8px;margin-left:auto}
+.hbody{font-size:14px;line-height:2.05;margin-top:9px;background:#fbfaf6;border-left:3px solid var(--line2);border-radius:0 9px 9px 0;padding:13px 15px}
 </style></head>
 <body>
 <div class="hd"><div class="hd-in">
@@ -167,433 +335,153 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 <div class="toast" id="toast"></div>
 <script>
 /* ============================================================
-   交野市PTA 会則・細則 くらべる板（デモ）
-   ・岩船小学校 … 実際の会則/細則PDFから起こした本物データ
-   ・他校 … 「集まるとこう見える」を体感してもらうためのサンプル（仮）
-   ・条文番号は学校ごとにバラバラなので、AIが“趣旨”で束ねて並べています
+   交野市PTA 会則・細則 くらべる板
+   ・提出9校すべて、各校から提出された会則・細則の原本から起こした実データ
+   ・星田小学校は未提出（提出され次第、同じ手順で追加できます）
+   ・条文番号は学校ごとにバラバラなので、趣旨で束ねて並べています
+   ・データ部（SCHOOLS / PDFS / KAI / SAI）は論点マトリクスxlsxから自動生成
+     → 直すときは xlsx を直して gen_board_kaisoku.py を再実行
    ============================================================ */
 
 /* ---- 学校（badge＝頭文字バッジ） ---- */
-const SCHOOLS=[
- {id:'iwa', name:'岩船小学校',    sname:'岩船小',   badge:'岩',  block:'４ブロック', real:true},
- {id:'kzu', name:'郡津小学校',    sname:'郡津小',   badge:'郡',  block:'２ブロック'},
- {id:'kra', name:'倉治小学校',    sname:'倉治小',   badge:'倉',  block:'２ブロック'},
- {id:'hsi', name:'星田小学校',    sname:'星田小',   badge:'星',  block:'３ブロック'},
- {id:'kis', name:'私市小学校',    sname:'私市小',   badge:'私',  block:'４ブロック'},
- {id:'fuj', name:'藤が尾小学校',  sname:'藤が尾小', badge:'藤',  block:'４ブロック'},
- // ↓ まだ会則を出していない学校（“出してほしい”導線用）
- {id:'mir', name:'交野みらい学園',sname:'みらい学園',badge:'み',  block:'１ブロック', pending:true},
- {id:'ni2', name:'第２中学校',    sname:'２中',     badge:'２中',block:'２ブロック', pending:true},
- {id:'aki', name:'旭小学校',      sname:'旭小',     badge:'旭',  block:'３ブロック', pending:true},
- {id:'ni3', name:'第３中学校',    sname:'３中',     badge:'３中',block:'３ブロック', pending:true},
-];
-const SUBMITTED=SCHOOLS.filter(s=>!s.pending);
-const PENDING=SCHOOLS.filter(s=>s.pending);
-const SMAP={};SCHOOLS.forEach(s=>SMAP[s.id]=s);
+/* ============================================================
+   交野市PTA 会則・細則 くらべる板
+   データは Googleスプレッドシート「交野市PTA_単P比較DB」から
+   読み込みます。HTMLの中にデータは持っていません。
+   直したいときはスプレッドシートを直してください。
+   ============================================================ */
+const SHEET_ID='1ZetpDElLBqk2-YlH9WC0VU8RVFb8LiY9RnhroazO-14';
+const SHEET_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/edit';
 
-/* ---- Google Drive PDFリンク（各校から届いたら、ここに貼るだけ） ----
-   例: kaisoku:'https://drive.google.com/file/d/xxxxx/view'
-   空('')のあいだは「準備中」と表示されます。岩船の全文はアプリ内に埋め込み済みなので、
-   リンクが無くても「全文を読む」ボタンはすぐ使えます。 */
-const PDFS={
- iwa:{kaisoku:'', saisoku:''},   // ← ここに岩船会則/細則のDriveリンクを貼ると「PDFで開く」が有効化
- kzu:{kaisoku:'', saisoku:''},
- kra:{kaisoku:'', saisoku:''},
- hsi:{kaisoku:'', saisoku:''},
- kis:{kaisoku:'', saisoku:''},
- fuj:{kaisoku:'', saisoku:''},
-};
+let SCHOOLS=[], SUBMITTED=[], PENDING=[], SMAP={}, PDFS={}, KAI=[], SAI=[];
+let LEDGER=[], TODO=[], CODE2ID={};
+let ITEMS=[], PROV={}, NAME2ID={};
 
-/* ---- 比較の論点（AIが趣旨で束ねたもの） ----
-   stances[0] を最上段に置く（多数派を先頭に）。
-   kind: common(多数派) / variant(別バリエーション) / uniq(岩船のみ) を色分けに使用。
-   detail: 各校の実際の条文番号(ref)と抜粋(t)。realは岩船の実データ。 */
-const KAI=[
- {ch:'第1章 総則', title:'PTAの目的', saisoku:null,
-  ai:'全校ほぼ共通。国のPTA標準に沿い「学校・家庭・社会で子どもの幸福な成長を図る」と定めています。文言の細部だけが各校で少し違います。',
-  stances:[{kind:'common',label:'会員の協力で、学校・家庭・社会における児童の幸福な成長を図る',schools:['iwa','kzu','kra','hsi','kis','fuj']}],
-  detail:{
-   iwa:{ref:'第2条',real:true,t:'本会は、会員相互が協力して、学校と家庭と社会における児童の幸福な成長を図ることを目的とする。'},
-   kzu:{ref:'第2条',t:'本会は、会員相互の協力のもと、家庭・学校・地域社会における児童の健全な育成を図ることを目的とする。'},
-   kra:{ref:'第3条',t:'保護者と教職員が協力し、児童の幸福な成長と学校教育の充実に資することを目的とする。'},
-   hsi:{ref:'第2条',t:'会員が協力して児童・生徒の幸福な成長を図り、あわせて会員相互の親睦を深める。'},
-   kis:{ref:'第2条',t:'学校・家庭・社会における児童の福祉を増進し、健全な発達を図る。'},
-   fuj:{ref:'第2条',t:'会員相互の協力により、児童の幸福な成長と教育環境の向上を図る。'},
-  }},
+/* --- スプレッドシート読み込み（JSONP。CORSの設定が要らない方式） --- */
+let __gvizN=0;
+function gviz(sheetName){
+ return new Promise((resolve,reject)=>{
+  const cb='__gviz_cb_'+(__gvizN++);
+  const el=document.createElement('script');
+  let done=false;
+  const cleanup=()=>{try{delete window[cb]}catch(e){window[cb]=undefined};el.remove()};
+  window[cb]=(r)=>{
+   done=true;
+   try{
+    const cols=r.table.cols.map((c,i)=>(c.label||c.id||('C'+i)).trim());
+    const rows=r.table.rows.map(rw=>{
+     const o={};
+     cols.forEach((c,i)=>{const cell=rw.c&&rw.c[i];o[c]=(cell&&cell.v!=null)?cell.v:''});
+     return o;
+    });
+    cleanup(); resolve(rows);
+   }catch(e){cleanup(); reject(e)}
+  };
+  el.onerror=()=>{if(!done){cleanup();reject(new Error(sheetName+' を読めませんでした'))}};
+  el.src='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?headers=1&sheet='
+        +encodeURIComponent(sheetName)+'&tqx=responseHandler:'+cb;
+  document.head.appendChild(el);
+  setTimeout(()=>{if(!done){cleanup();reject(new Error(sheetName+' の読み込みがタイムアウトしました'))}},20000);
+ });
+}
+const S=v=>(v==null?'':String(v)).trim();
+const isTrue=v=>v===true||S(v).toUpperCase()==='TRUE';
 
- {ch:'第2章 会員', title:'会員になれる人', saisoku:null,
-  ai:'全校共通で「在籍児童の保護者」と「本校教職員」の2種類。ここは市内で完全にそろっています。',
-  stances:[{kind:'common',label:'在籍児童の保護者＋本校教職員',schools:['iwa','kzu','kra','hsi','kis','fuj']}],
-  detail:{
-   iwa:{ref:'第5条',real:true,t:'（１）本校に在籍する児童の保護者\n（２）本校教職員'},
-   kzu:{ref:'第5条',t:'本校に在籍する児童の保護者、および本校の教職員。'},
-   kra:{ref:'第4条',t:'本校児童の保護者と本校教職員をもって会員とする。'},
-   hsi:{ref:'第5条',t:'在籍児童の保護者・本校教職員。'},
-   kis:{ref:'第5条',t:'本校に在籍する児童の保護者ならびに教職員。'},
-   fuj:{ref:'第4条',t:'本校に在籍する児童の保護者及び本校教職員。'},
-  }},
+/* --- 読み込んだ表を、板が使う形に組み立てる --- */
+function buildAll(mst,led,top,stn,ans){
+ SCHOOLS=mst.filter(r=>S(r['板ID'])).sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99)).map(r=>({
+  id:S(r['板ID']), name:S(r['正式名称']), sname:S(r['略称']), badge:S(r['バッジ']),
+  block:S(r['ブロック']), real:S(r['提出状況'])==='あり', pending:S(r['提出状況'])!=='あり',
+  homes:S(r['会員家庭数【採用値】']), how:S(r['算出方法（板に表示する説明）']),
+  certainty:S(r['算出の確からしさ']), fee:S(r['年会費_R8'])
+ }));
+ SUBMITTED=SCHOOLS.filter(s=>!s.pending);
+ PENDING=SCHOOLS.filter(s=>s.pending);
+ SMAP={}; SCHOOLS.forEach(s=>SMAP[s.id]=s);
 
- {ch:'第3章 役員', title:'役員の構成（人数）', saisoku:'細則で選出方法を規定',
-  ai:'「会長・副会長・書記・会計・会計監査」の5職はほぼ共通。ただし人数は学校差があり、岩船は書記3名（うち教職員1名）と多め。会計監査を置くかどうかも分かれます。',
-  stances:[
-   {kind:'variant',label:'会長1・副会長2・書記3(教職員1含む)・会計1〜2・会計監査2',schools:['iwa']},
-   {kind:'common',label:'会長1・副会長1〜2・書記1〜2・会計2・会計監査2',schools:['kzu','kra','kis','fuj']},
-   {kind:'variant',label:'会長1・副会長2・書記2・会計2（会計監査は運営委員が兼務）',schools:['hsi']},
-  ],
-  detail:{
-   iwa:{ref:'第6条',real:true,t:'（１）会長 １名（２）副会長 ２名（３）書記 ３名（内教職員１名）（４）会計 １〜２名（５）会計監査 ２名'},
-   kzu:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名・会計監査2名。'},
-   kra:{ref:'第6条',t:'会長1名・副会長1名・書記1名・会計2名・会計監査2名。'},
-   hsi:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名。会計監査は運営委員より2名を選ぶ。'},
-   kis:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名・会計監査2名。'},
-   fuj:{ref:'第6条',t:'会長1名・副会長2名・書記2名・会計2名・会計監査2名。'},
-  }},
+ const codeToId={}; mst.forEach(r=>{if(S(r['校コード']))codeToId[S(r['校コード'])]=S(r['板ID'])});
+ CODE2ID=codeToId;
+ /* 会則・細則の正規化ファイル。ラベルも収録内容も 02_ファイル台帳 の列そのままで、
+    HTML側では対応づけをしない（手で対応づけるとズレるため）。 */
+ PDFS={}; SCHOOLS.forEach(s=>PDFS[s.id]={kaisoku:[],saisoku:[],sanko:[]});
+ led.forEach(r=>{
+  if(S(r['公開可否'])!=='OK')return;                 // 個人情報を含む行は出さない
+  const id=codeToId[S(r['校コード'])]; if(!id||!PDFS[id])return;
+  const kind=S(r['種別']), url=S(r['共有URL']); if(!url)return;
+  if(kind!=='会則'&&kind!=='細則等')return;
+  const docs=S(r['収録している規程']).split('／').map(x=>x.trim()).filter(x=>x&&x!=='—');
+  const sub=S(r['小分類']);
+  const item={label:(kind==='会則'?(sub?'会則（'+sub+'）':'会則'):(sub||docs[0]||'細則')),
+              url:url, docs:docs, note:S(r['中身']), year:S(r['年度']), lid:S(r['台帳ID'])};
+  if(!docs.length) PDFS[id].sanko.push(item);
+  else if(kind==='会則') PDFS[id].kaisoku.push(item);
+  else PDFS[id].saisoku.push(item);
+ });
 
- {ch:'第3章 役員', title:'役員の任期', saisoku:null,
-  ai:'本体は「4/1〜翌3/31」で一致。岩船の特色は、会計監査だけ任期を延ばし「翌年度の決算報告を終える総会日まで」としている点です。前年度会計を最後まで見届ける設計で、これは少数派です。',
-  stances:[
-   {kind:'common',label:'4/1〜翌3/31（全役員一律）',schools:['kzu','kra','hsi','kis','fuj']},
-   {kind:'uniq',label:'4/1〜翌3/31。ただし会計監査のみ「翌年度の決算総会日」まで',schools:['iwa']},
-  ],
-  detail:{
-   iwa:{ref:'第7条',real:true,t:'役員（会計監査除く）の任期は4/1〜翌3/31。会計監査の任期は4/1〜翌年度の決算報告を終える次年度総会日まで。欠員時は補充し任期は前任者の残期間。'},
-   kzu:{ref:'第7条',t:'役員の任期は4/1から翌年3/31までの1年とし、再任を妨げない。'},
-   kra:{ref:'第7条',t:'任期は1年（4/1〜翌3/31）。'},
-   hsi:{ref:'第7条',t:'役員の任期は当該年度の1年間とする。'},
-   kis:{ref:'第7条',t:'任期は4/1〜翌3/31。再任は妨げない。'},
-   fuj:{ref:'第7条',t:'任期は1年とし、4/1に始まり翌3/31に終わる。'},
-  }},
+ const stByTopic={}; stn.forEach(r=>{
+  const t=S(r['論点ID']); if(!t)return;
+  (stByTopic[t]=stByTopic[t]||[]).push({id:S(r['立場ID']),ord:+r['並び順']||0,kind:S(r['色区分'])||'variant',label:S(r['立場のラベル'])});
+ });
+ Object.values(stByTopic).forEach(a=>a.sort((x,y)=>x.ord-y.ord));
 
- {ch:'第5章 組織', title:'総会の成立・議決の要件', saisoku:null,
-  ai:'定足数と議決の割合は学校でばらつきが大きい論点です。岩船は「議決権者(委任状含む)の1/5以上で成立・過半数で議決」。決算審議に限り前年度6年保護者にも議決権を与える点はやや独自です。',
-  stances:[
-   {kind:'variant',label:'1/5以上の出席で成立／過半数で議決（決算のみ前年度6年保護者も議決権）',schools:['iwa']},
-   {kind:'common',label:'過半数の出席で成立／出席者の過半数で議決',schools:['kzu','kra','fuj']},
-   {kind:'variant',label:'1/3以上の出席（委任状含む）で成立／過半数で議決',schools:['hsi','kis']},
-  ],
-  detail:{
-   iwa:{ref:'第12条',real:true,t:'総会は年1回。議決権者(委任状含む)の1/5以上の出席で成立。議決は出席議決権者(委任状除く)または書面決議書の過半数。書面表決も可。決算審議のみ前年度6年生の保護者も議決権を有する。'},
-   kzu:{ref:'第11条',t:'会員の過半数の出席(委任状含む)で成立し、出席者の過半数で議決する。'},
-   kra:{ref:'第10条',t:'総会は会員の過半数で成立、議決は出席者の過半数による。'},
-   hsi:{ref:'第12条',t:'議決権者の3分の1以上(委任状含む)の出席で成立、過半数で議決。'},
-   kis:{ref:'第11条',t:'会員の1/3以上の出席で成立し、出席者の過半数で決する。'},
-   fuj:{ref:'第11条',t:'会員の過半数の出席で成立、出席者の過半数の同意で議決。'},
-  }},
+ const ansByTopic={}; ans.forEach(r=>{
+  const t=S(r['論点ID']); if(!t)return;
+  (ansByTopic[t]=ansByTopic[t]||[]).push(r);
+ });
 
- {ch:'第5章 組織', title:'書面表決（総会に出られない人の投票）', saisoku:null,
-  ai:'「総会に来られなくても書面で意思表示できる」しくみ。岩船は明文化しています。コロナ以降に入れた学校と、まだ委任状のみの学校に分かれます。見直しのヒントになりやすい論点です。',
-  stances:[
-   {kind:'common',label:'書面表決を明文で認める',schools:['iwa','kzu','hsi']},
-   {kind:'variant',label:'委任状のみ（書面表決の規定なし）',schools:['kra','kis','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第12条5項',real:true,t:'書面による審議を行う場合、資料を配布し、議案ごとに意思が確認できるよう書面表決書の提出をもって審議できる。'},
-   kzu:{ref:'第11条4項',t:'やむを得ず欠席する会員は、書面表決書により議決に加わることができる。'},
-   kra:{ref:'—',t:'—（書面表決の規定なし。委任状のみ）'},
-   hsi:{ref:'第12条3項',t:'欠席者は書面または委任状により表決できる。'},
-   kis:{ref:'—',t:'—（委任状のみ）'},
-   fuj:{ref:'—',t:'—（委任状のみ）'},
-  }},
+ const mk=(tab)=>top.filter(r=>S(r['タブ'])===tab&&isTrue(r['公開']))
+   .sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99))
+   .map(r=>{
+     const tid=S(r['論点ID']);
+     const rows=ansByTopic[tid]||[];
+     const detail={};
+     rows.forEach(x=>{
+      const bid=S(x['板ID']); if(!bid||!SMAP[bid]||SMAP[bid].pending)return;
+      const body=S(x['本文（要約）']);
+      detail[bid]={ref:S(x['条番号'])||tab,real:true,t:body||'—'};
+     });
+     const stances=(stByTopic[tid]||[]).map(st=>({
+      kind:st.kind,label:st.label,
+      schools:rows.filter(x=>S(x['立場ID'])===st.id&&SMAP[S(x['板ID'])]&&!SMAP[S(x['板ID'])].pending).map(x=>S(x['板ID']))
+     })).filter(s=>s.schools.length);
+     return {ch:S(r['分類']),title:S(r['タイトル（板に出る見出し）'])||S(r['タイトル']),ai:S(r['やさしい解説']),
+             saisoku:S(r['関連（細則リンク）'])||null,stances,detail};
+   }).filter(t=>t.stances.length);
+ KAI=mk('会則'); SAI=mk('細則');
+}
 
- {ch:'第5章 組織', title:'委員会の種類とフェスタ', saisoku:'各委員の選出は細則で規定',
-  ai:'委員会の骨組み（学年・広報・地区）は共通。違いが出るのは「地域交流／お祭り系の委員会」で、岩船は"地域交流委員会"が「岩船わいわいフェスタ」を担当。名称と担当がそのまま各校の色になります。',
-  stances:[
-   {kind:'variant',label:'学年・地域交流(わいわいフェスタ)・広報・地区・特別',schools:['iwa']},
-   {kind:'common',label:'学年・広報・地区・成人(文化)・特別',schools:['kzu','kis']},
-   {kind:'variant',label:'学年・広報・地区・環境整備・お祭り実行',schools:['kra','hsi','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第17条',real:true,t:'（１）学年委員会（２）地域交流委員会＝岩船わいわいフェスタの準備・運営（３）広報委員会（４）地区委員会（５）特別委員会（必要の都度）'},
-   kzu:{ref:'第16条',t:'学年委員会・広報委員会・地区委員会・成人委員会・特別委員会。'},
-   kra:{ref:'第17条',t:'学年・広報・地区・環境整備委員会と、夏まつり実行委員会。'},
-   hsi:{ref:'第16条',t:'学級・広報・地区・環境の各委員会、および星まつり実行委員会。'},
-   kis:{ref:'第17条',t:'学年・広報・地区・文化(成人)・特別委員会。'},
-   fuj:{ref:'第16条',t:'学年・広報・地区・環境整備委員会、ふれあいフェスタ実行委員会。'},
-  }},
+function fatal(msg){
+ document.getElementById('page').innerHTML=
+  '<div class="card" style="padding:22px"><h2 style="margin:0 0 10px">データを読み込めませんでした</h2>'
+ +'<p class="lead">'+esc(msg)+'</p>'
+ +'<p class="lead">スプレッドシートが「ウェブに公開」になっているかご確認ください。'
+ +'シート名（01_学校マスタ／02_ファイル台帳／03_論点マスタ／04_立場マスタ／05_回答）と、1行目の見出しは変えないでください。</p>'
+ +'<p><a class="pdf-btn" href="'+SHEET_URL+'" target="_blank" rel="noopener">スプレッドシートを開く</a></p></div>';
+}
 
- {ch:'第6章 会計', title:'会費の決め方', saisoku:null,
-  ai:'ほぼ全校で「その年度の総会で決定」。金額を会則に直接書かず総会に委ねる点は市内でそろっています。',
-  stances:[{kind:'common',label:'当該年度の総会で決定する',schools:['iwa','kzu','kra','hsi','kis','fuj']}],
-  detail:{
-   iwa:{ref:'第22条',real:true,t:'本会の会費は、当該年度の総会において決定する。'},
-   kzu:{ref:'第20条',t:'会費は総会において決定する。'},
-   kra:{ref:'第21条',t:'会費の額は毎年度の総会で定める。'},
-   hsi:{ref:'第22条',t:'会費は当該年度総会で決定する。'},
-   kis:{ref:'第21条',t:'会費は総会の議決による。'},
-   fuj:{ref:'第20条',t:'会費は総会において決定する。'},
-  }},
-
- {ch:'第6章 会計', title:'会計年度', saisoku:null,
-  ai:'完全共通で「4/1〜翌3/31」。岩船はさらに「決算のための1か月の出納整理期間」を明記しています（この一文の有無だけ差が出ます）。',
-  stances:[
-   {kind:'common',label:'4/1〜翌3/31',schools:['kzu','kra','hsi','kis','fuj']},
-   {kind:'variant',label:'4/1〜翌3/31＋出納整理期間1か月を明記',schools:['iwa']},
-  ],
-  detail:{
-   iwa:{ref:'第23条',real:true,t:'会計年度は毎年4/1に始まり翌3/31に終わる。会計年度終了から1か月間を出納整理期間とし、会計年度内の出納の精算期間とする。'},
-   kzu:{ref:'第21条',t:'会計年度は4/1から翌3/31まで。'},
-   kra:{ref:'第22条',t:'会計年度は4/1〜翌3/31とする。'},
-   hsi:{ref:'第23条',t:'会計年度は4/1に始まり翌3/31に終わる。'},
-   kis:{ref:'第22条',t:'毎年4/1から翌3/31まで。'},
-   fuj:{ref:'第21条',t:'4/1〜翌3/31。'},
-  }},
-
- {ch:'第7章 規約改正', title:'会則を変えるときの要件', saisoku:null,
-  ai:'ここは実務で一番差が効く論点。岩船は「総会で出席会員の2/3以上の賛成」。過半数で改正できる学校もあり、ハードルの高さが分かれます。改正のしやすさに直結するので要チェック。',
-  stances:[
-   {kind:'common',label:'総会で出席会員の2/3以上の賛成',schools:['iwa','hsi','kis']},
-   {kind:'variant',label:'総会で出席会員の過半数の賛成',schools:['kzu','kra','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第24条',real:true,t:'本会の会則は、総会の審議において出席会員の3分の2以上の賛成により改正することができる。'},
-   kzu:{ref:'第22条',t:'会則の改正は総会出席者の過半数の賛成による。'},
-   kra:{ref:'第23条',t:'会則は総会において出席者の過半数で改正できる。'},
-   hsi:{ref:'第24条',t:'会則の改正は総会出席者の2/3以上の賛成を要する。'},
-   kis:{ref:'第23条',t:'会則の変更は総会で出席会員の2/3以上の同意による。'},
-   fuj:{ref:'第22条',t:'会則の改正は総会出席者の過半数による。'},
-  }},
-
- {ch:'第1章 総則', title:'個人情報の保護', saisoku:'細則に詳細な取扱規約(全16条)',
-  ai:'岩船は会則本体(第4条)で枠組みを定め、さらに細則に全16条の詳しい取扱規約を持つ手厚い構成。ここまで細則で整えている学校は多くありません。個人情報まわりを見直したい学校の“お手本”になります。',
-  stances:[
-   {kind:'uniq',label:'会則で枠組み＋細則に全16条の取扱規約(法令準拠)',schools:['iwa']},
-   {kind:'common',label:'会則に数項の個人情報条項のみ',schools:['kzu','kra','hsi','fuj']},
-   {kind:'variant',label:'別紙「個人情報取扱方針」を用意',schools:['kis']},
-  ],
-  detail:{
-   iwa:{ref:'第4条＋細則第15〜30条',real:true,t:'会則第4条で収集目的・提供先(協議会/教委/学校/区長自治会等)・管理を規定。さらに細則第4章に、管理者・秘密保持・収集/利用/保管/第三者提供・開示請求・漏えい対応・研修・苦情処理まで全16条を整備。'},
-   kzu:{ref:'第4条',t:'取得した個人情報は会の活動目的にのみ利用し、適正に管理する旨を数項で規定。'},
-   kra:{ref:'第5条',t:'個人情報は目的外に使用せず、適切に管理する。'},
-   hsi:{ref:'第4条',t:'個人情報は活動に必要な範囲で収集・利用し、外部に漏らさない。'},
-   kis:{ref:'第4条＋別紙',t:'会則で概要を定め、詳細は別紙「個人情報取扱方針」による。'},
-   fuj:{ref:'第4条',t:'収集した個人情報は目的の範囲で利用し、管理責任者を会長とする。'},
-  }},
-];
-
-const SAI=[
- {ch:'第1章 役員の選出', title:'役員をどう割り当てるか（地区制）', saisoku:null,
-  ai:'岩船は「森／寺／天／私部」を2グループに分け、地区ごとに役員を出す地区割方式。地域に根ざした独自色が強い部分で、そのまま真似るより「自校の地区に置き換えて考える」お手本になります。',
-  stances:[
-   {kind:'uniq',label:'居住地区(森/寺/天/私部)を2グループに分け地区ごとに選出',schools:['iwa']},
-   {kind:'common',label:'学年ごとに割り当て(輪番)',schools:['kzu','kis','fuj']},
-   {kind:'variant',label:'立候補＋推薦、不足分を地区・学年から補充',schools:['kra','hsi']},
-  ],
-  detail:{
-   iwa:{ref:'第2条',real:true,t:'地区名(森Ⅰ/森Ⅱ/寺/天Ⅰ・Ⅱ/天Ⅲ/私部)ごとに、会長・会計監査を除く役員6名を2グループに分けて選出。具体的方法は各地区で定める。会計監査は原則前年度会計から。'},
-   kzu:{ref:'第2条',t:'役員は各学年から輪番で選出する。'},
-   kra:{ref:'第1条',t:'立候補と推薦により選び、不足は地区から補う。'},
-   hsi:{ref:'第2条',t:'立候補を基本とし、不足分は学年ごとに割り当てる。'},
-   kis:{ref:'第2条',t:'各学年から人数を割り当てて選出。'},
-   fuj:{ref:'第2条',t:'学年ごとの輪番制で役員を出す。'},
-  }},
-
- {ch:'第1章 役員の選出', title:'役員を辞退できる条件', saisoku:null,
-  ai:'「小さい子・介護・病気・経験者は辞退できる」という配慮は各校に共通。岩船は"3歳以下(次年度4/2時点)"と基準日まで明記し、経験者免除も細かく定義しています。',
-  stances:[
-   {kind:'common',label:'乳幼児・介護・病気・経験者などは希望すれば辞退可',schools:['iwa','kzu','kra','hsi','kis','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第3条',real:true,t:'希望すれば役員候補を免れる：(1)3歳以下(次年度4/2時点)の子がいる(2)介護を要する家族がいる(3)本人が病気等(4)役員経験者(5)地区選管長が認める特別な理由。申請と証明を要する場合あり。'},
-   kzu:{ref:'第3条',t:'未就学児の育児・介護・疾病・過去の役員経験がある場合は辞退できる。'},
-   kra:{ref:'第3条',t:'乳幼児のいる家庭、介護・病気の事情、経験者は免除を申し出できる。'},
-   hsi:{ref:'第3条',t:'3歳未満児の養育・介護・傷病・役員経験者は辞退可。'},
-   kis:{ref:'第3条',t:'未就学児がいる・介護中・病気・経験済みの場合は免除申請できる。'},
-   fuj:{ref:'第3条',t:'乳児養育・介護・疾病・役員経験者は希望により免除。'},
-  }},
-
- {ch:'第1章 役員の選出', title:'会長の選び方', saisoku:null,
-  ai:'まず立候補を募り、いなければ選挙や輪番、という流れは共通。岩船の独自点は「立候補ゼロのとき2グループ輪番制で会長を出す」明確なルールがあること。“決まらない年”への備えとして参考になります。',
-  stances:[
-   {kind:'variant',label:'立候補→(複数は選挙/1人は信任)→不在なら2グループ輪番制',schools:['iwa']},
-   {kind:'common',label:'立候補優先、いなければ役員互選',schools:['kzu','kra','kis','fuj']},
-   {kind:'variant',label:'推薦委員会が候補を推薦',schools:['hsi']},
-  ],
-  detail:{
-   iwa:{ref:'第4・5条',real:true,t:'中央選管が立候補を募る。複数なら無記名投票で最高得票者、1人なら信任投票(過半数)。不在時は再募集し、なお不在なら「森Ⅰ・森Ⅱ・寺」と「天Ⅰ・Ⅱ・天Ⅲ」の2グループ輪番で選出。'},
-   kzu:{ref:'第4条',t:'立候補を優先し、いない場合は役員の互選による。'},
-   kra:{ref:'第4条',t:'立候補者から選び、不在時は前役員会が推薦する。'},
-   hsi:{ref:'第4条',t:'推薦委員会が候補者を選び総会で承認する。'},
-   kis:{ref:'第4条',t:'立候補、なければ役員間の互選で決める。'},
-   fuj:{ref:'第4条',t:'立候補優先、不在なら役員会推薦。'},
-  }},
-
- {ch:'第2章 委員の選出', title:'学級委員の選び方と人数', saisoku:null,
-  ai:'「1家庭1回以上」の原則は共通。岩船は学級数(1〜3学級)ごとに委員長・広報の人数配分まで細かく定義し、6年保護者の扱い(地域交流委員補佐)まで規定。運用で迷わない作り込みが特徴です。',
-  stances:[
-   {kind:'variant',label:'1家庭1回以上。学級数別に委員長/広報の人数を細かく規定',schools:['iwa']},
-   {kind:'common',label:'各学級から数名を話し合い/くじで選出(1家庭1回)',schools:['kzu','kra','hsi','kis','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第8条',real:true,t:'学級委員=学級委員長＋広報委員。1家庭1回以上。1学年4人を学級懇談で選出。1学級なら委員長2/広報2、2学級なら各学級で委員長1/広報1、3学級なら学年で委員長2/広報2になるよう調整。話し合いで決まらなければくじ引き。'},
-   kzu:{ref:'第7条',t:'各学級から2名を選び、1家庭1回以上を原則とする。'},
-   kra:{ref:'第6条',t:'学級ごとに委員を話し合いで選出、不調時はくじ引き。'},
-   hsi:{ref:'第7条',t:'各学級から学級委員・広報委員を各1名選ぶ。'},
-   kis:{ref:'第7条',t:'学級から数名を選出。1家庭1回を原則。'},
-   fuj:{ref:'第7条',t:'各学級2名を選び、立候補多数・不足時はくじで決定。'},
-  }},
-
- {ch:'第2章 委員の選出', title:'役員と委員の兼務', saisoku:null,
-  ai:'「役員と委員の掛け持ちは不可」は各校ほぼ共通。岩船は加えて「学級委員と地区委員は兼務可、ただし両方の委員長は不可」と一段細かく定めています。',
-  stances:[
-   {kind:'common',label:'役員と委員の兼務は不可',schools:['iwa','kzu','kra','hsi','kis','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第10条',real:true,t:'役員と学級委員・地区委員の兼任は不可。学級委員と地区委員は兼任可。ただし両方の委員長を兼ねることはできない。'},
-   kzu:{ref:'第9条',t:'役員は委員を兼ねることができない。'},
-   kra:{ref:'第8条',t:'役員と委員の兼務を認めない。'},
-   hsi:{ref:'第9条',t:'役員・委員の兼任は原則不可。'},
-   kis:{ref:'第9条',t:'役員は委員を兼務しない。'},
-   fuj:{ref:'第8条',t:'役員と各委員の兼任はできない。'},
-  }},
-
- {ch:'第3章 会費・会計', title:'会費の集め方', saisoku:null,
-  ai:'口座引き落としが主流。岩船は「ゆうちょ銀行から引き落とし」「兄弟姉妹は下の子で納入」「年度途中の加入は月割り、退会時の返金なし」まで具体的。集金トラブルを減らす書き方の見本です。',
-  stances:[
-   {kind:'common',label:'口座引き落とし(年1回)。兄弟は1家庭でまとめる',schools:['iwa','kzu','kra','kis']},
-   {kind:'variant',label:'現金徴収または振込',schools:['hsi','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第11〜13条',real:true,t:'会費はゆうちょ銀行より引き落とし、納入回数は年1回。兄弟姉妹がいる場合は弟妹の方で納入。教職員は免除できる。年度途中加入は月額×残月分、途中退会の返金は行わない。'},
-   kzu:{ref:'第10条',t:'会費は口座引き落としで年1回。兄弟姉妹は1口とする。'},
-   kra:{ref:'第9条',t:'会費は指定口座からの引き落とし。'},
-   hsi:{ref:'第10条',t:'会費は学期ごとに現金で徴収する。'},
-   kis:{ref:'第10条',t:'会費は口座振替により年1回徴収。'},
-   fuj:{ref:'第9条',t:'会費は指定口座への振込による。'},
-  }},
-
- {ch:'第3章 会費・会計', title:'回収事業(アルミ缶など)の収益の使い道', saisoku:null,
-  ai:'岩船だけが「アルミ缶回収の収益は図書購入などへ還元」と使途を明記。回収・ベルマーク系の収益の行き先を会則/細則に書いている学校は少なく、透明性の面で参考になる独自ルールです。',
-  stances:[
-   {kind:'uniq',label:'アルミ缶回収の収益は図書購入などへ還元(明文)',schools:['iwa']},
-   {kind:'common',label:'収益事業の使途は会則/細則に明記なし',schools:['kzu','kra','hsi','kis','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第14条',real:true,t:'アルミ缶回収による収益金は、図書購入などへ還元する。'},
-   kzu:{ref:'—',t:'—（回収収益の使途規定なし。都度、総会/運営委で決定）'},
-   kra:{ref:'—',t:'—（規定なし）'},
-   hsi:{ref:'—',t:'—（ベルマーク収益は都度使途を協議）'},
-   kis:{ref:'—',t:'—（規定なし）'},
-   fuj:{ref:'—',t:'—（規定なし）'},
-  }},
-
- {ch:'第4章 個人情報', title:'個人情報の取扱規約(細則本体)', saisoku:null,
-  ai:'岩船は細則に、管理者・秘密保持・収集/利用/保管/第三者提供の記録・開示請求・漏えい対応・研修・苦情処理まで全16条。法令に沿った本格的な規約で、市内で最も手厚い部類。見直しの“基準テンプレ”に使えます。',
-  stances:[
-   {kind:'uniq',label:'細則に法令準拠の取扱規約 全16条(第15〜30条)',schools:['iwa']},
-   {kind:'common',label:'細則に数条の取扱規定',schools:['kra','hsi','fuj']},
-   {kind:'variant',label:'別紙の個人情報方針で対応',schools:['kzu','kis']},
-  ],
-  detail:{
-   iwa:{ref:'第15〜30条',real:true,t:'目的・責務・管理者(会長)・秘密保持義務(退任後も)・収集/利用/利用目的制限・管理/保管(施錠書庫・ウィルス対策・パスワード)・第三者提供の制限と記録作成・開示等請求への対応・漏えい時の即時報告・定期研修・苦情処理まで、全16条を整備。'},
-   kra:{ref:'第11〜13条',t:'収集目的の明示・目的外利用の禁止・適正管理を3条で規定。'},
-   hsi:{ref:'第12〜14条',t:'利用目的・管理責任・第三者提供の制限を規定。'},
-   kis:{ref:'別紙',t:'細則本体では触れず、別紙「個人情報取扱方針」で対応。'},
-   kzu:{ref:'別紙',t:'個人情報は別途「取扱方針」により管理。'},
-   fuj:{ref:'第11〜12条',t:'目的の範囲での利用と管理責任者を規定。'},
-  }},
-
- {ch:'第5章 改正', title:'細則を変えるときの要件', saisoku:null,
-  ai:'細則は会則より軽く変えられるのが一般的。岩船は「運営委員会で出席者の2/3以上」。会則(総会2/3)より一段機動的に見直せる設計で、多くの学校と同じ考え方です。',
-  stances:[
-   {kind:'common',label:'運営委員会で出席者の2/3以上の賛成',schools:['iwa','hsi','kis']},
-   {kind:'variant',label:'運営委員会で出席者の過半数の賛成',schools:['kzu','kra','fuj']},
-  ],
-  detail:{
-   iwa:{ref:'第31条',real:true,t:'この細則は、運営委員会において出席者の3分の2以上の賛成により改正することができる。'},
-   kzu:{ref:'第20条',t:'細則の改正は運営委員会出席者の過半数による。'},
-   kra:{ref:'第18条',t:'細則は運営委員会の過半数で改正できる。'},
-   hsi:{ref:'第22条',t:'細則の改正は運営委員会で出席者の2/3以上。'},
-   kis:{ref:'第20条',t:'細則の変更は運営委員会2/3以上の賛成による。'},
-   fuj:{ref:'第19条',t:'細則は運営委員会の過半数で改正。'},
-  }},
-];
-
-/* ---- 岩船の全文（実データ。モーダルで表示） ---- */
-const IWA_KAISOKU={title:'岩船小学校PTA会則（令和8年1月17日改正）',chapters:[
- {ch:'第1章 総則',arts:[
-  {n:'第1条（名称）',t:'この会は、交野市立岩船小学校ＰＴＡ（以下「本会」という）と呼び、所在地を岩船小学校におく。'},
-  {n:'第2条（目的）',t:'本会は、会員相互が協力して、学校と家庭と社会における児童の幸福な成長を図ることを目的とする。'},
-  {n:'第3条（活動）',t:'前条の目的達成のため次の方針に従い活動する。(1)教育を本旨とする民主団体として活動(2)児童憲章の精神に即し他団体・機関と協力(3)適正な教育予算充実に努力(4)特定政党・宗教に片寄らず営利行為は行わない(5)本会・役員名で選挙候補者を推薦しない(6)学校の人事その他管理運営に干渉しない。'},
-  {n:'第4条（個人情報保護）',t:'本会は目的達成に必要な個人情報を収集することがある。利用目的＝(1)活動の情報伝達・広報(2)会費徴収・集金事務(3)その他必要と認める活動。提供先＝(1)加入するPTA協議会等(2)交野市教委・岩船小(3)校区内の区長・自治会(4)その他必要と認める社会教育団体等。利用・管理は別に細則で定める。'},
- ]},
- {ch:'第2章 会員',arts:[
-  {n:'第5条（会員）',t:'会員となれる者：(1)本校に在籍する児童の保護者(2)本校教職員。'},
- ]},
- {ch:'第3章 役員',arts:[
-  {n:'第6条（役員）',t:'(1)会長1名(2)副会長2名(3)書記3名(内教職員1名)(4)会計1〜2名(5)会計監査2名。'},
-  {n:'第7条（任期）',t:'役員(会計監査除く)の任期は4/1〜翌3/31。会計監査は4/1〜翌年度の決算報告を終える次年度総会日まで。欠員は補充し、任期は前任者の残留期間。'},
-  {n:'第8条（任務）',t:'(1)会長=本会を代表し会務を総轄、各委員会を召集し報告を受ける(2)副会長=会長を補佐、事故時は職務代行(3)書記=庶務(4)会計=財務(5)会計監査=年1回以上監査し総会で報告。'},
- ]},
- {ch:'第4章 役員の選出',arts:[
-  {n:'第9条（役員選出）',t:'役員は着任年度の2〜6年生保護者から選出(書記1名は教職員)。保護者役員(会計監査除く)の具体的方法は細則で定める。役職は互選。会計監査は前運営委員から前役員会が2名推薦。欠員時は当該地区から後任を選出。'},
-  {n:'第10条（選挙管理委員会）',t:'各地区に選挙管理委員会を設け、統括する中央選管を置く。中央選管は年度内に役員選出結果を役職名を付して報告。次年度役員の承認は承認書提出数の過半数で決定。'},
- ]},
- {ch:'第5章 組織',arts:[
-  {n:'第11条（組織）',t:'(1)総会(2)運営委員会(3)役員会(4)各委員会。'},
-  {n:'第12条（総会）',t:'総会は最高議決機関で年1回。会員の1/3以上の希望または会長が必要と認めるとき臨時開催可。議決権は全会員(決算審議のみ前年度6年保護者も)。議決権者(委任状含む)の1/5以上で成立、議決は過半数。書面表決も可。'},
-  {n:'第13条（審議事項）',t:'(1)運営の基本方針(2)予算・決算(3)会則改正(4)その他重要事項。'},
-  {n:'第14条（運営委員会）',t:'総会に次ぐ議決機関。(1)運営計画(2)総会議案(3)事業計画(4)細則の改正(5)その他を審議。原則月1回、臨時開催可。役員会は内容を随時会員に報告。'},
-  {n:'第15条（構成員）',t:'役員(会計監査除く)・学校長・教頭・各委員長・会長/校長が必要と認める者。'},
-  {n:'第16条（役員会）',t:'役員で構成、運営委員会に次ぐ議決機関。運営委員会議案の作成、諸問題の対応。'},
-  {n:'第17条（各委員会）',t:'(1)学年委員会(2)地域交流委員会(3)広報委員会(4)地区委員会(5)特別委員会(必要の都度)。'},
-  {n:'第18条（各委員の選出）',t:'1〜3号は細則で選出(総称=学級委員)。地区委員会は各地区から選出。特別委員会は関係会員から。各委員会は委員長・副委員長を互選。'},
-  {n:'第19条（任期）',t:'委員の任期は1年、再任可。欠員は補充(任期は残留期間)。'},
-  {n:'第20条（任務）',t:'学年委員会=学年環境整備・ベルマーク回収分類発送/地域交流委員会=岩船わいわいフェスタの準備・運営/広報委員会=広報活動/地区委員会=地区の連絡と校外生活の補導。'},
-  {n:'第21条（校長の参画）',t:'学校長は第11条の各会に出席し、学校管理・教育に関して意見を述べることができる。'},
- ]},
- {ch:'第6章 会計',arts:[
-  {n:'第22条（会費）',t:'会費は当該年度の総会で決定する。'},
-  {n:'第23条（会計年度）',t:'会計年度は4/1〜翌3/31。終了から1か月を出納整理期間とする。'},
- ]},
- {ch:'第7章 規約改正',arts:[
-  {n:'第24条（会則改正）',t:'会則は総会の審議で出席会員の2/3以上の賛成により改正できる。'},
- ]},
- {ch:'第8章 細則',arts:[
-  {n:'第25条（細則の制定）',t:'会長は施行に細則を要する場合、運営委員会に諮り定めることができる。'},
- ]},
- {ch:'附則',arts:[
-  {n:'第26条（附則）',t:'昭和53年12月3日施行。以後、昭和58年〜令和8年1月17日(第7条改正)まで多数回の一部改正を経る。'},
- ]},
-]};
-
-const IWA_SAISOKU={title:'岩船小学校PTA細則（令和8年2月21日改正）',chapters:[
- {ch:'第1章 役員の選出',arts:[
-  {n:'第1条（選挙管理委員会）',t:'選管は役員選出の一切の事務を行う。各地区委員で構成し委員長・副委員長を互選。各地区選管委員長で中央選管を構成。委員が役員候補に上がった場合は任務を解かれる。'},
-  {n:'第2条（役員の選出）',t:'地区名(森Ⅰ=森北1・2/森南3、森Ⅱ=森南1・2、寺=寺全体、天Ⅰ・Ⅱ=天野が原1・2・5、天Ⅲ=天野が原3・4、私部=私部南4他)ごとに、会長・会計監査を除く役員6名を2グループに分けて選出。具体的方法は各地区で定める。会計監査は原則前年度会計から。'},
-  {n:'第3条（役員免除条件）',t:'希望すれば免除：(1)3歳以下(次年度4/2時点)の子(2)介護を要する家族(3)本人が病気等(4)役員経験者(5)地区選管長が認める特別な理由。申請・証明を要する場合あり。免除理由は第三者に漏らさない。'},
-  {n:'第4条（会長の選出）',t:'中央選管が立候補を募る。複数は無記名投票で最高得票者、1人は信任投票(過半数)。地区ごと投票し開票は全地区終了後。不在なら再受付、なお不在なら2グループ輪番制。'},
-  {n:'第5条（会長の輪番制）',t:'「森Ⅰ・森Ⅱ・寺」と「天Ⅰ・Ⅱ・天Ⅲ」の2グループから交互に会長を選出する。'},
-  {n:'第6条（選挙方法）',t:'1月現在6年児童のみで下級の弟妹がいない会員は選挙に参加不可(選挙事務は除く)。投票は単記無記名、1家庭1票、地区ごと。最高得票者を役員とする。結果は中央選管が一括公表。'},
- ]},
- {ch:'第2章 地区委員及び学級委員の選出',arts:[
-  {n:'第7条（地区委員）',t:'会則第17条1項4号の地区委員の選出方法は各地区で定める。'},
-  {n:'第8条（学級委員）',t:'学級委員=学級委員長＋広報委員。1家庭1回以上。1学年4人を学級懇談で選出。学級数(1〜3)に応じ委員長/広報の人数を調整。各学年で学年委員長・地域交流委員を選出。話し合いで決まらなければくじ引き。6年保護者で未経験者は地域交流委員補佐(経験にカウントせず)。'},
-  {n:'第9条（学級委員の免除）',t:'役員経験者は事前アンケートで免除希望可。各種委員長経験者は、全家庭が1回以上経験済みの場合に2回目の対象から免除。'},
-  {n:'第10条（委員の兼務）',t:'役員と学級委員/地区委員の兼任は不可。学級委員と地区委員は兼任可(ただし両方の委員長は不可)。'},
- ]},
- {ch:'第3章 会費及び会計',arts:[
-  {n:'第11条（納入者）',t:'兄弟姉妹がいる場合は弟妹の方で納入。事情のある家庭は考慮。教職員は免除できる。'},
-  {n:'第12条（納入回数）',t:'納入回数は年1回とする。'},
-  {n:'第13条（徴収方法）',t:'会費はゆうちょ銀行より引き落とし。年度途中加入は月額×残月分。途中退会の返金は行わない。'},
-  {n:'第14条（アルミ缶回収）',t:'アルミ缶回収による収益金は、図書購入などへ還元する。'},
- ]},
- {ch:'第4章 個人情報取扱規約',arts:[
-  {n:'第15〜17条（目的・責務・管理者）',t:'保有個人情報の適正管理と権利保護を目的とし、法令遵守。管理者はPTA会長で、会員の管理監督に努める。'},
-  {n:'第18〜21条（秘密保持・収集・利用）',t:'職務上知り得た情報をみだりに漏らさない(退任後も)。収集時は利用目的を明示(要配慮情報は同意)。会則の目的の範囲で利用し、範囲を超えて取り扱わない。'},
-  {n:'第22〜24条（管理・保管・第三者提供）',t:'必要最低限の期間で保管し不要分は年度末までに廃棄。施錠書庫・ウィルス対策・パスワード等で適切に管理。法令・規約の場合を除き同意なく第三者提供しない。'},
-  {n:'第25〜27条（提供の記録・開示）',t:'第三者提供・受領時は氏名・項目・同意等の記録を作成保存。本人からの開示・利用停止・追加・削除の求めに法令に沿って応じる。'},
-  {n:'第28〜30条（漏えい対応・研修・苦情）',t:'漏えい等を把握したら直ちに管理者へ報告。役員に定期研修を実施。苦情の適切・迅速な処理に努める。'},
- ]},
- {ch:'第5章 規約改正',arts:[
-  {n:'第31条（細則改正）',t:'この細則は運営委員会で出席者の2/3以上の賛成により改正できる。'},
- ]},
- {ch:'附則',arts:[
-  {n:'第32条（附則）',t:'平成14年5月18日以降、多数回の一部改正を経て、令和8年2月21日(第2条・第5条改正)に至る。'},
- ]},
-]};
+async function boot(){
+ document.getElementById('page').innerHTML=
+  '<div class="card" style="padding:26px;text-align:center"><p class="lead" style="margin:0">スプレッドシートから読み込んでいます…</p></div>';
+ try{
+  const [mst,led,top,stn,ans,tod,itm,prov,yoi,hina]=await Promise.all([
+   gviz('01_学校マスタ'),gviz('02_ファイル台帳'),gviz('03_論点マスタ'),gviz('04_立場マスタ'),gviz('05_回答'),
+   gviz('11_未確認・宿題').catch(()=>[]),gviz('12_項目マスタ').catch(()=>[]),gviz('13_条文').catch(()=>[]),
+   gviz('14_よい条文').catch(()=>[]),gviz('15_ひな形').catch(()=>[])]);
+  LEDGER=led; TODO=tod;
+  buildAll(mst,led,top,stn,ans);
+  buildItems(itm,prov);
+  buildStance(stn,ans);
+  buildFull(prov);
+  buildYoi(yoi); buildHina(hina);
+  if(!SCHOOLS.length) return fatal('01_学校マスタ に行がありません。');
+  if(!ITEMS.length) return fatal('12_項目マスタ に公開中の項目がありません。');
+  if(!SMAP[ST.axis]||SMAP[ST.axis].pending) ST.axis=(SUBMITTED[0]||{}).id;
+  render();
+ }catch(e){ fatal(e&&e.message?e.message:String(e)); }
+}
 
 /* ============ 状態 ============ */
-const ST={tab:'kaisoku', onlyDiff:false, axis:'iwa', expanded:{}};
+const ST={tab:'all', onlyDiff:false, axis:'iwa', expanded:{}};
 
 /* ============ ヘルパ ============ */
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -615,10 +503,10 @@ function submittedCount(tp){const set=new Set();tp.stances.forEach(s=>s.schools.
 
 /* ============ 描画 ============ */
 function renderNav(){
- const items=[['kaisoku','会則をくらべる'],['saisoku','細則をくらべる'],['pdf','会則・細則PDF']];
+ const items=[['all','すべての定め'],['dia','うちの学校を診断'],['yoi','よい条文'],['hina','ひな形'],['pdf','会則・細則PDF'],['status','提出状況']];
  document.getElementById('nav').innerHTML=items.map(([v,l])=>`<button class="navbtn ${ST.tab===v?'on':''}" onclick="setTab('${v}')">${l}</button>`).join('');
  const sel=document.getElementById('axisSel');
- sel.innerHTML=SUBMITTED.map(s=>`<option value="${s.id}" ${s.id===ST.axis?'selected':''}>${esc(s.sname)}${s.real?'（実データ）':'（サンプル）'}</option>`).join('');
+ sel.innerHTML=SUBMITTED.map(s=>`<option value="${s.id}" ${s.id===ST.axis?'selected':''}>${esc(s.sname)}</option>`).join('');
  sel.disabled=(ST.tab==='pdf');
  sel.parentNode.style.opacity=(ST.tab==='pdf')?'.35':'1';
 }
@@ -629,7 +517,7 @@ function toggleExp(i){ST.expanded[ST.tab+i]=!ST.expanded[ST.tab+i];render()}
 
 function render(){
  renderNav();
- document.getElementById('page').innerHTML=(ST.tab==='pdf')?viewPDF():viewCompare();
+ document.getElementById('page').innerHTML=(ST.tab==='all')?viewAll():(ST.tab==='dia')?viewDia():(ST.tab==='yoi')?viewYoi():(ST.tab==='hina')?viewHina():(ST.tab==='status')?viewStatus():viewPDF();
 }
 
 function viewCompare(){
@@ -640,14 +528,14 @@ function viewCompare(){
  const uniq=list.filter(t=>{const s=axisStance(t);return s&&s.mark==='uniq'});
  const minor=list.filter(t=>{const s=axisStance(t);return s&&s.mark==='minor'});
  const common=list.filter(t=>{const s=axisStance(t);return s&&s.mark==='common'});
- const tt=a=>a.map(t=>t.title).join('／');
+ const tt=a=>{const n=a.map(t=>t.title);return n.length>5?n.slice(0,5).join('／')+`　ほか${n.length-5}件`:n.join('／')};
 
  let h='';
- if(!A.real)h+=`<div class="warnbar">${I.info}<div><b>${esc(A.sname)}</b>の内容は、イメージをつかむためのサンプル（仮）です。実際の${doc}が届くと、この比較が本物のデータに置き換わります。岩船小だけが実データです。</div></div>`;
+ if(!A.real)h+=`<div class="warnbar">${I.info}<div><b>${esc(A.sname)}</b>は${doc}が未提出です。提出されると、この比較に加わります。</div></div>`;
 
  h+=`<div class="hero">
   <h2>${doc}を、条文番号ではなく“中身”でくらべる</h2>
-  <p class="lead">条文の並びも言い回しも学校ごとに違います。同じ趣旨の条文をAIが束ねて横に並べたので、いま選んでいる<b>${esc(A.sname)}</b>から見て「うちだけ違うところ」「市内でそろっているところ」がひと目でわかります。右上の「目線」を切り替えると、どの学校を軸にも見られます。</p>
+  <p class="lead">条文の並びも言い回しも学校ごとに違います。同じ趣旨の条文を束ねて横に並べたので、いま選んでいる<b>${esc(A.sname)}</b>から見て「うちだけ違うところ」「市内でそろっているところ」がひと目でわかります。右上の「目線」を切り替えると、どの学校を軸にも見られます。</p>
   <div class="statrow">
    <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
    <div class="stat"><b>${list.length}</b><span>くらべた論点</span></div>
@@ -657,16 +545,16 @@ function viewCompare(){
  </div>`;
 
  h+=`<div class="aibox">
-   <div class="aih">${I.spark} AIのまとめ ／ ${esc(A.sname)}の目線</div>
+   <div class="aih">${I.spark} 9校を見わたすと ／ ${esc(A.sname)}の目線</div>
    <div class="airow"><span class="aitag common">そろっている</span><div class="aitx">${common.length?`他校と同じ考え方なのは <b>${esc(tt(common))}</b>（${common.length}論点）。ここは見直しの優先度が低い部分です。`:'他校と足並みがそろう論点はありません。'}</div></div>
    <div class="airow"><span class="aitag mix">少数派</span><div class="aitx">${minor.length?`書き方が分かれる中で少数側なのは <b>${esc(tt(minor))}</b>（${minor.length}論点）。多数派の条文も見てから判断すると安心です。`:'少数派になっている論点はありません。'}</div></div>
    <div class="airow"><span class="aitag uniq">${esc(A.sname)}だけ</span><div class="aitx">${uniq.length?`市内で唯一の独自ルールは <b>${esc(tt(uniq))}</b>（${uniq.length}論点）。他校のお手本にも、見直しの候補にもなります。`:'独自ルールはありません。すべて他校と同じ考え方です。'}</div></div>
-   <div class="aimeta">${I.info} 条文番号は学校ごとに違うため、AIが趣旨で束ねて対応づけています。判断の最終確認は原本のPDFでお願いします。</div>
+   <div class="aimeta">${I.info} 条文番号は学校ごとに違うため、趣旨で束ねて対応づけています。カード内の文言は原本を要約したものです。改正の議案にするときは、必ず「会則・細則PDF」タブの原本で確認してください。</div>
  </div>`;
 
  h+=`<div class="filt"><span class="fl">表示</span>
    <div class="seg"><button class="${!ST.onlyDiff?'on':''}" onclick="setOnlyDiff(false)">すべての論点</button><button class="${ST.onlyDiff?'on':''}" onclick="setOnlyDiff(true)">${esc(A.sname)}が他校と違う所だけ</button></div>
-   <span style="flex:1"></span><span class="tiny muted">${I.tap} カードをタップで各校の条文を表示</span></div>`;
+   <span style="flex:1"></span><span class="tiny muted">${I.tap} カードをタップで各校の定めを表示</span></div>`;
 
  const shown=ST.onlyDiff?list.filter(t=>{const s=axisStance(t);return s&&s.mark!=='common'}):list;
  if(!shown.length){h+=`<p class="empty-note">${esc(A.sname)}が他校と違う論点は、このタブにはありません。「すべての論点」に切り替えてご覧ください。</p>`;return h;}
@@ -699,11 +587,11 @@ function topicCard(tp,i){
    const d=tp.detail[sc.id];
    if(!d)return '';
    const isAx=sc.id===ST.axis;
-   const refBadge=d.real?`<span class="rl">実データ</span>`:`<span class="sm">サンプル</span>`;
-   return `<div class="drow ${isAx?'ax':''}"><div class="dsch"><span class="nm">${esc(sc.badge)}</span><span class="rf">${esc(sc.name)}</span><span class="rf">${esc(d.ref)}</span>${refBadge}</div><div class="dtxt ${d.t.startsWith('—')?'none':''}">${esc(d.t)}</div></div>`;
+   const refBadge='';
+   return `<div class="drow ${isAx?'ax':''}"><div class="dsch"><span class="nm">${esc(sc.badge)}</span><span class="rf">${esc(sc.name)}</span><span class="rf">${esc(d.ref)}</span>${refBadge}</div><div class="dtxt ${(d.t.startsWith('—')||d.t.startsWith('×')||d.t.startsWith('（'))?'none':''}">${esc(d.t)}</div></div>`;
   }).join('');
   const penList=PENDING.map(s=>s.badge).join('・');
-  detail=`<div class="detail">${rows}${penN>0?`<div class="pending-note">${I.clock} 未提出：${esc(PENDING.map(s=>s.name).join('・'))}（会則が届き次第ここに追加されます）</div>`:''}</div>`;
+  detail=`<div class="detail">${rows}${penN>0?`<div class="pending-note">${I.clock} 未提出：${esc(PENDING.map(s=>s.name).join('・'))}（提出され次第ここに追加されます）</div>`:''}</div>`;
  }
 
  const saisokuChip=tp.saisoku?`<span class="saisoku-chip" onclick="event.stopPropagation();gotoSaisoku()">${I.link}${esc(tp.saisoku)}</span>`:'';
@@ -717,54 +605,622 @@ function topicCard(tp,i){
      ${stanceRows}
      <div class="meter">${meter}</div>
    </div>
-   <div class="expander" onclick="toggleExp(${i})">${expanded?'各校の条文を閉じる':`各校の実際の条文を見る（提出${sub}校）`}<span>${expanded?I.up:I.down}</span></div>
+   <div class="expander" onclick="toggleExp(${i})">${expanded?'各校の定めを閉じる':`各校の定めを見る（提出${sub}校）`}<span>${expanded?I.up:I.down}</span></div>
    ${detail}
  </div>`;
 }
 function gotoSaisoku(){ST.tab='saisoku';ST.expanded={};render();window.scrollTo(0,0);toast('細則タブに移動しました')}
 
 /* ---- PDF一覧 ---- */
+const DOCKINDS=['会則','細則等','決算書','決算明細','予算書','総会資料','事業計画','事業報告','その他'];
+const KIND_NEED={'会則':1,'細則等':1,'決算書':1,'予算書':1,'総会資料':1};  // 1=必須
+function ledgerBySchool(){
+ const m={}; SCHOOLS.forEach(s=>m[s.id]={});
+ LEDGER.forEach(r=>{
+  const id=CODE2ID[S(r['校コード'])]; if(!id||!m[id])return;
+  const k=S(r['種別']); if(!k||k==='（未提出）')return;
+  (m[id][k]=m[id][k]||[]).push(r);
+ });
+ return m;
+}
+function viewStatus(){
+ const by=ledgerBySchool();
+ const files=LEDGER.filter(r=>S(r['DriveファイルID'])).length;
+ const missing=[];
+ SCHOOLS.forEach(s=>{
+  Object.keys(KIND_NEED).forEach(k=>{
+   const a=(by[s.id]||{})[k]||[];
+   const real=a.filter(r=>!S(r['中身']).startsWith('参考'));
+   if(!real.length) missing.push([s,k+(a.length?'（参考資料のみ）':'')]);
+  });
+ });
+ let h=`<div class="hero"><h2>だれが何を出していて、何が足りないか</h2>
+  <p class="lead">スプレッドシートの「02_ファイル台帳」から作っています。ファイルを追加したら、台帳に行を足すだけでこの表に反映されます。必須は<b>会則・細則等・決算書・予算書・総会資料</b>の5点としています。</p>
+  <div class="statrow">
+   <div class="stat"><b>${SUBMITTED.length}</b><span>提出のあった学校</span></div>
+   <div class="stat"><b>${files}</b><span>登録ファイル数</span></div>
+   <div class="stat hl"><b>${missing.length}</b><span>足りていない資料</span></div>
+   <div class="stat"><b>${PENDING.length}</b><span>まだ何も未提出</span></div>
+  </div></div>`;
+
+ // マトリクス
+ h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.doc}</span>提出マトリクス</div>
+  <div style="overflow-x:auto"><table class="mx"><thead><tr><th class="sticky">学校</th>`
+  +DOCKINDS.map(k=>`<th>${esc(k)}${KIND_NEED[k]?'<i class="req">必須</i>':''}</th>`).join('')+`</tr></thead><tbody>`;
+ SCHOOLS.forEach(s=>{
+  h+=`<tr${s.id===ST.axis?' class="ax"':''}><td class="sticky"><span class="bdg ${s.id===ST.axis?'ax':''}">${esc(s.badge)}</span> ${esc(s.sname)}</td>`;
+  DOCKINDS.forEach(k=>{
+   const a=(by[s.id]||{})[k]||[];
+   const real=a.filter(r=>!S(r['中身']).startsWith('参考'));
+   if(real.length) h+=`<td class="ok">${real.length>1?real.length:'○'}</td>`;
+   else if(a.length) h+=`<td class="ref" title="参考資料のみ">△</td>`;
+   else h+=`<td class="${KIND_NEED[k]?'ng':'na'}">${KIND_NEED[k]?'未':'−'}</td>`;
+  });
+  h+=`</tr>`;
+ });
+ h+=`</tbody></table></div>
+  <p class="tiny muted" style="margin-top:10px">${I.info} 数字はファイル数です。「未」は必須なのに届いていないもの、「△」は参考資料だけが届いていて本体が無いもの、「−」はもともと任意のものです。</p></div>`;
+
+ // 足りないもの
+ h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.clock}</span>足りていない資料（${missing.length}件）</div>`;
+ if(!missing.length) h+=`<p class="lead">すべてそろっています。</p>`;
+ else{
+  const byS={}; missing.forEach(([s,k])=>{(byS[s.id]=byS[s.id]||{s,ks:[]}).ks.push(k)});
+  h+=`<div class="misslist">`+Object.values(byS).map(x=>
+   `<div class="missrow"><span class="bdg">${esc(x.s.badge)}</span><b>${esc(x.s.name)}</b>
+     <span class="misstags">${x.ks.map(k=>`<i>${esc(k)}</i>`).join('')}</span></div>`).join('')+`</div>`;
+ }
+ h+=`</div>`;
+
+ // 宿題（11_未確認・宿題）
+ const open=TODO.filter(r=>S(r['状態'])&&S(r['状態'])!=='決定済');
+ if(open.length){
+  h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.info}</span>確認が要るところ（${open.length}件）</div><div class="todos">`
+   +open.map(r=>`<div class="todo"><div class="tt"><b>${esc(S(r['対象']))}</b><i class="st">${esc(S(r['状態']))}</i></div>
+      <div class="td">${esc(S(r['内容']))}</div>
+      <div class="tw">${esc(S(r['どう埋めるか']))}</div></div>`).join('')
+   +`</div></div>`;
+ }
+
+ // 学校ごとの提出ファイル
+ h+=`<div class="card"><div class="sec-h"><span class="ic">${I.doc}</span>学校ごとの提出ファイル</div>`;
+ SCHOOLS.forEach(s=>{
+  const rows=LEDGER.filter(r=>CODE2ID[S(r['校コード'])]===s.id&&S(r['DriveファイルID']));
+  const ng=rows.filter(r=>S(r['公開可否'])!=='OK').length;
+  h+=`<div class="schblk"><div class="schh"><span class="bdg ${s.id===ST.axis?'ax':''}">${esc(s.badge)}</span>${esc(s.name)}<i>${rows.length}件</i></div>`;
+  if(!rows.length) h+=`<p class="tiny muted" style="margin:6px 0 14px">まだ1件も届いていません。</p>`;
+  else{
+   h+=`<div class="filelist">`+rows.filter(r=>S(r['公開可否'])==='OK').map(r=>
+    `<a class="filerow" href="${esc(S(r['共有URL']))}" target="_blank" rel="noopener">${I.pdf}
+      <span class="fk">${esc(S(r['種別']))}</span>
+      <span class="fn">${esc(S(r['小分類'])||'')}${S(r['中身']).startsWith('参考')?` <i class="refmark">${esc(S(r['中身']))}</i>`:''}</span>
+      <span class="fy">${esc(S(r['年度']))}</span></a>`).join('')+`</div>`;
+   if(ng) h+=`<p class="tiny muted" style="margin:6px 0 14px">${I.info} このほかに、氏名・押印を含むため板に出していないファイルが${ng}件あります。</p>`;
+  }
+  h+=`</div>`;
+ });
+ h+=`</div>`;
+ return h;
+}
+/* ===== 会則・細則PDF タブ（02_ファイル台帳そのまま） + 全文モーダル（13_条文そのまま） ===== */
+let DOCFULL={};   // 板ID -> [{doc, kind, url, arts:[{art,head,text}]}]
+function buildFull(prov){
+ DOCFULL={};
+ const seen={};
+ prov.forEach(r=>{
+  if(S(r['主／副'])!=='主')return;                       // 副はほかの条の一部なので全文には出さない
+  const id=CODE2ID[S(r['校コード'])]; if(!id)return;
+  const doc=S(r['文書名']), art=S(r['条番号']);
+  const key=id+'|'+doc+'|'+art; if(seen[key])return; seen[key]=1;
+  const list=DOCFULL[id]=DOCFULL[id]||[];
+  let d=list.find(x=>x.doc===doc);
+  if(!d){d={doc:doc,kind:S(r['会則/細則']),url:S(r['正規化ファイルURL']),file:S(r['正規化ファイル名']),arts:[]};list.push(d)}
+  d.arts.push({art:art,head:S(r['条の見出し']),text:S(r['条文全文']),note:S(r['補記'])});
+ });
+ Object.values(DOCFULL).forEach(list=>{
+  list.sort((a,b)=>(a.kind==='会則'?0:1)-(b.kind==='会則'?0:1));
+  list.forEach(d=>d.arts.sort((a,b)=>artNo(a.art)-artNo(b.art)));
+ });
+}
+const _KAN={〇:0,一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
+function artNo(a){
+ const z=S(a).replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+ let m=z.match(/第\s*(\d+)/); if(m)return +m[1];
+ m=z.match(/第\s*([一二三四五六七八九十]+)/);
+ if(m){const t=m[1];let n=0;
+  if(t.indexOf('十')>=0){const p=t.split('十');n=(p[0]?_KAN[p[0]]:1)*10+(p[1]?_KAN[p[1]]:0)}
+  else n=_KAN[t]||0; return n}
+ return 999;
+}
+/* ===== すべての定め（12_項目マスタ ＋ 13_条文） ===== */
+let STANCE={};
+function buildStance(stn,ans){
+ const by={}; stn.forEach(r=>{
+  const t=S(r['論点ID']); if(!t)return;
+  (by[t]=by[t]||[]).push({id:S(r['立場ID']),ord:+r['並び順']||0,kind:S(r['色区分'])||'variant',label:S(r['立場のラベル']),schools:[]});
+ });
+ Object.values(by).forEach(a=>a.sort((x,y)=>x.ord-y.ord));
+ ans.forEach(r=>{
+  const t=S(r['論点ID']), sid=S(r['立場ID']), bid=S(r['板ID']);
+  if(!t||!sid||!bid||!by[t])return;
+  const st=by[t].find(x=>x.id===sid); if(st&&SMAP[bid]&&!SMAP[bid].pending) st.schools.push(bid);
+ });
+ STANCE={}; Object.keys(by).forEach(t=>{const v=by[t].filter(x=>x.schools.length); if(v.length)STANCE[t]=v});
+}
+function buildItems(itm,prov){
+ NAME2ID={}; SCHOOLS.forEach(s=>NAME2ID[s.name]=s.id);
+ const codeToId=CODE2ID;
+ PROV={};
+ prov.forEach(r=>{
+  const t=S(r['項目ID']); if(!t)return;
+  const id=codeToId[S(r['校コード'])]; if(!id)return;
+  (PROV[t]=PROV[t]||[]).push({id,kind:S(r['会則/細則']),doc:S(r['文書名']),art:S(r['条番号']),
+    head:S(r['条の見出し']),role:S(r['主／副']),text:S(r['条文全文']),note:S(r['補記']),
+    url:S(r['正規化ファイルURL']),file:S(r['正規化ファイル名'])});
+ });
+ const split=v=>S(v).split('／').map(x=>x.trim()).filter(x=>x&&x!=='—'&&x!=='なし').map(n=>NAME2ID[n]).filter(Boolean);
+ ITEMS=itm.filter(r=>S(r['項目ID'])&&isTrue(r['公開']))
+  .sort((a,b)=>(+a['表示順']||999)-(+b['表示順']||999))
+  .map(r=>({id:S(r['項目ID']),major:S(r['大項目']),title:S(r['小項目（板に出る項目名）']),
+    desc:S(r['概要（どんなことが定められているか）']),
+    n:+r['定めている学校数']||0, cnt:+r['条文の件数']||0, avg:r['条番号の平均'],
+    kai:split(r['会則に定めている学校']), sai:split(r['細則に定めている学校']),
+    mik:split(r['未確認（規則本体が未提出）']), none:split(r['定めのない学校']),
+    ron:S(r['対応論点ID']).split('／').filter(Boolean), yomi:S(r['読みどころ（詳しい解説）'])}));
+}
+
+const AST={q:'',major:'',onlyGap:false,open:{}};
+function setQ(v){AST.q=v;renderAll(true)}
+function setMajor(v){AST.major=v;renderAll()}
+function setGap(v){AST.onlyGap=v;renderAll()}
+function toggleItem(id){AST.open[id]=!AST.open[id];renderAll()}
+function renderAll(keepFocus){
+ document.getElementById('page').innerHTML=viewAll();
+ if(keepFocus){const el=document.getElementById('allq');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+}
+function itemsShown(){
+ const A=axisSchool();
+ let list=ITEMS;
+ if(AST.major) list=list.filter(t=>t.major===AST.major);
+ if(AST.onlyGap) list=list.filter(t=>t.none.includes(A.id));
+ const q=AST.q.trim();
+ if(q) list=list.filter(t=>(t.title+t.desc+t.major).includes(q)||(PROV[t.id]||[]).some(p=>p.text.includes(q)||p.doc.includes(q)));
+ return list;
+}
+function viewAll(){
+ const A=axisSchool();
+ if(!ITEMS.length) return `<div class="card" style="padding:24px"><p class="lead">12_項目マスタ が読み込めませんでした。スプレッドシートにシートがあるかご確認ください。</p></div>`;
+ const majors=[...new Set(ITEMS.map(t=>t.major))];
+ const gap=ITEMS.filter(t=>t.none.includes(A.id));
+ const only=ITEMS.filter(t=>t.n===1&&t.kai.concat(t.sai).includes(A.id));
+ const list=itemsShown();
+ let h=`<div class="hero"><h2>9校の会則・細則にある定めを、ぜんぶ並べる</h2>
+  <p class="lead">条文を「どんな定めか」でまとめ直したものです。<b>定めている学校が多い順</b>、同数なら<b>条番号が前にある順</b>に並んでいます。上ほど「どこも書いていること」、下ほど「その学校にしかないこと」です。カードを開くと各校の条文がそのまま読めます。</p>
+  <div class="statrow">
+   <div class="stat"><b>${ITEMS.length}</b><span>定めの項目</span></div>
+   <div class="stat"><b>${Object.values(PROV).reduce((a,b)=>a+b.length,0)}</b><span>ぶら下がる条文</span></div>
+   <div class="stat hl"><b>${gap.length}</b><span>${esc(A.sname)}に定めがない</span></div>
+   <div class="stat"><b>${only.length}</b><span>${esc(A.sname)}だけの定め</span></div>
+  </div></div>`;
+ if(only.length) h+=`<div class="aibox"><div class="aih">${I.spark} ${esc(A.sname)}だけが持っている定め</div>
+   <div class="airow"><span class="aitag uniq">独自</span><div class="aitx">${esc(only.map(t=>t.title).join('／'))}</div></div></div>`;
+ h+=`<div class="allbar">
+   <input id="allq" class="allq" type="search" placeholder="項目名や条文の中を検索（例：教職員、書面、免除）" value="${esc(AST.q)}" oninput="setQ(this.value)">
+   <div class="chips"><button class="chip ${!AST.major?'on':''}" onclick="setMajor('')">すべて</button>`
+   +majors.map(m=>`<button class="chip ${AST.major===m?'on':''}" onclick="setMajor('${esc(m)}')">${esc(m.replace(/^\d+\s*/,''))}</button>`).join('')+`</div>
+   <label class="gapchk"><input type="checkbox" ${AST.onlyGap?'checked':''} onchange="setGap(this.checked)"> ${esc(A.sname)}に定めがないものだけ</label>
+   <span class="tiny muted">${list.length}件</span></div>`;
+ if(!list.length) return h+`<p class="empty-note">条件に合う項目がありません。</p>`;
+ h+=list.map(itemCard).join('');
+ return h;
+}
+/* 対応論点が複数あると同じ分かれ方が2回出るので、学校の分かれ方が同じものは1つにまとめる */
+function itemStances(t){
+ const seen=new Set(), out2=[];
+ (t.ron||[]).forEach(r=>{
+  const a=STANCE[r]; if(!a||!a.length)return;
+  const sig=a.map(s=>s.schools.slice().sort().join(',')).join('|');
+  if(seen.has(sig))return; seen.add(sig); out2.push(a);
+ });
+ return out2.length?out2[0]:[];
+}
+function stanceHTML(t){
+ const sts=itemStances(t);
+ if(!sts.length&&!t.yomi) return '';
+ const KC={common:'#3a9d7e',variant:'#d98a3c',uniq:'#b4472f',minor:'#d98a3c'};
+ let h='<div class="stbox">';
+ if(t.yomi) h+=`<div class="stlead">${esc(t.yomi).split(String.fromCharCode(10)).filter(Boolean).join('<br><br>')}</div>`;
+ if(sts.length){
+  h+=`<div class="stlist">`+sts.map(s=>`<div class="stance2">
+    <span class="sdot" style="background:${KC[s.kind]||'#d98a3c'}"></span>
+    <div class="sbody"><div class="slabel">${esc(s.label)}</div>
+      <div class="badges">${s.schools.map(id=>{const sc=SMAP[id];return sc?`<span class="bdg ${id===ST.axis?'ax':''}" title="${esc(sc.name)}">${esc(sc.badge)}</span>`:''}).join('')}</div></div>
+    <span class="scount">${s.schools.length}校</span></div>`).join('')+`</div>`;
+ }
+ return h+'</div>';
+}
+function itemCard(t){
+ const A=axisSchool();
+ const open=AST.open[t.id];
+ const chip=(id,cls)=>{const s=SMAP[id];return s?`<span class="bdg ${cls} ${id===ST.axis?'ax':''}" title="${esc(s.name)}">${esc(s.badge)}</span>`:''};
+ const total=SUBMITTED.length;
+ const kaiN=t.kai.length, saiN=t.sai.filter(x=>!t.kai.includes(x)).length, mikN=(t.mik||[]).length;
+ const meter=`<div class="meter"><i style="width:${kaiN/total*100}%;background:#3a9d7e"></i>`
+  +`<i style="width:${saiN/total*100}%;background:#d98a3c"></i>`
+  +`<i style="width:${mikN/total*100}%;background:#c9b9a2"></i>`
+  +`<i style="width:${Math.max(0,total-kaiN-saiN-mikN)/total*100}%;background:#ece7db"></i></div>`;
+ let mark='';
+ if((t.mik||[]).includes(A.id)) mark=`<span class="mark mikm">${esc(A.sname)}は規則が未提出</span>`;
+ else if(t.none.includes(A.id)) mark=`<span class="mark gapm">${esc(A.sname)}に定めなし</span>`;
+ else if(t.n===1) mark=`<span class="mark uniq">${esc(A.sname)}のみ</span>`;
+ else if(t.n===SUBMITTED.length) mark=`<span class="mark common">全校が定めている</span>`;
+ else mark=`<span class="mark minor">${t.n}校が定めている</span>`;
+ let rows='';
+ if(open){
+  // 上のまとめと同じ区分（会則／細則／未確認／定めなし）で、開いた中もグループ分けする
+  const ord=(arr)=>arr.slice().sort((a,b)=>(b.id===ST.axis?1:0)-(a.id===ST.axis?1:0));
+  const all=PROV[t.id]||[];
+  const provRow=(p)=>{
+   const s=SMAP[p.id]||{};
+   return `<div class="prow ${p.id===ST.axis?'ax':''}">
+     <div class="phead"><span class="bdg ${p.kind==='会則'?'kai':'sai'} ${p.id===ST.axis?'ax':''}">${esc(s.badge||'')}</span>
+       <b>${esc(s.name||'')}</b><span class="pdoc">${esc(p.doc)}</span><span class="part">${esc(p.art)}</span>
+       ${p.head?`<span class="phd">（${esc(p.head)}）</span>`:''}
+       ${p.role==='副'?`<span class="prole">この条の一部</span>`:''}
+       ${p.url?`<a class="porig" href="${esc(p.url)}" target="_blank" rel="noopener" title="${esc(p.file||'')}">ファイル</a>`:''}</div>
+     <div class="ptext">${esc(p.text)}</div>
+     ${p.note?`<div class="pnoteline">${I.info} ${esc(p.note)}</div>`:''}</div>`;
+  };
+  const grp=(cls,label,n,inner)=>`<div class="pgrp ${cls}"><div class="pgh"><span class="slab ${cls}">${esc(label)}</span><span class="pgn">${n}校</span></div>${inner}</div>`;
+  const KC2={common:'#3a9d7e',variant:'#d98a3c',uniq:'#b4472f',minor:'#d98a3c'};
+  const grpS=(kind,label,n,inner)=>`<div class="pgrp st k-${esc(kind)}"><div class="pgh">
+     <span class="sdot" style="background:${KC2[kind]||'#d98a3c'}"></span>
+     <span class="pglabel">${esc(label)}</span><span class="pgn">${n}校</span></div>${inner}</div>`;
+  const chipline=(ids,cls)=>`<div class="pgchips">${ids.map(x=>{const s=SMAP[x];return s?`<span class="bdg ${cls} ${x===ST.axis?'ax':''}" title="${esc(s.name)}">${esc(s.badge)}</span> <span class="pgnm">${esc(s.name)}</span>`:''}).join('')}</div>`;
+  const sts=itemStances(t);
+  let body2='', inStance=new Set();
+  if(sts.length){
+   // 上のまとめと同じ「立場（どう定めているか）」でグループ分けする
+   const used=new Set();
+   sts.forEach(st=>{
+    const ps=ord(all.filter(p=>st.schools.includes(p.id)));
+    ps.forEach(p=>used.add(p));
+    if(!ps.length){
+     body2+=grpS(st.kind,st.label,st.schools.length,`<div class="pnote">この立場の学校には、この項目にあたる条文がありません。</div>`+chipline(st.schools,'non'));
+    }else{
+     body2+=grpS(st.kind,st.label,new Set(ps.map(p=>p.id)).size,ps.map(provRow).join(''));
+    }
+   });
+   const rest=ord(all.filter(p=>!used.has(p)));
+   if(rest.length) body2+=grp('kai','そのほかの定め',new Set(rest.map(p=>p.id)).size,rest.map(provRow).join(''));
+   inStance=new Set([].concat(...sts.map(x=>x.schools)));
+  }else{
+   const kai=ord(all.filter(p=>p.kind==='会則'));
+   const sai=ord(all.filter(p=>p.kind!=='会則'));
+   body2+=(kai.length?grp('kai','会則に定めている',new Set(kai.map(p=>p.id)).size,kai.map(provRow).join('')):'');
+   body2+=(sai.length?grp('sai','細則に定めている',new Set(sai.map(p=>p.id)).size,sai.map(provRow).join('')):'');
+  }
+  rows=`<div class="detail">`+body2
+   +(()=>{const mk=(t.mik||[]).filter(x=>!inStance.has(x));return mk.length?grp('mik','未確認（規則本体が未提出）',mk.length,
+       `<div class="pnote">会則で「別に定める」と決めていますが、規則そのものが提出されていないため中身を確認できていません。</div>`+chipline(mk,'mik')):''})()
+   +(()=>{const nn=t.none.filter(x=>!inStance.has(x));return nn.length?grp('non','定めがない',nn.length,
+       `<div class="pnote">この項目にあたる定めが、会則にも細則にも見当たりませんでした。</div>`+chipline(nn,'non')):''})()
+   +`</div>`;
+ }
+ return `<div class="tcard ${t.n===1?'uniq':''}">
+   <div class="tcard-main" onclick="toggleItem('${t.id}')">
+     <div class="tmeta"><span class="chchip">${esc(t.major.replace(/^\d+\s*/,''))}</span>${mark}</div>
+     <div class="ttitle">${esc(t.title)}</div>
+     <div class="tai">${esc(t.desc)}</div>
+     ${stanceHTML(t)}
+     <div class="schrow">
+      ${t.kai.length?`<div class="srow"><span class="slab kai">会則に定めている</span><span class="sch">${t.kai.map(x=>chip(x,'kai')).join('')}</span><span class="scount">${t.kai.length}校</span></div>`:''}
+      ${t.sai.length?`<div class="srow"><span class="slab sai">細則に定めている</span><span class="sch">${t.sai.map(x=>chip(x,'sai')).join('')}</span><span class="scount">${t.sai.length}校</span></div>`:''}
+      ${(t.mik||[]).length?`<div class="srow"><span class="slab mik">未確認（規則が未提出）</span><span class="sch">${t.mik.map(x=>chip(x,'mik')).join('')}</span><span class="scount">${t.mik.length}校</span></div>`:''}
+      ${t.none.length?`<div class="srow"><span class="slab non">定めがない</span><span class="sch">${t.none.map(x=>chip(x,'non')).join('')}</span><span class="scount">${t.none.length}校</span></div>`:''}
+     </div>
+     ${meter}
+   </div>
+   <div class="expander" onclick="toggleItem('${t.id}')">${open?'条文を閉じる':`各校の条文を読む（${(PROV[t.id]||[]).length}件）`}<span>${open?I.up:I.down}</span></div>
+   ${rows}
+ </div>`;
+}
+/* ================= うちの学校を診断 / よい条文 / ひな形 ================= */
+let YOI=[], HINA=[], YAX=[];
+function buildYoi(rows){
+ YOI=(rows||[]).filter(r=>S(r['推薦ID'])&&isTrue(r['公開']))
+  .sort((a,b)=>(+a['表示順']||999)-(+b['表示順']||999))
+  .map(r=>({id:S(r['推薦ID']),ax:S(r['軸']),axd:S(r['軸の説明']),code:S(r['校コード']),
+    sid:CODE2ID[S(r['校コード'])]||'',school:S(r['学校名']),kind:S(r['会則/細則']),
+    doc:S(r['文書名']),art:S(r['条番号']),head:S(r['条の見出し']),
+    title:S(r['見出し（板に出る一言）']),why:S(r['なぜ良いか']),use:S(r['どう使うか']),
+    item:S(r['関連する項目名']),itemId:S(r['関連する項目ID']),
+    text:S(r['条文全文']),url:S(r['正規化ファイルURL'])}));
+ YAX=[]; YOI.forEach(y=>{if(!YAX.some(a=>a.name===y.ax))YAX.push({name:y.ax,desc:y.axd})});
+}
+function buildHina(rows){
+ HINA=(rows||[]).filter(r=>S(r['ひな形ID'])&&isTrue(r['公開']))
+  .sort((a,b)=>(+a['表示順']||999)-(+b['表示順']||999))
+  .map(r=>({id:S(r['ひな形ID']),kind:S(r['区分']),doc:S(r['文書名']),ch:S(r['章']),
+    art:S(r['条番号']),head:S(r['見出し']),body:S(r['条文（ひな形）']),
+    src:S(r['もとにした学校']),srcDoc:S(r['もとにした文書']),srcArt:S(r['もとにした条番号']),
+    srcText:S(r['もとの条文']),why:S(r['なぜこの書き方か']),need:S(r['必須/推奨/任意'])}));
+}
+
+/* ---------------- うちの学校を診断 ---------------- */
+const DIA={open:{}};
+function toggleDia(k){DIA.open[k]=!DIA.open[k];render()}
+function diagnose(sid){
+ const lack=[], only=[], mino=[], mik=[];
+ ITEMS.forEach(t=>{
+  const has=t.kai.concat(t.sai).includes(sid);
+  if((t.mik||[]).includes(sid)) mik.push(t);
+  else if(!has) lack.push(t);
+  else if(t.n===1) only.push(t);
+  else if(t.n<=3) mino.push(t);
+ });
+ // 立場が多数派と違うもの
+ const diff=[];
+ ITEMS.forEach(t=>{
+  const sts=itemStances(t); if(sts.length<2)return;
+  const mine=sts.find(x=>x.schools.includes(sid)); if(!mine)return;
+  const max=Math.max(...sts.map(x=>x.schools.length));
+  if(mine.schools.length<max){
+   const top=sts.filter(x=>x.schools.length===max);
+   diff.push({t:t,mine:mine,top:top[0]});
+  }
+ });
+ return {lack:lack,only:only,mino:mino,mik:mik,diff:diff};
+}
+function viewDia(){
+ const A=axisSchool(); const d=diagnose(A.id);
+ const total=ITEMS.length;
+ let h=`<div class="hero"><h2>${esc(A.name)}の会則・細則を、9校の中に置いてみる</h2>
+  <p class="lead">いま選んでいる<b>${esc(A.sname)}</b>について、
+  「他校にあって自校にない定め」「自校だけの定め」「多数派と違う書き方をしている定め」を並べました。
+  右上の目線を変えると、別の学校の診断になります。</p>
+  <div class="statrow">
+   <div class="stat hl"><b>${d.lack.length}</b><span>ない定め</span></div>
+   <div class="stat"><b>${d.diff.length}</b><span>多数派と違う</span></div>
+   <div class="stat"><b>${d.only.length}</b><span>${esc(A.sname)}だけ</span></div>
+   <div class="stat"><b>${total-d.lack.length-d.mik.length}</b><span>／${total} 定めあり</span></div>
+  </div></div>`;
+
+ const grp=(key,label,lead,list,cls,body)=>{
+  if(!list.length) return '';
+  const open=DIA.open[key];
+  return `<div class="card diacard"><div class="diah" onclick="toggleDia('${key}')">
+    <div><div class="diat"><span class="dmark ${cls}">${list.length}</span>${esc(label)}</div>
+      <div class="dial">${esc(lead)}</div></div>
+    <span class="diachev">${open?I.up:I.down}</span></div>
+   ${open?`<div class="diabody">${body()}</div>`:''}</div>`;
+ };
+
+ const itemLine=(t,extra)=>`<div class="dirow">
+   <div class="dirow-h"><span class="chchip">${esc(t.major.replace(/^\d+\s*/,''))}</span>
+     <b>${esc(t.title)}</b><span class="dicount">${t.n}校が定めている</span></div>
+   <div class="didesc">${esc(t.desc)}</div>${extra||''}</div>`;
+
+ // ない定め：他校の条文を1つ見せる
+ const lackBody=()=>d.lack.sort((a,b)=>b.n-a.n).map(t=>{
+   let ps=(PROV[t.id]||[]).filter(p=>p.role!=='副');
+   if(!ps.length) ps=(PROV[t.id]||[]);
+   // 「よい条文」で推薦している条文があればそれを見せる。なければ一番短いものを選ぶ
+   const rec=YOI.filter(y=>y.itemId===t.id||y.item===t.title);
+   let p=null;
+   if(rec.length) p=ps.find(x=>x.id===rec[0].sid&&x.art===rec[0].art)||null;
+   if(!p) p=ps.slice().sort((a,b)=>a.text.length-b.text.length)[0];
+   const chips=t.kai.concat(t.sai).filter((v,i,a2)=>a2.indexOf(v)===i)
+     .map(x=>{const s=SMAP[x];return s?`<span class="bdg" title="${esc(s.name)}">${esc(s.badge)}</span>`:''}).join('');
+   return itemLine(t,`<div class="dichips">定めている学校：${chips}</div>`
+     +(p?`<div class="diex"><div class="diexh">${esc(SMAP[p.id]?SMAP[p.id].name:'')}　${esc(p.doc)}　${esc(p.art)}
+          ${rec.length&&p.id===rec[0].sid&&p.art===rec[0].art?`<span class="direc">よい条文で推薦</span>`:`<span class="diex2">他校の書き方の一例</span>`}</div>
+          <div class="diext">${esc(p.text)}</div></div>`:''));
+ }).join('');
+
+ const diffBody=()=>d.diff.map(x=>itemLine(x.t,
+   `<div class="dicmp"><div class="dicmp1"><span class="dlab me">${esc(A.sname)}</span>
+      <span>${esc(x.mine.label)}</span><span class="dn">${x.mine.schools.length}校</span></div>
+    <div class="dicmp1"><span class="dlab ot">多数派</span>
+      <span>${esc(x.top.label)}</span><span class="dn">${x.top.schools.length}校</span>
+      <span class="dchips">${x.top.schools.map(s=>{const y=SMAP[s];return y?`<span class="bdg" title="${esc(y.name)}">${esc(y.badge)}</span>`:''}).join('')}</span></div>
+    </div>`)).join('');
+
+ const ownBody=(list)=>list.map(t=>{
+   const ps=(PROV[t.id]||[]).filter(p=>p.id===A.id);
+   return itemLine(t, ps.map(p=>`<div class="diex"><div class="diexh">${esc(p.doc)}　${esc(p.art)}</div>
+     <div class="diext">${esc(p.text)}</div></div>`).join(''));
+ }).join('');
+
+ const mikBody=()=>d.mik.map(t=>itemLine(t,
+   `<div class="dinote">${I.info} 会則で「別に定める」としていますが、その規則の本体がまだ届いていません。</div>`)).join('');
+
+ h+=grp('lack','他校にあって、'+A.sname+'にない定め',
+   '定めている学校が多い順に並べています。上にあるものほど、入れておいたほうがよい定めです。',
+   d.lack,'warn',lackBody);
+ h+=grp('diff',A.sname+'が多数派と違う書き方をしている定め',
+   '違うことが悪いわけではありません。理由があってそうしているか、見直す価値があるかを確かめる材料です。',
+   d.diff,'mid',diffBody);
+ h+=grp('only',A.sname+'だけが持っている定め',
+   '他校が持ち帰れる可能性があるものです。会長会で紹介する価値があります。',
+   d.only,'good',()=>ownBody(d.only));
+ h+=grp('mino',A.sname+'を含む3校以下しか持っていない定め',
+   '少数派ですが、持っていること自体は強みです。',
+   d.mino,'good',()=>ownBody(d.mino));
+ h+=grp('mik','規則の本体が届いていないため確認できない定め',
+   '「定めがない」とは別ものです。規則の提出があれば解消します。',
+   d.mik,'mik',mikBody);
+ if(!d.lack.length&&!d.diff.length&&!d.only.length&&!d.mik.length)
+   h+=`<p class="empty-note">この学校について、特筆すべき差分はありませんでした。</p>`;
+ return h;
+}
+
+/* ---------------- よい条文 ---------------- */
+const YST={ax:'',q:'',open:{}};
+function setYax(v){YST.ax=v;render()}
+function setYq(v){YST.q=v;renderY(true)}
+function toggleY(id){YST.open[id]=!YST.open[id];render()}
+function renderY(keep){
+ document.getElementById('page').innerHTML=viewYoi();
+ if(keep){const el=document.getElementById('yq');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+}
+function viewYoi(){
+ const A=axisSchool();
+ if(!YOI.length) return `<div class="card" style="padding:24px"><p class="lead">14_よい条文 が読み込めませんでした。スプレッドシートにシートがあるかご確認ください。</p></div>`;
+ let list=YOI;
+ if(YST.ax) list=list.filter(y=>y.ax===YST.ax);
+ const q=YST.q.trim();
+ if(q) list=list.filter(y=>(y.title+y.why+y.use+y.text+y.school+y.item).includes(q));
+ const mine=YOI.filter(y=>y.sid===A.id);
+ let h=`<div class="hero"><h2>まねできる条文をあつめました</h2>
+  <p class="lead">9校${YOI.length}本の条文を、<b>もめない</b>（その場で判断せずに済む）・<b>実態に合う</b>（運用に条文が追いついている）・
+  <b>負担が軽い</b>（引き受ける人の負担を実際に減らしている）の3つの軸で選びました。
+  それぞれ「なぜ良いか」と「どう使うか」を添えています。条文はそのまま持ち帰れます。</p>
+  <div class="statrow">
+   <div class="stat"><b>${YOI.length}</b><span>推薦した条文</span></div>
+   ${YAX.map(a=>`<div class="stat"><b>${YOI.filter(y=>y.ax===a.name).length}</b><span>${esc(a.name)}</span></div>`).join('')}
+   <div class="stat hl"><b>${mine.length}</b><span>${esc(A.sname)}の条文</span></div>
+  </div></div>`;
+ if(mine.length) h+=`<div class="aibox"><div class="aih">${I.spark} ${esc(A.sname)}の条文が推薦に入っています</div>
+   <div class="airow"><span class="aitag uniq">推薦</span><div class="aitx">${esc(mine.map(y=>y.title).join('／'))}</div></div></div>`;
+ h+=`<div class="allbar">
+   <input id="yq" class="allq" type="search" placeholder="条文の中を検索（例：委任状、免除、返金）" value="${esc(YST.q)}" oninput="setYq(this.value)">
+   <div class="chips"><button class="chip ${!YST.ax?'on':''}" onclick="setYax('')">すべて</button>`
+   +YAX.map(a=>`<button class="chip ${YST.ax===a.name?'on':''}" onclick="setYax('${esc(a.name)}')">${esc(a.name)}</button>`).join('')+`</div>
+   <span class="tiny muted">${list.length}件</span></div>`;
+ if(YST.ax){const a=YAX.find(x=>x.name===YST.ax);if(a)h+=`<p class="axdesc">${I.info} ${esc(a.desc)}</p>`}
+ if(!list.length) return h+`<p class="empty-note">条件に合う条文がありません。</p>`;
+ let cur='';
+ list.forEach(y=>{
+  if(!YST.ax&&y.ax!==cur){cur=y.ax;const a=YAX.find(x=>x.name===cur);
+   h+=`<div class="axhead"><span class="axname">${esc(cur)}</span><span class="axtx">${esc(a?a.desc:'')}</span></div>`}
+  h+=yoiCard(y);
+ });
+ return h;
+}
+function yoiCard(y){
+ const open=YST.open[y.id];
+ const s=SMAP[y.sid]||{};
+ const isAx=(y.sid===ST.axis);
+ return `<div class="tcard ycard ${isAx?'ax':''}">
+   <div class="tcard-main" onclick="toggleY('${y.id}')">
+     <div class="tmeta"><span class="chchip ax-${esc(y.ax)}">${esc(y.ax)}</span>
+       <span class="ysch"><span class="bdg ${y.kind==='会則'?'kai':'sai'} ${isAx?'ax':''}">${esc(s.badge||'')}</span>${esc(y.school)}</span>
+       <span class="yart">${esc(y.doc)}　${esc(y.art)}${y.head?'（'+esc(y.head)+'）':''}</span></div>
+     <div class="ttitle">${esc(y.title)}</div>
+     <div class="tai">${esc(y.why)}</div>
+     <div class="yuse"><span class="yul">${I.tap} どう使うか</span><span>${esc(y.use)}</span></div>
+   </div>
+   <div class="expander" onclick="toggleY('${y.id}')">${open?'条文を閉じる':'条文をそのまま読む'}<span>${open?I.up:I.down}</span></div>
+   ${open?`<div class="detail"><div class="prow"><div class="phead">
+       <span class="bdg ${y.kind==='会則'?'kai':'sai'}">${esc(s.badge||'')}</span><b>${esc(y.school)}</b>
+       <span class="pdoc">${esc(y.doc)}</span><span class="part">${esc(y.art)}</span>
+       ${y.url?`<a class="porig" href="${esc(y.url)}" target="_blank" rel="noopener">ファイル</a>`:''}</div>
+     <div class="ptext">${esc(y.text)}</div></div>
+     ${y.item?`<div class="pnoteline">${I.info} この条文は「${esc(y.item)}」の項目に入っています。他校の書き方は「すべての定め」タブで比べられます。</div>`:''}
+   </div>`:''}
+ </div>`;
+}
+
+/* ---------------- ひな形 ---------------- */
+const HST={doc:'',open:{}};
+function setHdoc(v){HST.doc=v;render();window.scrollTo(0,0)}
+function toggleH(id){HST.open[id]=!HST.open[id];render()}
+function viewHina(){
+ if(!HINA.length) return `<div class="card" style="padding:24px"><p class="lead">15_ひな形 が読み込めませんでした。スプレッドシートにシートがあるかご確認ください。</p></div>`;
+ const docs=[]; HINA.forEach(x=>{if(!docs.includes(x.doc))docs.push(x.doc)});
+ const cur=HST.doc||docs[0];
+ const list=HINA.filter(x=>x.doc===cur);
+ const chapters=[]; list.forEach(x=>{if(!chapters.includes(x.ch))chapters.push(x.ch)});
+ const nNew=HINA.filter(x=>x.src==='（新しく書いた条文）').length;
+ let h=`<div class="hero"><h2>9校の良いところを集めた、会則・細則のたたき台</h2>
+  <p class="lead">市内9校の条文から良い書き方を選んで組み上げた標準版です。
+  <b>1条ずつ「もとにした学校の条文」と「なぜこの書き方か」が付いています</b>ので、
+  単Ｐに説明するときは、そのまま根拠として使えます。
+  ○○の部分は各校の実情に合わせて埋めてください。</p>
+  <div class="statrow">
+   <div class="stat"><b>${HINA.length}</b><span>条・項</span></div>
+   <div class="stat"><b>${docs.length}</b><span>本の規程</span></div>
+   <div class="stat"><b>${HINA.filter(x=>x.need==='必須').length}</b><span>必須</span></div>
+   <div class="stat hl"><b>${HINA.length-nNew}</b><span>市内に実例がある</span></div>
+  </div></div>`;
+ h+=`<div class="allbar"><div class="chips">`
+  +docs.map(d=>`<button class="chip ${cur===d?'on':''}" onclick="setHdoc('${esc(d)}')">${esc(d)}<span class="chn">${HINA.filter(x=>x.doc===d).length}</span></button>`).join('')
+  +`</div><span class="tiny muted">${list.length}条</span></div>`;
+ h+=`<p class="axdesc">${I.info} 「もとにした学校」が<b>（新しく書いた条文）</b>のものは、市内9校のどこにも同じ定めがなく、必要と判断して書き足したものです（全体で${nNew}条）。使うかどうかは単Ｐでご判断ください。</p>`;
+ chapters.forEach(ch=>{
+  if(ch) h+=`<div class="axhead"><span class="axname">${esc(ch)}</span></div>`;
+  h+=list.filter(x=>x.ch===ch).map(hinaCard).join('');
+ });
+ return h;
+}
+function hinaCard(x){
+ const open=HST.open[x.id];
+ const isNew=(x.src==='（新しく書いた条文）');
+ return `<div class="tcard hcard">
+   <div class="tcard-main" onclick="toggleH('${x.id}')">
+     <div class="tmeta"><span class="hneed n-${esc(x.need)}">${esc(x.need)}</span>
+       <span class="hart">${esc(x.art)}</span>
+       ${isNew?`<span class="hnew">市内に実例なし</span>`:`<span class="hsrc">もと：${esc(x.src)}　${esc(x.srcArt)}</span>`}</div>
+     <div class="ttitle">${esc(x.head)}</div>
+     <div class="hbody mincho">${esc(x.body)}</div>
+   </div>
+   <div class="expander" onclick="toggleH('${x.id}')">${open?'閉じる':'もとにした条文と、この書き方にした理由'}<span>${open?I.up:I.down}</span></div>
+   ${open?`<div class="detail">
+     <div class="pgrp kai"><div class="pgh"><span class="slab kai">なぜこの書き方か</span></div>
+       <div class="pnote">${esc(x.why)}</div></div>
+     ${x.srcText?`<div class="pgrp sai"><div class="pgh"><span class="slab sai">もとにした条文</span>
+        <span class="pgn">${esc(x.src)}</span></div>
+       <div class="prow"><div class="phead"><b>${esc(x.src)}</b><span class="pdoc">${esc(x.srcDoc)}</span><span class="part">${esc(x.srcArt)}</span></div>
+       <div class="ptext">${esc(x.srcText)}</div></div></div>`:''}
+   </div>`:''}
+ </div>`;
+}
 function viewPDF(){
- let h=`<div class="hero"><h2>会則・細則のPDFを1か所に</h2>
-   <p class="lead">各校の会則・細則をここにまとめます。文書アイコンをタップすると全文をその場で読め、Google DriveのPDFにも飛べます（岩船小は全文を収録済み。他校はPDFリンクが届き次第、順次追加します）。</p></div>`;
+ let h=`<div class="hero"><h2>会則・細則のファイルを1か所に</h2>
+   <p class="lead">提出9校からお預かりし、規程ごとに切り分けた正規化ファイルです。<b>どのファイルに何の規程が入っているか</b>もそのまま出しています（1つのファイルに会則と細則がまとまっている学校があります）。「全文を読む」を押すと、その学校の条文をこのページの中で通して読めます。</p></div>`;
  h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.doc}</span>提出済み</div><div class="pdf-grid">`;
  h+=SUBMITTED.map(pdfCard).join('');
  h+=`</div></div>`;
  h+=`<div class="card"><div class="sec-h"><span class="ic">${I.clock}</span>これから提出</div><div class="pdf-grid">`;
  h+=PENDING.map(pdfCard).join('');
- h+=`</div><p class="tiny muted" style="margin-top:14px">${I.info} PDFリンクは、各校から届いたものをコード内の一覧に貼るだけで有効化されます。難しい設定は不要です。</p></div>`;
+ h+=`</div><p class="tiny muted" style="margin-top:14px">${I.info} この一覧はスプレッドシートの「02_ファイル台帳」から作っています。ファイルを差し替えたら共有URLの列を書き換えてください。氏名や押印を含むファイル（公開可否＝NG）はここに出ません。リンクが開けないときは共有設定（リンクを知っている人が閲覧可）をご確認ください。</p></div>`;
  return h;
 }
+function fileRow(x){
+ const inner=(x.docs.length>1)?`<div class="frdocs">${I.info} このファイルに入っているもの：${esc(x.docs.join('／'))}</div>`:'';
+ const note=x.note&&x.note!=='条文あり'?`<div class="frnote">${esc(x.note)}</div>`:'';
+ return `<div class="frow"><a class="pdf-btn" href="${esc(x.url)}" target="_blank" rel="noopener">${I.pdf} ${esc(x.label)}${x.year?`<span class="fry">${esc(x.year)}</span>`:''}</a>${inner}${note}</div>`;
+}
 function pdfCard(sc){
- const isReal=sc.real;
- const pdf=PDFS[sc.id]||{};
- const hasK=pdf.kaisoku&&pdf.kaisoku.length>4;
- const hasS=pdf.saisoku&&pdf.saisoku.length>4;
- const fullBtn=isReal
-   ? `<button class="pdf-btn full" onclick="openDoc('${sc.id}','kaisoku')">${I.book} 会則の全文を読む</button><button class="pdf-btn full" onclick="openDoc('${sc.id}','saisoku')">${I.book} 細則の全文を読む</button>`
-   : (sc.pending
-      ? `<button class="pdf-btn dim">未提出</button>`
-      : `<button class="pdf-btn dim">全文は準備中</button>`);
- const driveK=hasK?`<a class="pdf-btn" href="${esc(pdf.kaisoku)}" target="_blank" rel="noopener">${I.pdf} 会則PDF(Drive)</a>`:'';
- const driveS=hasS?`<a class="pdf-btn" href="${esc(pdf.saisoku)}" target="_blank" rel="noopener">${I.pdf} 細則PDF(Drive)</a>`:'';
- const badge=isReal?`<span class="pdf-badge real">実データ収録</span>`:(sc.pending?`<span class="pdf-badge samp">これから</span>`:`<span class="pdf-badge samp">サンプル</span>`);
- return `<div class="pdf-card ${isReal?'real':''}">
+ const pdf=PDFS[sc.id]||{kaisoku:[],saisoku:[],sanko:[]};
+ const nDoc=(DOCFULL[sc.id]||[]).reduce((a,d)=>a+d.arts.length,0);
+ const fullBtn=nDoc
+   ? `<button class="pdf-btn full" onclick="openDoc('${sc.id}')">${I.book} 全文を読む（${nDoc}条）</button>`
+   : (sc.pending?`<button class="pdf-btn dim">未提出</button>`:`<button class="pdf-btn dim">全文は準備中</button>`);
+ const badge=sc.pending?`<span class="pdf-badge samp">未提出</span>`:`<span class="pdf-badge real">ファイルあり</span>`;
+ const sec=(t,arr)=>arr.length?`<div class="fsec"><div class="fsh">${esc(t)}</div>${arr.map(fileRow).join('')}</div>`:'';
+ return `<div class="pdf-card ${sc.real?'real':''}">
    <div class="pdf-top"><div class="pdf-ico"><div class="lines"><i></i><i></i><i></i><i></i></div><span class="seal mincho">約</span></div>
      <div><div class="pdf-name">${esc(sc.name)}<br>PTA会則・細則</div>${badge}</div></div>
-   <div class="pdf-actions">${fullBtn}${driveK}${driveS}</div>
+   <div class="pdf-actions">${fullBtn}</div>
+   ${sec('会則',pdf.kaisoku)}${sec('細則・規則・内規',pdf.saisoku)}${sec('参考資料（条文なし）',pdf.sanko)}
+   ${(!pdf.kaisoku.length&&!pdf.saisoku.length&&!pdf.sanko.length)?`<div class="frnote">${sc.pending?'資料の提出をお待ちしています。':'ファイルが台帳に登録されていません。'}</div>`:''}
  </div>`;
 }
-
-/* ---- 全文モーダル ---- */
-function openDoc(sid,kind){
- const sc=SMAP[sid];
- let doc=null;
- if(sid==='iwa')doc=(kind==='kaisoku')?IWA_KAISOKU:IWA_SAISOKU;
+/* ---- 全文モーダル（13_条文から組み立てる） ---- */
+let DOCSEL={sid:null,doc:0};
+function openDoc(sid,di){
+ DOCSEL={sid:sid,doc:di||0};
+ const sc=SMAP[sid], list=DOCFULL[sid]||[];
+ document.getElementById('modalTitle').textContent=(sc?sc.name:'')+' 会則・細則の全文';
  const body=document.getElementById('modalBody');
- document.getElementById('modalTitle').textContent=doc?doc.title:(sc.name+' '+(kind==='kaisoku'?'会則':'細則'));
- if(!doc){body.innerHTML='<div class="doc-empty">この学校の全文はまだ収録されていません。</div>';showModal();return;}
- let h=`<div class="doc-note">${I.info}<div>これは岩船小学校PTAの実際の${kind==='kaisoku'?'会則':'細則'}を要約・収録したものです。正式な原本は各校のPDFをご確認ください。</div></div>`;
- doc.chapters.forEach(c=>{h+=`<div class="doc-ch mincho">${esc(c.ch)}</div>`;c.arts.forEach(a=>{h+=`<div class="doc-art"><div class="an">${esc(a.n)}</div><div class="at">${esc(a.t)}</div></div>`})});
+ if(!list.length){body.innerHTML='<div class="doc-empty">この学校の条文はまだ収録されていません。</div>';showModal();return}
+ const d=list[DOCSEL.doc]||list[0];
+ let h=`<div class="doctabs">`+list.map((x,i)=>`<button class="doctab ${i===DOCSEL.doc?'on':''}" onclick="openDoc('${sid}',${i})"><span class="dtk ${x.kind==='会則'?'kai':'sai'}">${esc(x.kind)}</span>${esc(x.doc)}<span class="dtn">${x.arts.length}</span></button>`).join('')+`</div>`;
+ h+=`<div class="doc-note">${I.info}<div>スプレッドシート「13_条文」に入っている全文をそのまま表示しています。もとの正規化ファイルは「${esc(d.file||'—')}」です。${d.url?`<a href="${esc(d.url)}" target="_blank" rel="noopener">ファイルを開く</a>`:''}</div></div>`;
+ h+=`<div class="doc-ch mincho">${esc(d.doc)}</div>`;
+ d.arts.forEach(a=>{h+=`<div class="doc-art"><div class="an">${esc(a.art)}${a.head?`<span class="anh">（${esc(a.head)}）</span>`:''}</div><div class="at">${esc(a.text)}</div>${a.note?`<div class="pnoteline">${I.info} ${esc(a.note)}</div>`:''}</div>`});
  body.innerHTML=h;showModal();
 }
 function showModal(){document.getElementById('modalBg').classList.add('show');document.body.style.overflow='hidden'}
@@ -785,5 +1241,5 @@ const I={
  tap:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 11V8a1.5 1.5 0 0 1 3 0v3M15 11v-1a1.5 1.5 0 0 1 3 0v5a5 5 0 0 1-5 5h-1.5a4 4 0 0 1-3-1.4L6 18"/></svg>',
 };
 
-render();
+boot();
 </script></body></html>
