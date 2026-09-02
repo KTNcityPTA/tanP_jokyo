@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交野市PTA 総会資料 くらべる板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#f4f0e6;--surface:#fff;--ink:#2b2a26;--ink2:#6f6a60;--ink3:#a39d91;
+ --line:#e7e1d4;--line2:#d9d2c2;
+ --navy:#2d445f;--navy2:#3f5d83;--navy-soft:#e5ebf2;
+ --amber:#d98a3c;--amber-d:#a9631d;--amber-soft:#f8ead4;
+ --teal:#3a9d7e;--teal-d:#2c7a61;--teal-soft:#e1efe9;
+ --red:#c65f45;--red-soft:#f7e2da;
+ --seal:#b4472f;
+ --r:15px;--r-s:11px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:"Noto Sans JP",sans-serif;font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
+.mincho{font-family:"Shippori Mincho",serif}
+.wrap{max-width:940px;margin:0 auto;padding:0 18px}
+.hd{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.hd-in{max-width:940px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Zen Maru Gothic";font-weight:700;font-size:16.5px;letter-spacing:.02em}
+.logo .mk{width:30px;height:30px;border-radius:9px;background:var(--seal);display:flex;align-items:center;justify-content:center;font-family:"Shippori Mincho";font-weight:700;color:#fff;font-size:15px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.hd .sub{font-size:11.5px;color:#c4cfdd;font-weight:400;font-family:"Noto Sans JP"}
+.axiswrap{display:flex;align-items:center;gap:7px;margin-left:auto}
+.axiswrap .al{font-size:11px;color:#a9b7c8;font-family:"Zen Maru Gothic";white-space:nowrap}
+.axissel{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;padding:6px 10px;font-size:13px;font-family:"Zen Maru Gothic";font-weight:500;cursor:pointer}
+.axissel option{color:#222}
+.nav{background:#26394f}.nav-in{max-width:940px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
+.navbtn{background:none;border:none;color:#c1ccda;font-family:"Zen Maru Gothic";font-weight:500;font-size:14px;padding:11px 15px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.navbtn:hover{color:#fff}.navbtn.on{color:#fff;border-bottom-color:var(--amber)}
+.page{padding:22px 0 80px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.muted{color:var(--ink2)}.tiny{font-size:12px}
+.sec-h{font-family:"Zen Maru Gothic";font-weight:700;font-size:17px;margin:0 0 13px;display:flex;align-items:center;gap:9px}.sec-h .ic{color:var(--amber);display:flex}
+.warnbar{background:var(--amber-soft);border:1px solid #eacfaa;color:var(--amber-d);border-radius:11px;padding:9px 14px;font-size:12.5px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start}
+.hero{background:linear-gradient(175deg,#fff,#fbf7ef);border:1px solid var(--line);border-radius:var(--r);padding:22px 22px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::after{content:"議";position:absolute;right:-14px;bottom:-30px;font-family:"Shippori Mincho";font-weight:700;font-size:150px;color:rgba(180,71,47,.05);line-height:1;pointer-events:none}
+.hero h2{font-size:21px;margin-bottom:6px;line-height:1.4;position:relative}
+.hero .lead{font-size:14px;color:var(--ink2);max-width:660px;position:relative}
+.statrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-s);padding:11px 15px;min-width:96px}
+.stat b{font-family:"Zen Maru Gothic";font-size:22px;font-weight:700;color:var(--navy);display:block;line-height:1.15}
+.stat span{font-size:11.5px;color:var(--ink2)}
+.stat.hl b{color:var(--seal)}
+.aibox{background:linear-gradient(180deg,#fbf5eb,#fff);border:1px solid var(--amber-soft);border-radius:var(--r);padding:17px 19px;margin-bottom:16px}
+.aibox .aih{font-family:"Zen Maru Gothic";font-weight:700;font-size:15px;color:var(--amber-d);display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.aibox .airow{display:flex;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+.aibox .airow:last-child{border-bottom:none}
+.aibox .aitag{flex-shrink:0;font-size:11px;font-weight:700;font-family:"Zen Maru Gothic";border-radius:7px;padding:3px 9px;white-space:nowrap;margin-top:1px}
+.aitag.common{background:var(--teal-soft);color:var(--teal-d)}
+.aitag.uniq{background:var(--red-soft);color:var(--red)}
+.aitag.mix{background:var(--navy-soft);color:var(--navy2)}
+.aibox .aitx{font-size:13.5px;line-height:1.7}
+.aibox .aimeta{font-size:11px;color:var(--ink3);margin-top:11px}
+.filt{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:15px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 14px}
+.filt .fl{font-size:12px;font-weight:700;color:var(--ink3);font-family:"Zen Maru Gothic"}
+.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.seg button{border:none;background:none;font-family:"Zen Maru Gothic";font-size:12.5px;padding:7px 13px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:none}.seg button.on{background:var(--navy);color:#fff}
+/* card */
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.tcard.uniq{border-color:#e7c3b3}
+.tcard-main{padding:15px 18px}
+.tcard-main.tap{cursor:pointer}.tcard-main.tap:hover{background:#fdfbf6}
+.tmeta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
+.chchip{font-size:11px;color:var(--navy2);background:var(--navy-soft);border-radius:6px;padding:2px 9px;font-weight:500;white-space:nowrap}
+.mark{font-size:10.5px;font-weight:700;font-family:"Zen Maru Gothic";border-radius:6px;padding:2px 9px;white-space:nowrap}
+.mark.uniq{background:var(--seal);color:#fff}.mark.minor{background:var(--amber);color:#fff}.mark.common{background:var(--teal);color:#fff}
+.mark.rank{background:var(--navy);color:#fff}
+.ttitle{font-family:"Zen Maru Gothic";font-weight:700;font-size:16.5px;line-height:1.4;margin-bottom:4px}
+.tai{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:12px}
+.stance{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line)}
+.stance:first-of-type{border-top:none}
+.sdot{width:11px;height:11px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.sbody{flex:1;min-width:0}
+.slabel{font-size:13.5px;font-weight:500;line-height:1.55;margin-bottom:5px}
+.badges{display:flex;gap:5px;flex-wrap:wrap}
+.bdg{font-size:12px;font-family:"Zen Maru Gothic";font-weight:700;min-width:26px;height:26px;padding:0 7px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:var(--paper);border:1px solid var(--line2);color:var(--ink2)}
+.bdg.ax{background:var(--seal);color:#fff;border-color:var(--seal);box-shadow:0 1px 4px rgba(180,71,47,.3)}
+.scount{font-size:11.5px;color:var(--ink3);white-space:nowrap;margin-top:6px;flex-shrink:0}
+.meter{display:flex;height:8px;border-radius:5px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
+.meter i{height:100%;display:block}
+/* ★ signature: まね／らく の2択チップ */
+.tips{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+@media(max-width:600px){.tips{grid-template-columns:1fr}}
+.tip{border-radius:11px;padding:9px 12px;font-size:12.5px;line-height:1.6;border:1px solid}
+.tip .tl{display:flex;align-items:center;gap:5px;font-family:"Zen Maru Gothic";font-weight:700;font-size:11.5px;margin-bottom:3px}
+.tip.mane{background:var(--teal-soft);border-color:#bfe2d3;color:var(--teal-d)}
+.tip.mane .tx{color:#2f5f50}
+.tip.raku{background:var(--navy-soft);border-color:#cddae8;color:var(--navy2)}
+.tip.raku .tx{color:#3d5064}
+/* number rows */
+.nrow{display:flex;align-items:center;gap:10px;padding:6px 0}
+.nrow.ax{background:linear-gradient(90deg,#fdf3ee,transparent);border-radius:8px;padding:7px 10px;margin:0 -10px;box-shadow:inset 3px 0 0 var(--seal)}
+.nlab{width:74px;flex-shrink:0;display:flex;align-items:center;gap:6px}
+.nlab .nm{font-size:12.5px;font-weight:500;color:var(--navy);font-family:"Zen Maru Gothic"}
+.ntrack{flex:1;height:20px;background:var(--paper);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.ntrack i{display:block;height:100%;background:linear-gradient(90deg,var(--navy2),var(--navy))}
+.nrow.ax .ntrack i{background:linear-gradient(90deg,#d0714f,var(--seal))}
+.nval{width:104px;flex-shrink:0;text-align:right;font-size:12.5px;font-weight:500}
+.nnote{font-size:11.5px;color:var(--ink3);margin:-2px 0 6px 84px;line-height:1.5}
+.nnote.ax{color:var(--seal)}
+.numstats{display:flex;gap:20px;margin-top:13px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
+.numstats div{font-size:11.5px;color:var(--ink2)}
+.numstats b{display:block;font-family:"Zen Maru Gothic";font-size:15px;color:var(--navy)}
+.expander{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:var(--paper);border-top:1px solid var(--line);cursor:pointer;font-family:"Zen Maru Gothic";font-size:12.5px;color:var(--navy2);font-weight:500}
+.expander:hover{background:#efe9dc}
+.detail{padding:4px 18px 16px;background:#fcfaf5;border-top:1px solid var(--line)}
+.drow{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.drow:last-child{border-bottom:none}
+.drow.ax{background:linear-gradient(90deg,#fdf3ee,transparent);border-radius:8px;padding:11px 10px;margin:0 -10px;box-shadow:inset 3px 0 0 var(--seal)}
+.dsch{width:100px;flex-shrink:0;display:flex;flex-direction:column;gap:3px}
+.dsch .nm{font-size:12.5px;font-weight:700;color:var(--navy);font-family:"Zen Maru Gothic"}
+.dsch .rf{font-size:10.5px;color:var(--ink3);line-height:1.4}
+.dsch .rl{font-size:9.5px;font-weight:700;color:#fff;background:var(--seal);border-radius:5px;padding:1px 6px;width:fit-content}
+.dsch .sm{font-size:9.5px;font-weight:700;color:var(--amber-d);background:var(--amber-soft);border:1px solid #eacfaa;border-radius:5px;padding:1px 6px;width:fit-content}
+.dtxt{flex:1;font-size:13px;line-height:1.7;white-space:pre-wrap}
+.dtxt.none{color:var(--ink3)}
+.pending-note{margin-top:12px;font-size:12px;color:var(--ink3);background:var(--paper);border:1px dashed var(--line2);border-radius:9px;padding:8px 12px}
+/* PDF */
+.pdf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
+.pdf-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;transition:.13s}
+.pdf-card.real{border-color:#e7c3b3;background:linear-gradient(180deg,#fffdfb,#fff)}
+.pdf-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.07);transform:translateY(-1px)}
+.pdf-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.pdf-ico{width:46px;height:56px;flex-shrink:0;border-radius:6px;background:linear-gradient(160deg,#fff,#f0e8d8);border:1.5px solid var(--line2);position:relative;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.pdf-ico::before{content:"";position:absolute;top:0;right:0;border-width:0 13px 13px 0;border-style:solid;border-color:var(--paper) var(--paper) var(--line2) var(--line2)}
+.pdf-ico .seal{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-family:"Shippori Mincho";font-weight:700;font-size:15px;color:var(--seal);opacity:.9}
+.pdf-ico .lines{position:absolute;top:12px;left:7px;right:7px;display:flex;flex-direction:column;gap:3px}
+.pdf-ico .lines i{height:2px;background:var(--line2);border-radius:2px;display:block}
+.pdf-ico .lines i:nth-child(2){width:70%}.pdf-ico .lines i:nth-child(4){width:55%}
+.pdf-name{font-family:"Zen Maru Gothic";font-weight:700;font-size:14.5px;line-height:1.35}
+.pdf-badge{font-size:10px;font-weight:700;border-radius:6px;padding:1px 8px;margin-top:4px;display:inline-block}
+.pdf-badge.real{background:var(--red-soft);color:var(--seal)}
+.pdf-badge.samp{background:var(--paper);color:var(--ink3);border:1px solid var(--line2)}
+.pdf-actions{display:flex;flex-direction:column;gap:7px}
+.pdf-btn{font-family:"Zen Maru Gothic";font-size:12.5px;font-weight:500;border-radius:9px;padding:8px 11px;cursor:pointer;border:1px solid var(--line2);background:#fff;color:var(--ink);display:flex;align-items:center;gap:7px;text-decoration:none;transition:.12s}
+.pdf-btn:hover{background:#faf7f0;border-color:var(--ink3)}
+.pdf-btn.full{background:var(--navy);border-color:var(--navy);color:#fff}.pdf-btn.full:hover{background:var(--navy2)}
+.pdf-btn.dim{opacity:.5;cursor:not-allowed}.pdf-btn.dim:hover{background:#fff;border-color:var(--line2)}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(30,25,20,.55);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:28px 14px;overflow-y:auto;opacity:0;pointer-events:none;transition:.2s}
+.modal-bg.show{opacity:1;pointer-events:auto}
+.modal{background:var(--surface);border-radius:16px;max-width:760px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;transform:translateY(10px);transition:.2s}
+.modal-bg.show .modal{transform:none}
+.modal-h{position:sticky;top:0;background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;z-index:2}
+.modal-h .mt{font-family:"Zen Maru Gothic";font-weight:700;font-size:15.5px;flex:1}
+.modal-h .mx{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal-h .mx:hover{background:rgba(255,255,255,.28)}
+.modal-body{padding:20px 22px 30px;max-height:calc(100vh - 130px);overflow-y:auto}
+.doc-note{background:var(--amber-soft);border:1px solid #eacfaa;border-radius:9px;padding:9px 13px;font-size:12px;color:var(--amber-d);margin-bottom:16px;display:flex;gap:7px;align-items:flex-start}
+.doc-ch{font-family:"Shippori Mincho";font-weight:700;font-size:15px;color:var(--seal);margin:20px 0 9px;padding-bottom:5px;border-bottom:2px solid var(--amber-soft)}
+.doc-ch:first-child{margin-top:0}
+.btable{width:100%;border-collapse:collapse;font-size:12px}
+.btable th{background:var(--navy);color:#fff;font-weight:500;padding:7px 8px;text-align:right;white-space:nowrap;font-size:11px}
+.btable th:first-child{text-align:left}
+.btable td{padding:6px 8px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
+.btable td:first-child{text-align:left;white-space:normal}
+.btable td.ex{text-align:left;white-space:normal;color:var(--ink2);font-size:11px;min-width:130px}
+.btable tr:nth-child(even) td{background:#fcfaf5}
+.btable tr.sum td{font-weight:700;background:var(--paper);color:var(--navy)}
+.chglist{list-style:none;margin-top:6px}
+.chglist li{font-size:12.5px;padding:5px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px}
+.chglist li:last-child{border-bottom:none}
+.chglist .no{font-family:"Zen Maru Gothic";font-weight:700;color:var(--seal);flex-shrink:0}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 19px;border-radius:11px;font-size:13.5px;z-index:200;box-shadow:0 6px 22px rgba(0,0,0,.25);opacity:0;transition:.25s;font-family:"Zen Maru Gothic"}
+.toast.show{opacity:1}
+.empty-note{text-align:center;color:var(--ink3);padding:34px 10px;font-size:14px}
+@media(max-width:560px){.dsch{width:82px}.hero h2{font-size:19px}.nval{width:88px}.nnote{margin-left:0}}
+
+.allbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:14px;display:flex;flex-direction:column;gap:9px}
+.allq{width:100%;box-sizing:border-box;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-family:inherit;background:#fdfcf9}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:inherit;font-size:12px;padding:4px 11px;border-radius:13px;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.schrow{display:flex;flex-direction:column;gap:5px;margin:9px 0 7px}
+.srow{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.slab{font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap;margin-top:2px}
+.slab.kai{background:#e8f3ee;color:#2f7d64}
+.slab.non{background:#f0eee9;color:#8a8175}
+.sch{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.bdg.kai{border-color:#bcdcd0;background:#f2faf6}
+.bdg.non{opacity:.45}
+.bdg.kai.ax,.bdg.non.ax{background:var(--seal);color:#fff;border-color:var(--seal);opacity:1}
+.mark.gapm{background:#fbf0ed;color:#b4472f}
+.prow{padding:10px 0;border-bottom:1px dotted var(--line)}
+.prow.ax{background:#fdf6f3;margin:0 -12px;padding:10px 12px;border-radius:8px}
+.phead{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:4px}
+.ptext{font-size:13.5px;line-height:1.8;color:var(--ink2)}
+.ptext.none{color:var(--ink3)}
+.lackline{font-size:12px;color:#a8672a;background:#fdf7ee;border-radius:8px;padding:6px 9px;margin-top:10px}
+.howline{font-size:12px;color:var(--ink3);background:#faf7f1;border-radius:8px;padding:6px 9px;margin:8px 0 10px}
+
+table.mx{border-collapse:collapse;font-size:13px;min-width:640px}
+table.mx th,table.mx td{border:1px solid var(--line);padding:7px 9px;text-align:center;white-space:nowrap}
+table.mx th{background:#f3efe6;font-weight:700;font-size:12px}
+table.mx th .req{display:block;font-style:normal;font-size:10px;color:#b4472f;font-weight:600}
+table.mx td.sticky,table.mx th.sticky{position:sticky;left:0;background:#fff;text-align:left}
+table.mx th.sticky{background:#f3efe6}
+table.mx tr.ax td,table.mx tr.ax td.sticky{background:#fdf6f3}
+table.mx td.ok{color:#3a9d7e;font-weight:700}
+table.mx td.ng{color:#b4472f;font-weight:700;background:#fbf0ed}
+table.mx td.na{color:#c9c2b4}
+table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
+.misslist{display:flex;flex-direction:column;gap:8px}
+.missrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.misstags i{display:inline-block;font-style:normal;font-size:12px;background:#fbf0ed;color:#b4472f;border:1px solid #eeddd8;border-radius:11px;padding:2px 9px;margin:2px 4px 2px 0}
+.todos{display:flex;flex-direction:column;gap:12px}
+.todo{border-left:3px solid #d98a3c;padding:2px 0 2px 11px}
+.todo .tt{display:flex;align-items:center;gap:8px;font-size:14px}
+.todo .tt .st{font-style:normal;font-size:11px;color:#8a7f6d;background:#f3efe6;border-radius:9px;padding:1px 8px}
+.todo .td{font-size:13px;color:var(--ink2);margin-top:2px}
+.todo .tw{font-size:12px;color:var(--ink3);margin-top:2px}
+</style></head>
+<body>
+<div class="hd"><div class="hd-in">
+ <div class="logo"><span class="mk mincho">議</span><span>交野市PTA 総会資料 くらべる板<span class="sub"> ／ まねる所と、省ける所を見つける</span></span></div>
+ <div class="axiswrap"><span class="al">目線</span><select class="axissel" id="axisSel" onchange="setAxis(this.value)"></select></div>
+</div>
+<div class="nav"><div class="nav-in" id="nav"></div></div></div>
+<div class="wrap"><div class="page" id="page"></div></div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><span class="mt" id="modalTitle"></span><button class="mx" onclick="closeModal()">×</button></div><div class="modal-body" id="modalBody"></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ============================================================
+   交野市PTA 総会資料 くらべる板（デモ）
+   ・岩船小学校 … 2023年度決算/2024年度予算・2024年度決算/2025年度予算の
+                   実際の総会資料PDFから起こした本物データ
+   ・他校 … 「集まるとこう見える」を体感するためのサンプル（仮）
+   ・見どころ：指標は 07_会計_指標定義 の式に従い、06_会計_元数値 からその場で計算
+   ============================================================ */
+
+const I={
+ spark:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>',
+ down:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+ up:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>',
+ yen:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11M6 4l6 7 6-7M7 13h10M7 17h10"/></svg>',
+ doc:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>',
+ book:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/></svg>',
+ pdf:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+ clock:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ info:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/></svg>',
+ tap:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 11V8a1.5 1.5 0 0 1 3 0v3M15 11v-1a1.5 1.5 0 0 1 3 0v5a5 5 0 0 1-5 5h-1.5a4 4 0 0 1-3-1.4L6 18"/></svg>',
+ copy:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+ cut:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg>',
+};
+
+/* ---- 学校 ---- */
+/* ============================================================
+   交野市PTA 総会資料 くらべる板
+   データは Googleスプレッドシート「交野市PTA_単P比較DB」から読み込みます。
+   HTMLの中にデータは持っていません。直すときはスプレッドシートを直してください。
+   指標は 07_会計_指標定義 の計算式に従い、06_会計_元数値 と 01_学校マスタ から
+   その場で計算しています（数値を持ち回っていません）。
+   ============================================================ */
+const SHEET_ID='1ZetpDElLBqk2-YlH9WC0VU8RVFb8LiY9RnhroazO-14';
+const SHEET_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/edit';
+
+let SCHOOLS=[], SUBMITTED=[], PENDING=[], SMAP={}, PDFS={}, METRICS=[], DOCS=[];
+let LEDGER=[], TODO=[], CODE2ID={}, FIN={}, TSUMI={};
+
+let __gvizN=0;
+function gviz(sheetName){
+ return new Promise((resolve,reject)=>{
+  const cb='__gviz_cb_'+(__gvizN++);
+  const el=document.createElement('script'); let done=false;
+  const cleanup=()=>{try{delete window[cb]}catch(e){window[cb]=undefined};el.remove()};
+  window[cb]=(r)=>{done=true;
+   try{
+    const cols=r.table.cols.map((c,i)=>(c.label||c.id||('C'+i)).trim());
+    const rows=r.table.rows.map(rw=>{const o={};cols.forEach((c,i)=>{const cell=rw.c&&rw.c[i];o[c]=(cell&&cell.v!=null)?cell.v:''});return o});
+    cleanup(); resolve(rows);
+   }catch(e){cleanup(); reject(e)}
+  };
+  el.onerror=()=>{if(!done){cleanup();reject(new Error(sheetName+' を読めませんでした'))}};
+  el.src='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?headers=1&sheet='
+        +encodeURIComponent(sheetName)+'&tqx=responseHandler:'+cb;
+  document.head.appendChild(el);
+  setTimeout(()=>{if(!done){cleanup();reject(new Error(sheetName+' の読み込みがタイムアウトしました'))}},20000);
+ });
+}
+const S=v=>(v==null?'':String(v)).trim();
+const isTrue=v=>v===true||S(v).toUpperCase()==='TRUE';
+const N=v=>{const t=S(v).replace(/,/g,'');if(t===''||isNaN(+t))return null;return +t};
+
+function buildSchools(mst){
+ SCHOOLS=mst.filter(r=>S(r['板ID'])).sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99)).map(r=>({
+  id:S(r['板ID']),code:S(r['校コード']),name:S(r['正式名称']),sname:S(r['略称']),badge:S(r['バッジ']),
+  block:S(r['ブロック']),real:S(r['提出状況'])==='あり',pending:S(r['提出状況'])!=='あり',
+  homes:N(r['会員家庭数【採用値】']),how:S(r['算出方法（板に表示する説明）']),
+  certainty:S(r['算出の確からしさ']),fee:N(r['年会費_R8']),ayear:S(r['採用値の年度'])
+ }));
+ SUBMITTED=SCHOOLS.filter(s=>!s.pending); PENDING=SCHOOLS.filter(s=>s.pending);
+ SMAP={}; SCHOOLS.forEach(s=>SMAP[s.id]=s);
+ CODE2ID={}; SCHOOLS.forEach(s=>CODE2ID[s.code]=s.id);
+}
+function buildFin(fin){
+ FIN={}; TSUMI={};
+ fin.forEach(r=>{
+  const id=CODE2ID[S(r['校コード'])]; if(!id)return;
+  const y=S(r['年度']), k=S(r['名寄せ科目']);
+  FIN[id]=FIN[id]||{}; FIN[id][y]=FIN[id][y]||{};
+  const rec={yosan:N(r['予算額']),kessan:N(r['決算額']),note:S(r['摘要']),kbn:S(r['区分']),dai:S(r['大科目'])};
+  (FIN[id][y][k]=FIN[id][y][k]||[]).push(rec);
+  if(rec.kbn==='積立'){TSUMI[id]=(TSUMI[id]||0)+(rec.kessan||0)}
+ });
+}
+/* 集計値（＝収入合計・予備費など）は「名寄せ科目」明細と二重計上しないよう、
+   大科目が '名寄せ科目' の行を除いて拾う。 */
+const f=(id,y,k,which)=>{
+ const a=((FIN[id]||{})[y]||{})[k]; if(!a)return null;
+ const rows=a.filter(x=>x.dai!=='名寄せ科目');
+ const use=rows.length?rows:a;
+ const v=use.map(x=>x[which]).filter(x=>x!=null);
+ return v.length?v.reduce((p,q)=>p+q,0):null;
+};
+const yosan=(id,y,k)=>f(id,y,k,'yosan');
+const kessan=(id,y,k)=>f(id,y,k,'kessan');
+
+/* 07_会計_指標定義 の式に対応する計算 */
+const CALC={
+ M01:s=>s.fee,
+ M02:s=>yosan(s.id,'R8','＝支出合計'),
+ M03:s=>{const a=CALC.M02(s);return (a!=null&&s.homes)?Math.round(a/s.homes):null},
+ M04:s=>{const a=CALC.M02(s),y=yosan(s.id,'R8','予備費');return (a!=null&&y!=null&&s.homes)?Math.round((a-y)/s.homes):null},
+ M05:s=>{const k=yosan(s.id,'R8','前年度繰越金'),t=yosan(s.id,'R8','＝収入合計');return (k!=null&&t)?Math.round(k/t*1000)/10:null},
+ M06:s=>{const y=yosan(s.id,'R8','予備費'),t=yosan(s.id,'R8','＝支出合計');return (y!=null&&t)?Math.round(y/t*1000)/10:null},
+ M07:s=>{const d=kessan(s.id,'R7','＝支出合計'),b=kessan(s.id,'R7','＝当初予算額');return (d!=null&&b)?Math.round(d/b*1000)/10:null},
+ M08:s=>{const k=yosan(s.id,'R8','前年度繰越金'),t=TSUMI[s.id]||0;return (k!=null&&s.homes)?Math.round((k+t)/s.homes):null},
+ M09:s=>{const a=CALC.M08(s);return (a!=null&&s.fee)?Math.round(a/s.fee*100)/100:null},
+};
+const UNIT={M01:'yen',M02:'yen',M03:'yen',M04:'yen',M05:'pct',M06:'pct',M07:'pct',M08:'yen',M09:'year'};
+function buildMetrics(def){
+ METRICS=def.filter(r=>S(r['指標ID'])&&isTrue(r['公開'])&&CALC[S(r['指標ID'])])
+  .sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99))
+  .map(r=>{
+   const mid=S(r['指標ID']); const vals={},notes={};
+   SUBMITTED.forEach(s=>{
+    const v=CALC[mid](s); if(v!=null) vals[s.id]=v;
+    if(mid==='M03'||mid==='M04'||mid==='M08'||mid==='M09') notes[s.id]=s.how;
+   });
+   return {id:mid,ch:S(r['表示名']).slice(0,0)||'',title:S(r['表示名']),unit:UNIT[mid]||'yen',
+           how:S(r['計算のしかた']),ai:S(r['解説']),vals,notes};
+  }).filter(m=>Object.keys(m.vals).length>=2);
+}
+function buildDocs(rows){
+ const byItem={};
+ rows.forEach(r=>{
+  const id=CODE2ID[S(r['校コード'])]; if(!id)return;
+  const key=S(r['区分'])+'|'+S(r['項目']);
+  (byItem[key]=byItem[key]||{ch:S(r['区分']),title:S(r['項目']),detail:{}}).detail[id]=S(r['内容']);
+ });
+ DOCS=Object.values(byItem).filter(t=>Object.values(t.detail).some(v=>v&&v!=='None'));
+}
+function fatal(msg){
+ document.getElementById('page').innerHTML=
+  '<div class="card" style="padding:22px"><h2 style="margin:0 0 10px">データを読み込めませんでした</h2>'
+ +'<p class="lead">'+esc(msg)+'</p><p class="lead">スプレッドシートが「ウェブに公開」になっているか、'
+ +'シート名（01_学校マスタ／02_ファイル台帳／06_会計_元数値／07_会計_指標定義／08_総会資料_構成）をご確認ください。</p>'
+ +'<p><a class="pdf-btn" href="'+SHEET_URL+'" target="_blank" rel="noopener">スプレッドシートを開く</a></p></div>';
+}
+async function boot(){
+ document.getElementById('page').innerHTML=
+  '<div class="card" style="padding:26px;text-align:center"><p class="lead" style="margin:0">スプレッドシートから読み込んでいます…</p></div>';
+ try{
+  const [mst,led,fin,def,doc,tod]=await Promise.all([
+   gviz('01_学校マスタ'),gviz('02_ファイル台帳'),gviz('06_会計_元数値'),
+   gviz('07_会計_指標定義'),gviz('08_総会資料_構成'),gviz('11_未確認・宿題').catch(()=>[])]);
+  LEDGER=led; TODO=tod;
+  buildSchools(mst); buildFin(fin); buildMetrics(def); buildDocs(doc);
+  PDFS={}; SCHOOLS.forEach(s=>PDFS[s.id]=[]);
+  const WANT=['総会資料','決算書','予算書','事業計画','事業報告','決算明細'];
+  LEDGER.forEach(r=>{
+   if(S(r['公開可否'])!=='OK')return;
+   const id=CODE2ID[S(r['校コード'])]; if(!id||!PDFS[id])return;
+   const k=S(r['種別']); if(WANT.indexOf(k)<0)return;
+   const u=S(r['共有URL']); if(!u)return;
+   PDFS[id].push({kind:k,sub:S(r['小分類']),year:S(r['年度']),url:u,naka:S(r['中身'])});
+  });
+  if(!SCHOOLS.length) return fatal('01_学校マスタ に行がありません。');
+  if(!METRICS.length) return fatal('指標を計算できませんでした。06_会計_元数値 と 07_会計_指標定義 をご確認ください。');
+  if(!SMAP[ST.axis]||SMAP[ST.axis].pending) ST.axis=(SUBMITTED[0]||{}).id;
+  render();
+ }catch(e){ fatal(e&&e.message?e.message:String(e)); }
+}
+
+/* ============ 状態 ============ */
+const ST={tab:'money', axis:'iwa', expanded:{}};
+
+/* ============ ヘルパ ============ */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function yen(v){return (Math.round(v)).toLocaleString()+'円'}
+function fmtVal(m,v){return m.unit==='yen'?yen(v):m.unit==='pct'?(Math.round(v*10)/10)+'%':m.unit==='year'?(Math.round(v*100)/100)+'年分':v+'項目'}
+// いま選んでいる学校（目線）
+function axisSchool(){return SMAP[ST.axis]||SUBMITTED[0]||{sname:'',name:'',id:'',real:true}}
+
+function metricRank(m){
+ const arr=SUBMITTED.filter(s=>m.vals[s.id]!=null).map(s=>({id:s.id,v:m.vals[s.id]})).sort((a,b)=>b.v-a.v);
+ const i=arr.findIndex(x=>x.id===ST.axis);
+ return i<0?null:i+1;          // 値がない学校は順位なし（0番目と出さない）
+}
+
+/* ============================================================
+   描画
+   ============================================================ */
+function renderNav(){
+ const items=[['money','数字でくらべる'],['doc','資料の中身でくらべる'],['pdf','総会資料PDF'],['status','提出状況']];
+ document.getElementById('nav').innerHTML=items.map(([v,l])=>`<button class="navbtn ${ST.tab===v?'on':''}" onclick="setTab('${v}')">${l}</button>`).join('');
+ const sel=document.getElementById('axisSel');
+ sel.innerHTML=SUBMITTED.map(s=>`<option value="${s.id}" ${s.id===ST.axis?'selected':''}>${esc(s.sname)}</option>`).join('');
+ sel.disabled=(ST.tab==='pdf');
+ sel.parentNode.style.opacity=(ST.tab==='pdf')?'.35':'1';
+}
+function setTab(v){ST.tab=v;ST.expanded={};render();window.scrollTo(0,0)}
+function setAxis(v){ST.axis=v;render();window.scrollTo(0,0);toast(SMAP[v].sname+'の目線に切り替えました')}
+function setOnlyDiff(v){ST.onlyDiff=v;render()}
+function toggleExp(i){ST.expanded[ST.tab+i]=!ST.expanded[ST.tab+i];render()}
+function render(){
+ renderNav();
+ document.getElementById('page').innerHTML=ST.tab==='money'?viewMoney():ST.tab==='doc'?viewDoc():ST.tab==='status'?viewStatus():viewPDF();
+}
+function sampleWarn(){
+ const A=axisSchool();
+ if(A.real)return '';
+ return `<div class="warnbar">${I.info}<div><b>${esc(A.sname)}</b>の数字と資料の中身は、イメージをつかむためのサンプル（仮）です。実際の総会資料が届くと、本物のデータに置き換わります。</div></div>`;
+}
+function tipsHTML(tip){
+ if(!tip)return '';
+ return `<div class="tips">
+   <div class="tip mane"><div class="tl">${I.copy} まねすると効く</div><div class="tx">${esc(tip.mane)}</div></div>
+   <div class="tip raku"><div class="tl">${I.cut} やらなくても回る</div><div class="tx">${esc(tip.raku)}</div></div>
+ </div>`;
+}
+
+/* ---- 数字でくらべる ---- */
+function viewMoney(){
+ const A=axisSchool();
+ const highs=METRICS.filter(m=>metricRank(m)===1).map(m=>m.title);
+ const lows=METRICS.filter(m=>metricRank(m)===SUBMITTED.length).map(m=>m.title);
+ let h=sampleWarn();
+ h+=`<div class="hero">
+  <h2>数字は、大きい／小さいより「なぜその額か」</h2>
+  <p class="lead">会費・予算規模・繰越金・積立金を、提出された${SUBMITTED.length}校で横に並べました。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。資料が届いていない学校は、その指標だけ計算から外しています。</p>
+  <div class="statrow">
+   <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
+   <div class="stat"><b>${METRICS.length}</b><span>くらべた数字</span></div>
+   <div class="stat hl"><b>${highs.length+lows.length}</b><span>${esc(A.sname)}が最大・最小</span></div>
+   <div class="stat"><b>${PENDING.length}</b><span>これからの学校</span></div>
+  </div>
+ </div>`;
+ h+=`<div class="aibox">
+   <div class="aih">${I.spark} 9校を見わたすと ／ ${esc(A.sname)}の目線</div>
+   <div class="airow"><span class="aitag uniq">市内で最も大きい</span><div class="aitx">${highs.length?`<b>${esc(highs.join('／'))}</b>。理由を説明できるなら強み、できないなら見直しの入口です。`:'市内で最大の項目はありません。'}</div></div>
+   <div class="airow"><span class="aitag mix">市内で最も小さい</span><div class="aitx">${lows.length?`<b>${esc(lows.join('／'))}</b>。少なくて回っているなら、他校が省ける根拠になります。`:'市内で最小の項目はありません。'}</div></div>
+   <div class="airow"><span class="aitag common">読み方</span><div class="aitx">数字は単独では意味を持ちません。会費は繰越金と、予算規模は家庭数と、費目の数は担い手の人数とセットで見てください。</div></div>
+   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます。</div>
+ </div>`;
+ h+=METRICS.map(metricCard).join('');
+ return h;
+}
+function metricCard(m){
+ const rank=metricRank(m);
+ const have=SUBMITTED.filter(s=>m.vals[s.id]!=null);
+ const lack=SUBMITTED.filter(s=>m.vals[s.id]==null);
+ const N=have.length;
+ const arr=have.map(s=>({s,v:m.vals[s.id]})).sort((a,b)=>b.v-a.v);
+ const max=Math.max(...arr.map(x=>x.v),1);
+ const nums=arr.map(x=>x.v);
+ const avg=nums.reduce((a,b)=>a+b,0)/nums.length;
+ const rows=arr.map(({s,v})=>{
+  const isAx=s.id===ST.axis;
+  const note=m.notes[s.id];
+  return `<div class="nrow ${isAx?'ax':''}"><div class="nlab"><span class="bdg ${isAx?'ax':''}">${esc(s.badge)}</span><span class="nm">${esc(s.sname)}</span></div>
+   <div class="ntrack"><i style="width:${Math.max(2,Math.round(v/max*100))}%"></i></div>
+   <div class="nval">${esc(fmtVal(m,v))}</div></div>
+   ${note&&note!=='—'?`<div class="nnote ${isAx?'ax':''}">${esc(note)}</div>`:''}`;
+ }).join('');
+ const rankLabel=(rank==null)?'資料が届いていないため出せません':rank===1?`${N}校で最も高い`:rank===N?`${N}校で最も低い`:`高い方から${rank}番目`;
+ const lackHTML=lack.length?`<div class="lackline">${I.info} 資料が届いていないため計算できない学校：${esc(lack.map(s=>s.sname).join('・'))}</div>`:'';
+ return `<div class="tcard ${rank===1||rank===N?'uniq':''}">
+  <div class="tcard-main">
+    <div class="tmeta"><span class="chchip">${esc(m.ch)}</span><span class="mark ${rank===1||rank===N?'uniq':'rank'}">${esc(axisSchool().sname)}は${esc(rankLabel)}</span></div>
+    <div class="ttitle">${esc(m.title)}</div>
+    <div class="tai">${esc(m.ai)}</div>
+    <div class="howline">${I.info} 計算のしかた：${esc(m.how)}</div>
+    ${rows}
+    <div class="numstats"><div>最小<b>${esc(fmtVal(m,Math.min(...nums)))}</b></div><div>平均<b>${esc(fmtVal(m,m.unit==='item'?Math.round(avg):Math.round(avg*10)/10))}</b></div><div>最大<b>${esc(fmtVal(m,Math.max(...nums)))}</b></div><div>${esc(axisSchool().sname)}<b>${m.vals[ST.axis]!=null?esc(fmtVal(m,m.vals[ST.axis])):'—'}</b></div></div>
+    ${lackHTML}
+  </div>
+ </div>`;
+}
+
+/* ---- 資料の中身でくらべる ---- */
+const DST={ch:'',q:'',open:{}};
+function setDch(v){DST.ch=v;render()}
+function setDq(v){DST.q=v;render();const el=document.getElementById('dq');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}}
+function toggleDoc(i){DST.open[i]=!DST.open[i];render()}
+function docsShown(){
+ let l=DOCS;
+ if(DST.ch) l=l.filter(t=>t.ch===DST.ch);
+ const q=DST.q.trim();
+ if(q) l=l.filter(t=>t.title.includes(q)||Object.values(t.detail).some(v=>String(v).includes(q)));
+ return l;
+}
+function viewDoc(){
+ const A=axisSchool();
+ const chs=[...new Set(DOCS.map(t=>t.ch))];
+ const has=v=>v&&v!=='None'&&v!=='—'&&v!=='×'&&!v.startsWith('×');
+ const mine=DOCS.filter(t=>has(t.detail[A.id]));
+ const gaps=DOCS.filter(t=>t.detail[A.id]!==undefined&&!has(t.detail[A.id]));
+ let h=sampleWarn();
+ h+=`<div class="hero"><h2>総会資料に、何がどこまで載っているか</h2>
+  <p class="lead">9校の総会資料を実際に開いて、載っている要素・総会の開き方・書きぶりの細かさを並べたものです。<b>${esc(A.sname)}</b>の目線で、他校が入れていて自校に無いものが見えます。</p>
+  <div class="statrow">
+   <div class="stat"><b>${DOCS.length}</b><span>くらべた項目</span></div>
+   <div class="stat"><b>${mine.length}</b><span>${esc(A.sname)}にあるもの</span></div>
+   <div class="stat hl"><b>${gaps.length}</b><span>${esc(A.sname)}に無いもの</span></div>
+   <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
+  </div></div>`;
+ h+=`<div class="allbar">
+  <input id="dq" class="allq" type="search" placeholder="項目や中身を検索（例：書面、監査、積立）" value="${esc(DST.q)}" oninput="setDq(this.value)">
+  <div class="chips"><button class="chip ${!DST.ch?'on':''}" onclick="setDch('')">すべて</button>`
+  +chs.map(c=>`<button class="chip ${DST.ch===c?'on':''}" onclick="setDch('${esc(c)}')">${esc(c)}</button>`).join('')
+  +`</div><span class="tiny muted">${docsShown().length}件</span></div>`;
+ const list=docsShown();
+ if(!list.length) return h+`<p class="empty-note">条件に合う項目がありません。</p>`;
+ h+=list.map((t)=>docCard(t,DOCS.indexOf(t))).join('');
+ return h;
+}
+function docCard(t,i){
+ const A=axisSchool(); const open=DST.open[i];
+ const has=v=>v&&v!=='None'&&v!=='—'&&v!=='×'&&!String(v).startsWith('×');
+ const yes=SUBMITTED.filter(s=>has(t.detail[s.id]));
+ const no=SUBMITTED.filter(s=>t.detail[s.id]!==undefined&&!has(t.detail[s.id]));
+ const chip=(s,cls)=>`<span class="bdg ${cls} ${s.id===ST.axis?'ax':''}" title="${esc(s.name)}">${esc(s.badge)}</span>`;
+ const total=SUBMITTED.length;
+ const mark = !has(t.detail[A.id]) ? `<span class="mark gapm">${esc(A.sname)}には無い</span>`
+   : (yes.length===1 ? `<span class="mark uniq">${esc(A.sname)}だけ</span>`
+   : (yes.length===total ? `<span class="mark common">全校にある</span>` : `<span class="mark minor">${yes.length}校にある</span>`));
+ const mine=t.detail[A.id];
+ let rows='';
+ if(open){
+  const ord=SUBMITTED.slice().sort((a,b)=>(b.id===ST.axis?1:0)-(a.id===ST.axis?1:0));
+  rows=`<div class="detail">`+ord.map(s=>{
+   const v=t.detail[s.id];
+   return `<div class="prow ${s.id===ST.axis?'ax':''}"><div class="phead">
+     <span class="bdg ${s.id===ST.axis?'ax':''}">${esc(s.badge)}</span><b>${esc(s.name)}</b></div>
+     <div class="ptext ${has(v)?'':'none'}">${esc(v&&v!=='None'?v:'—')}</div></div>`;
+  }).join('')+`</div>`;
+ }
+ return `<div class="tcard ${yes.length===1?'uniq':''}">
+  <div class="tcard-main" onclick="toggleDoc(${i})">
+   <div class="tmeta"><span class="chchip">${esc(t.ch)}</span>${mark}</div>
+   <div class="ttitle">${esc(t.title)}</div>
+   ${has(mine)?`<div class="tai"><b>${esc(A.sname)}：</b>${esc(mine)}</div>`:`<div class="tai">${esc(A.sname)}の資料には見当たりません。</div>`}
+   <div class="schrow">
+    ${yes.length?`<div class="srow"><span class="slab kai">ある</span><span class="sch">${yes.map(s=>chip(s,'kai')).join('')}</span><span class="scount">${yes.length}校</span></div>`:''}
+    ${no.length?`<div class="srow"><span class="slab non">無い</span><span class="sch">${no.map(s=>chip(s,'non')).join('')}</span><span class="scount">${no.length}校</span></div>`:''}
+   </div>
+   <div class="meter"><i style="width:${yes.length/total*100}%;background:#3a9d7e"></i><i style="width:${no.length/total*100}%;background:#ece7db"></i></div>
+  </div>
+  <div class="expander" onclick="toggleDoc(${i})">${open?'各校の中身を閉じる':'各校の中身を見る'}<span>${open?I.up:I.down}</span></div>
+  ${rows}
+ </div>`;
+}
+
+function viewPDF(){
+ let h=`<div class="hero"><h2>総会資料・決算書・予算書を1か所に</h2>
+   <p class="lead">スプレッドシートの「02_ファイル台帳」から作っています。ファイルを差し替えたら共有URLの列を書き換えるだけで、ここも変わります。氏名や押印を含むファイル（公開可否＝NG）は出していません。岩船小は予算・決算の中身をこのページ内でも表で読めます。</p></div>`;
+ h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.doc}</span>提出済み</div><div class="pdf-grid">`;
+ h+=SUBMITTED.map(pdfCard).join('');
+ h+=`</div></div>`;
+ if(PENDING.length){
+  h+=`<div class="card"><div class="sec-h"><span class="ic">${I.clock}</span>これから提出</div><div class="pdf-grid">`
+   +PENDING.map(pdfCard).join('')+`</div></div>`;
+ }
+ return h;
+}
+function pdfCard(sc){
+ const fs=(PDFS[sc.id]||[]);
+ const badge=sc.pending?`<span class="pdf-badge samp">未提出</span>`:`<span class="pdf-badge real">原本あり ${fs.length}件</span>`;
+ const full='';
+ const links=fs.map(x=>`<a class="pdf-btn" href="${esc(x.url)}" target="_blank" rel="noopener">${I.pdf} ${esc(x.kind)}${x.sub?'・'+esc(x.sub):''}${x.year?'（'+esc(x.year)+'）':''}</a>`).join('');
+ return `<div class="pdf-card ${fs.length?'real':''}">
+   <div class="pdf-top"><div class="pdf-ico"><div class="lines"><i></i><i></i><i></i><i></i></div><span class="seal mincho">議</span></div>
+     <div><div class="pdf-name">${esc(sc.name)}<br>総会資料ほか</div>${badge}</div></div>
+   <div class="pdf-actions">${full}${links||`<button class="pdf-btn dim">${sc.pending?'未提出':'準備中'}</button>`}</div>
+ </div>`;
+}
+
+/* ---- 提出状況 ---- */
+const DOCKINDS=['会則','細則等','決算書','決算明細','予算書','総会資料','事業計画','事業報告','その他'];
+const KIND_NEED={'会則':1,'細則等':1,'決算書':1,'予算書':1,'総会資料':1};
+function ledgerBySchool(){
+ const m={}; SCHOOLS.forEach(s=>m[s.id]={});
+ LEDGER.forEach(r=>{const id=CODE2ID[S(r['校コード'])];if(!id||!m[id])return;
+  const k=S(r['種別']); if(!k||k==='（未提出）')return; (m[id][k]=m[id][k]||[]).push(r)});
+ return m;
+}
+function viewStatus(){
+ const by=ledgerBySchool();
+ const files=LEDGER.filter(r=>S(r['DriveファイルID'])).length;
+ const missing=[];
+ SCHOOLS.forEach(s=>Object.keys(KIND_NEED).forEach(k=>{
+  const a=(by[s.id]||{})[k]||[]; const real=a.filter(r=>!S(r['中身']).startsWith('参考'));
+  if(!real.length) missing.push([s,k+(a.length?'（参考資料のみ）':'')]);
+ }));
+ let h=`<div class="hero"><h2>だれが何を出していて、何が足りないか</h2>
+  <p class="lead">「02_ファイル台帳」から作っています。必須は<b>会則・細則等・決算書・予算書・総会資料</b>の5点としています。</p>
+  <div class="statrow">
+   <div class="stat"><b>${SUBMITTED.length}</b><span>提出のあった学校</span></div>
+   <div class="stat"><b>${files}</b><span>登録ファイル数</span></div>
+   <div class="stat hl"><b>${missing.length}</b><span>足りていない資料</span></div>
+   <div class="stat"><b>${PENDING.length}</b><span>まだ何も未提出</span></div>
+  </div></div>`;
+ h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.doc}</span>提出マトリクス</div>
+  <div style="overflow-x:auto"><table class="mx"><thead><tr><th class="sticky">学校</th>`
+  +DOCKINDS.map(k=>`<th>${esc(k)}${KIND_NEED[k]?'<i class="req">必須</i>':''}</th>`).join('')+`</tr></thead><tbody>`;
+ SCHOOLS.forEach(s=>{
+  h+=`<tr${s.id===ST.axis?' class="ax"':''}><td class="sticky"><span class="bdg ${s.id===ST.axis?'ax':''}">${esc(s.badge)}</span> ${esc(s.sname)}</td>`;
+  DOCKINDS.forEach(k=>{
+   const a=(by[s.id]||{})[k]||[]; const real=a.filter(r=>!S(r['中身']).startsWith('参考'));
+   if(real.length) h+=`<td class="ok">${real.length>1?real.length:'○'}</td>`;
+   else if(a.length) h+=`<td class="ref">△</td>`;
+   else h+=`<td class="${KIND_NEED[k]?'ng':'na'}">${KIND_NEED[k]?'未':'−'}</td>`;
+  });
+  h+=`</tr>`;
+ });
+ h+=`</tbody></table></div><p class="tiny muted" style="margin-top:10px">${I.info} 数字はファイル数。「未」は必須なのに届いていないもの、「△」は参考資料だけで本体が無いもの、「−」は任意のものです。</p></div>`;
+ if(missing.length){
+  const byS={}; missing.forEach(([s,k])=>{(byS[s.id]=byS[s.id]||{s,ks:[]}).ks.push(k)});
+  h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.clock}</span>足りていない資料（${missing.length}件）</div><div class="misslist">`
+   +Object.values(byS).map(x=>`<div class="missrow"><span class="bdg">${esc(x.s.badge)}</span><b>${esc(x.s.name)}</b><span class="misstags">${x.ks.map(k=>`<i>${esc(k)}</i>`).join('')}</span></div>`).join('')
+   +`</div></div>`;
+ }
+ const open2=TODO.filter(r=>S(r['状態'])&&S(r['状態'])!=='決定済'&&S(r['状態'])!=='解決済');
+ if(open2.length){
+  h+=`<div class="card"><div class="sec-h"><span class="ic">${I.info}</span>確認が要るところ（${open2.length}件）</div><div class="todos">`
+   +open2.map(r=>`<div class="todo"><div class="tt"><b>${esc(S(r['対象']))}</b><i class="st">${esc(S(r['状態']))}</i></div>
+     <div class="td">${esc(S(r['内容']))}</div><div class="tw">${esc(S(r['どう埋めるか']))}</div></div>`).join('')+`</div></div>`;
+ }
+ return h;
+}
+
+function closeModal(){document.getElementById('modalBg').classList.remove('show');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+boot();
+</script></body></html>
