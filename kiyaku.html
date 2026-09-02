@@ -1147,7 +1147,7 @@ function viewHina(){
  h+=`<div class="allbar"><div class="chips">`
   +docs.map(d=>`<button class="chip ${cur===d?'on':''}" onclick="setHdoc('${esc(d)}')">${esc(d)}<span class="chn">${HINA.filter(x=>x.doc===d).length}</span></button>`).join('')
   +`</div><span class="tiny muted">${list.length}条</span></div>`;
- h+=`<p class="axdesc">${I.info} 「もとにした学校」が<b>（新しく書いた条文）</b>のものは、市内9校のどこにも同じ定めがなく、必要と判断して書き足したものです（全体で${nNew}条）。使うかどうかは単Ｐでご判断ください。</p>`;
+ h+=`<p class="axdesc">${I.info} <span>「もとにした学校」が<b>（新しく書いた条文）</b>のものは、市内9校のどこにも同じ定めがなく、必要と判断して書き足したものです（全体で${nNew}条）。使うかどうかは単Ｐでご判断ください。</span></p>`;
  chapters.forEach(ch=>{
   if(ch) h+=`<div class="axhead"><span class="axname">${esc(ch)}</span></div>`;
   h+=list.filter(x=>x.ch===ch).map(hinaCard).join('');
