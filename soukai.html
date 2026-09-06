@@ -290,7 +290,8 @@ function buildSchools(mst){
   id:S(r['板ID']),code:S(r['校コード']),name:S(r['正式名称']),sname:S(r['略称']),badge:S(r['バッジ']),
   block:S(r['ブロック']),real:S(r['提出状況'])==='あり',pending:S(r['提出状況'])!=='あり',
   homes:N(r['会員家庭数【採用値】']),how:S(r['算出方法（板に表示する説明）']),
-  certainty:S(r['算出の確からしさ']),fee:N(r['年会費_R8']),ayear:S(r['採用値の年度'])
+  certainty:S(r['算出の確からしさ']),fee:N(r['年会費_R8']),ayear:S(r['採用値の年度']),
+  feeIncome:N(r['会費収入_R8予算'])
  }));
  SUBMITTED=SCHOOLS.filter(s=>!s.pending); PENDING=SCHOOLS.filter(s=>s.pending);
  SMAP={}; SCHOOLS.forEach(s=>SMAP[s.id]=s);
@@ -322,30 +323,94 @@ const kessan=(id,y,k)=>f(id,y,k,'kessan');
 /* 07_会計_指標定義 の式に対応する計算 */
 /* 繰越金の科目名は学校によって「前年度繰越金」「繰越金」とゆれがあるため両対応 */
 const carryover=(id,y)=>{const a=yosan(id,y,'前年度繰越金');return a!=null?a:yosan(id,y,'繰越金')};
-/* 特別委員会費・イベント費は学校ごとに名寄せ科目の呼び方がバラバラなため、
-   キーワードに一致する名寄せ科目をすべて合算して比較する */
-const CMT_RE=/その他委員会活動費/;
-const EVT_RE=/フェスタ|イベント|サマー|夏祭/;
-const sumByPattern=(id,y,re)=>{
- const yr=(FIN[id]||{})[y]; if(!yr)return null;
- let sum=0, hit=false;
- Object.keys(yr).forEach(k=>{
-  if(re.test(k)){ const v=yosan(id,y,k); if(v!=null){sum+=v; hit=true} }
- });
- return hit?sum:null;
+
+/* ============================================================
+   この板だけの追加データ（KYOUTSUU）
+   ・出典：各校PTA予算書決算書_原本抽出データ.xlsx の「共通科目／共通項目」列
+   ・R8予算額（令和8年度予算）ベースで学校ごとに合計したもの
+   ・共通科目への割り振りは、各校の予算科目の中身（摘要）を踏まえて
+     元気がひとつずつ判断したもので、確定的な確認ではなく推定を含みます
+   ・積立金の現在額（tsumitate）は、各校の積立金台帳・決算書に記載された
+     最新の残高で、基準日は学校ごとに異なります（学校ごとの注記参照）
+   ・スナップショット：2026-09時点。集計元の予算・決算資料が更新された
+     場合は、このオブジェクトを作り直してください（06_会計_元数値には
+     まだ反映されていません）
+   ============================================================ */
+const KYOUTSUU={
+ mir:{koho:30000,  gakunen:null,   chiku:150000, sonota:null,   teirei:800000, tanpatsu:30000,  gakko:null,   jido:450000, tsumitate:null},
+ ni2:{koho:300000, gakunen:100000, chiku:null,   sonota:null,   teirei:400000, tanpatsu:null,   gakko:null,   jido:null,   tsumitate:1430730},
+ kra:{koho:60000,  gakunen:400000, chiku:10000,  sonota:30000,  teirei:640000, tanpatsu:550000, gakko:null,   jido:300000, tsumitate:330328},
+ kzu:{koho:50000,  gakunen:30000,  chiku:140000, sonota:27000,  teirei:150000, tanpatsu:null,   gakko:100000, jido:220000, tsumitate:1121888},
+ ni3:{koho:null,   gakunen:null,   chiku:null,   sonota:null,   teirei:null,   tanpatsu:null,   gakko:null,   jido:null,   tsumitate:null},
+ aki:{koho:5000,   gakunen:null,   chiku:26000,  sonota:33000,  teirei:245000, tanpatsu:600000, gakko:null,   jido:null,   tsumitate:679430},
+ hsi:{koho:null,   gakunen:null,   chiku:null,   sonota:135000, teirei:220000, tanpatsu:150000, gakko:null,   jido:null,   tsumitate:450498},
+ iwa:{koho:45000,  gakunen:83000,  chiku:80520,  sonota:3000,   teirei:70000,  tanpatsu:400000, gakko:null,   jido:105000, tsumitate:864000},
+ kis:{koho:0,      gakunen:192500, chiku:154000, sonota:null,   teirei:null,   tanpatsu:null,   gakko:96250,  jido:null,   tsumitate:null},
+ fuj:{koho:null,   gakunen:194000, chiku:13500,  sonota:330,    teirei:null,   tanpatsu:3000,   gakko:null,   jido:440000, tsumitate:2018321},
 };
+const kv=(id,key)=>{const o=KYOUTSUU[id]; if(!o)return null; const v=o[key]; return v==null?null:v};
+
 const CALC={
  M01:s=>s.fee,
  M02:s=>yosan(s.id,'R8','＝支出合計'),
  M04:s=>{const a=CALC.M02(s),y=yosan(s.id,'R8','予備費');return (a!=null&&y!=null&&s.homes)?Math.round((a-y)/s.homes):null},
  M05:s=>carryover(s.id,'R8'),
- M10:s=>TSUMI[s.id]!=null?TSUMI[s.id]:null,
- M11:s=>sumByPattern(s.id,'R8',CMT_RE),
- M12:s=>sumByPattern(s.id,'R8',EVT_RE),
+ B01:s=>s.feeIncome,
+ B02:s=>carryover(s.id,'R8'),
+ B03:s=>kv(s.id,'tsumitate'),
+ B04:s=>kv(s.id,'koho'),
+ B05:s=>kv(s.id,'gakunen'),
+ B06:s=>kv(s.id,'chiku'),
+ B07:s=>kv(s.id,'sonota'),
+ B08:s=>kv(s.id,'teirei'),
+ B09:s=>kv(s.id,'tanpatsu'),
+ B10:s=>kv(s.id,'gakko'),
+ B11:s=>kv(s.id,'jido'),
 };
-const UNIT={M01:'yen',M02:'yen',M04:'yen',M05:'yen',M10:'yen',M11:'yen',M12:'yen'};
+const UNIT={M01:'yen',M02:'yen',M04:'yen',M05:'yen',
+ B01:'yen',B02:'yen',B03:'yen',B04:'yen',B05:'yen',B06:'yen',B07:'yen',B08:'yen',B09:'yen',B10:'yen',B11:'yen'};
+
+/* この板だけで追加している指標（07_会計_指標定義には未登録）。
+   公開されているスプレッドシートの指標定義に手を入れられないため、
+   ここに直接まとめている。数字はすべて KYOUTSUU／01_学校マスタ 由来。 */
+const BOARD_METRICS_DEF=[
+ {id:'B01',title:'会費収入（学校全体・年額）',
+  how:'01_学校マスタ の 会費収入_R8予算',
+  ai:'会費だけでは負担感は測れません。繰越金・積立金とあわせて、家庭からの年間負担の全体像として見てください。'},
+ {id:'B02',title:'繰越金（R8期首時点の金額）',
+  how:'各校の予算書「前年度繰越金」R8予算額',
+  ai:'使われずに翌年へ回ったお金です。多い学校は「事業を計画的に減らしている」のか「使い切れていない」のかを話し合う入り口になります。'},
+ {id:'B03',title:'積立金の現在額（基金残高）',
+  how:'各校の積立金台帳・決算書に記載された最新の残高（推定を含む）',
+  ai:'基金として積み立てている金額の残高です。基準日が学校ごとに違うため、金額の大小よりも「どのくらいの規模の基金を持っているか」の目安として見てください。'},
+ {id:'B04',title:'広報委員会費',
+  how:'共通科目「広報委員会費」の合計（R8予算額）',
+  ai:'広報紙の発行など、情報発信にかけている費用です。'},
+ {id:'B05',title:'学年委員会費',
+  how:'共通科目「学年委員会費」の合計（R8予算額）',
+  ai:'学年やクラスごとの活動にかけている費用です。'},
+ {id:'B06',title:'地区活動費',
+  how:'共通科目「地区活動費」の合計（R8予算額）',
+  ai:'登下校の見守りなど、学校の外・地域での活動にかけている費用です。'},
+ {id:'B07',title:'その他委員会活動費',
+  how:'共通科目「その他委員会活動費」の合計（R8予算額）',
+  ai:'広報・学年・地区のどれにも当てはまらない委員会活動の費用です。'},
+ {id:'B08',title:'定例イベント費',
+  how:'共通科目「定例イベント費」の合計（R8予算額）',
+  ai:'毎年開催している定例行事にかけている費用です。'},
+ {id:'B09',title:'単発イベント費',
+  how:'共通科目「単発イベント費」の合計（R8予算額）',
+  ai:'単発の企画やお祭りなど、その年かぎりのイベントにかけている費用です。'},
+ {id:'B10',title:'学校寄贈費',
+  how:'共通科目「学校寄贈費」の合計（R8予算額）',
+  ai:'学校そのものへの寄贈・支援にあてている費用です。'},
+ {id:'B11',title:'児童生徒寄贈費',
+  how:'共通科目「児童生徒寄贈費」の合計（R8予算額）',
+  ai:'図書や活動支援など、児童生徒に還元している費用です。'},
+];
+
 function buildMetrics(def){
- METRICS=def.filter(r=>S(r['指標ID'])&&isTrue(r['公開'])&&CALC[S(r['指標ID'])])
+ const fromSheet=def.filter(r=>S(r['指標ID'])&&isTrue(r['公開'])&&CALC[S(r['指標ID'])])
   .sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99))
   .map(r=>{
    const mid=S(r['指標ID']); const vals={},notes={};
@@ -356,13 +421,22 @@ function buildMetrics(def){
    return {id:mid,ch:S(r['表示名']).slice(0,0)||'',title:S(r['表示名']),unit:UNIT[mid]||'yen',
            how:S(r['計算のしかた']),ai:S(r['解説']),vals,notes};
   }).filter(m=>Object.keys(m.vals).length>=2);
+ const fromBoard=BOARD_METRICS_DEF.map(b=>{
+   const vals={};
+   SUBMITTED.forEach(s=>{const v=CALC[b.id](s); if(v!=null) vals[s.id]=v});
+   return {id:b.id,ch:'',title:b.title,unit:UNIT[b.id]||'yen',how:b.how,ai:b.ai,vals,notes:{}};
+  }).filter(m=>Object.keys(m.vals).length>=2);
+ METRICS=fromSheet.concat(fromBoard);
 }
 function buildDocs(rows){
+ /* ユーザー指示により比較対象から除外する項目 */
+ const EXCLUDE=['総会の案内文','書面表決書・委任状','議事録','会員への説明姿勢'];
  const byItem={};
  rows.forEach(r=>{
   const id=CODE2ID[S(r['校コード'])]; if(!id)return;
-  const key=S(r['区分'])+'|'+S(r['項目']);
-  (byItem[key]=byItem[key]||{ch:S(r['区分']),title:S(r['項目']),detail:{}}).detail[id]=S(r['内容']);
+  const title=S(r['項目']); if(EXCLUDE.indexOf(title)>=0)return;
+  const key=S(r['区分'])+'|'+title;
+  (byItem[key]=byItem[key]||{ch:S(r['区分']),title,detail:{}}).detail[id]=S(r['内容']);
  });
  DOCS=Object.values(byItem).filter(t=>Object.values(t.detail).some(v=>v&&v!=='None'));
 }
@@ -446,6 +520,20 @@ function tipsHTML(tip){
  </div>`;
 }
 
+/* ---- クローズアップ（注目ポイント。KYOUTSUU/xlsxの読み込みからわかったこと） ---- */
+function closeupHTML(){
+ return `<div class="card" style="margin-bottom:16px">
+   <div class="sec-h"><span class="ic">${I.spark}</span>注目ポイント</div>
+   <div class="prow"><div class="phead"><b>会費以外の収入を持っている学校もある</b></div>
+     <div class="ptext">岩船小学校はアルミ缶回収で年間約10万円（R8予算100,000円・R7決算104,400円）、倉治小学校は地域の夏まつりでの物品販売で1〜1.5万円ほど（R8予算10,000円・R7決算13,500円）を得ています。会費を上げずに済ませる選択肢の一つとして参考になります。</div></div>
+   <div class="prow"><div class="phead"><b>保育サポート補助金の使われ方</b></div>
+     <div class="ptext">交野市PTA協議会の保育サポート補助金は、児童生徒数に応じた最低保証額はあるものの、実際に使った額に応じて上乗せされる仕組みです（令和8年度配分一覧より）。旭小学校は最低保証額12,000円に対しR7決算で28,500円を受給しており、保育サポートをよく利用していることがうかがえます。岩船小学校は最低保証額16,000円に対しR7決算16,200円とほぼ保証額どおりです。郡津小学校・星田小学校はR8予算にこの補助金の受給を見込んでおらず、みらい学園・私市小学校は他の収入科目と合算されていて金額を切り分けられません。倉治小学校・第2中学校・第3中学校・藤が尾小学校は、資料の中にこの補助金の記載自体が見当たりませんでした。</div></div>
+   <div class="prow"><div class="phead"><b>保育サポート以外の補助金を受けている学校</b></div>
+     <div class="ptext">岩船小学校は「交野市まちづくり市民提案型事業補助金」としてR8予算100,000円（R7決算83,164円）を受けており、地域イベント「わいわいフェスタ」の財源にあてています。他校でこの種の補助金は見当たりませんでした。</div></div>
+   <div class="aimeta">${I.info} 保育サポート補助金の最低保証額は「令和8年度 保育サポート補助金 配分一覧」より。実績額は各校の予算書・決算書からで、記載のない学校は「不明」としています。</div>
+ </div>`;
+}
+
 /* ---- 数字でくらべる ---- */
 function viewMoney(){
  const A=axisSchool();
@@ -454,7 +542,7 @@ function viewMoney(){
  let h=sampleWarn();
  h+=`<div class="hero">
   <h2>予算を比較する</h2>
-  <p class="lead">会費・予算規模（歳出合計）・繰越金・積立金・特別委員会費・イベント費を、提出された${SUBMITTED.length}校で横に並べました。会費を上げる・下げるための比較ではなく、お金の使い方や貯め方の違いを知るための資料です。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。資料が届いていない学校や、その科目自体がない学校は、その指標だけ計算から外しています。</p>
+  <p class="lead">会費・予算規模（歳出合計）・繰越金・積立金・委員会活動費の内訳（広報／学年／地区／その他）・定例イベント費・単発イベント費・学校寄贈費・児童生徒寄贈費を、提出された${SUBMITTED.length}校で横に並べました。会費を上げる・下げるための比較ではなく、お金の使い方や貯め方の違いを知るための資料です。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。資料が届いていない学校や、その科目自体がない学校は、その指標だけ計算から外しています。</p>
   <div class="statrow">
    <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
    <div class="stat"><b>${METRICS.length}</b><span>くらべた予算項目</span></div>
@@ -467,8 +555,9 @@ function viewMoney(){
    <div class="airow"><span class="aitag uniq">市内で最も大きい</span><div class="aitx">${highs.length?`<b>${esc(highs.join('／'))}</b>。理由を説明できるなら強み、できないなら見直しの入口です。`:'市内で最大の項目はありません。'}</div></div>
    <div class="airow"><span class="aitag mix">市内で最も小さい</span><div class="aitx">${lows.length?`<b>${esc(lows.join('／'))}</b>。少なくて回っているなら、他校が省ける根拠になります。`:'市内で最小の項目はありません。'}</div></div>
    <div class="airow"><span class="aitag common">読み方</span><div class="aitx">数字は単独では意味を持ちません。会費は繰越金や積立金と、予算規模は家庭数とセットで見てください。会費は基本的に据え置く前提で、支出・繰越・積立の使い方の違いを比較しています。</div></div>
-   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。特別委員会費・イベント費は学校ごとに科目名がバラバラなため、それぞれ「その他委員会活動費」「フェスタ／イベント／サマー／夏祭を含む科目」をまとめて計算しています。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます。</div>
+   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。定例イベント費・単発イベント費・委員会活動費の内訳・寄贈費などの分類は、各校の予算科目の中身（摘要）を踏まえてこちらで判断したものです。推定を含んでおり、機械的な名寄せや第三者による確認を経た数字ではありません。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます。</div>
  </div>`;
+ h+=closeupHTML();
  h+=METRICS.map(metricCard).join('');
  return h;
 }
@@ -624,7 +713,7 @@ function viewStatus(){
   <div class="statrow">
    <div class="stat"><b>${SUBMITTED.length}</b><span>提出のあった学校</span></div>
    <div class="stat"><b>${files}</b><span>登録ファイル数</span></div>
-   <div class="stat hl"><b>${missing.length}</b><span>足りていない資料</span></div>
+   <div class="stat hl"><b>${missing.length}</b><span>未確認資料</span></div>
    <div class="stat"><b>${PENDING.length}</b><span>まだ何も未提出</span></div>
   </div></div>`;
  h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.doc}</span>提出マトリクス</div>
@@ -643,7 +732,7 @@ function viewStatus(){
  h+=`</tbody></table></div><p class="tiny muted" style="margin-top:10px">${I.info} 数字はファイル数。「未」は必須なのに届いていないもの、「△」は参考資料だけで本体が無いもの、「−」は任意のものです。</p></div>`;
  if(missing.length){
   const byS={}; missing.forEach(([s,k])=>{(byS[s.id]=byS[s.id]||{s,ks:[]}).ks.push(k)});
-  h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.clock}</span>足りていない資料（${missing.length}件）</div><div class="misslist">`
+  h+=`<div class="card" style="margin-bottom:16px"><div class="sec-h"><span class="ic">${I.clock}</span>未確認資料（${missing.length}件）</div><div class="misslist">`
    +Object.values(byS).map(x=>`<div class="missrow"><span class="bdg">${esc(x.s.badge)}</span><b>${esc(x.s.name)}</b><span class="misstags">${x.ks.map(k=>`<i>${esc(k)}</i>`).join('')}</span></div>`).join('')
    +`</div></div>`;
  }
