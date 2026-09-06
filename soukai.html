@@ -320,18 +320,30 @@ const yosan=(id,y,k)=>f(id,y,k,'yosan');
 const kessan=(id,y,k)=>f(id,y,k,'kessan');
 
 /* 07_会計_指標定義 の式に対応する計算 */
+/* 繰越金の科目名は学校によって「前年度繰越金」「繰越金」とゆれがあるため両対応 */
+const carryover=(id,y)=>{const a=yosan(id,y,'前年度繰越金');return a!=null?a:yosan(id,y,'繰越金')};
+/* 特別委員会費・イベント費は学校ごとに名寄せ科目の呼び方がバラバラなため、
+   キーワードに一致する名寄せ科目をすべて合算して比較する */
+const CMT_RE=/その他委員会活動費/;
+const EVT_RE=/フェスタ|イベント|サマー|夏祭/;
+const sumByPattern=(id,y,re)=>{
+ const yr=(FIN[id]||{})[y]; if(!yr)return null;
+ let sum=0, hit=false;
+ Object.keys(yr).forEach(k=>{
+  if(re.test(k)){ const v=yosan(id,y,k); if(v!=null){sum+=v; hit=true} }
+ });
+ return hit?sum:null;
+};
 const CALC={
  M01:s=>s.fee,
  M02:s=>yosan(s.id,'R8','＝支出合計'),
- M03:s=>{const a=CALC.M02(s);return (a!=null&&s.homes)?Math.round(a/s.homes):null},
  M04:s=>{const a=CALC.M02(s),y=yosan(s.id,'R8','予備費');return (a!=null&&y!=null&&s.homes)?Math.round((a-y)/s.homes):null},
- M05:s=>{const k=yosan(s.id,'R8','前年度繰越金'),t=yosan(s.id,'R8','＝収入合計');return (k!=null&&t)?Math.round(k/t*1000)/10:null},
- M06:s=>{const y=yosan(s.id,'R8','予備費'),t=yosan(s.id,'R8','＝支出合計');return (y!=null&&t)?Math.round(y/t*1000)/10:null},
- M07:s=>{const d=kessan(s.id,'R7','＝支出合計'),b=kessan(s.id,'R7','＝当初予算額');return (d!=null&&b)?Math.round(d/b*1000)/10:null},
- M08:s=>{const k=yosan(s.id,'R8','前年度繰越金'),t=TSUMI[s.id]||0;return (k!=null&&s.homes)?Math.round((k+t)/s.homes):null},
- M09:s=>{const a=CALC.M08(s);return (a!=null&&s.fee)?Math.round(a/s.fee*100)/100:null},
+ M05:s=>carryover(s.id,'R8'),
+ M10:s=>TSUMI[s.id]!=null?TSUMI[s.id]:null,
+ M11:s=>sumByPattern(s.id,'R8',CMT_RE),
+ M12:s=>sumByPattern(s.id,'R8',EVT_RE),
 };
-const UNIT={M01:'yen',M02:'yen',M03:'yen',M04:'yen',M05:'pct',M06:'pct',M07:'pct',M08:'yen',M09:'year'};
+const UNIT={M01:'yen',M02:'yen',M04:'yen',M05:'yen',M10:'yen',M11:'yen',M12:'yen'};
 function buildMetrics(def){
  METRICS=def.filter(r=>S(r['指標ID'])&&isTrue(r['公開'])&&CALC[S(r['指標ID'])])
   .sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99))
@@ -339,7 +351,7 @@ function buildMetrics(def){
    const mid=S(r['指標ID']); const vals={},notes={};
    SUBMITTED.forEach(s=>{
     const v=CALC[mid](s); if(v!=null) vals[s.id]=v;
-    if(mid==='M03'||mid==='M04'||mid==='M08'||mid==='M09') notes[s.id]=s.how;
+    if(mid==='M04') notes[s.id]=s.how;
    });
    return {id:mid,ch:S(r['表示名']).slice(0,0)||'',title:S(r['表示名']),unit:UNIT[mid]||'yen',
            how:S(r['計算のしかた']),ai:S(r['解説']),vals,notes};
@@ -406,7 +418,7 @@ function metricRank(m){
    描画
    ============================================================ */
 function renderNav(){
- const items=[['money','数字でくらべる'],['doc','資料の中身でくらべる'],['pdf','総会資料PDF'],['status','提出状況']];
+ const items=[['money','予算を比較'],['doc','資料の中身でくらべる'],['pdf','総会資料PDF'],['status','提出状況']];
  document.getElementById('nav').innerHTML=items.map(([v,l])=>`<button class="navbtn ${ST.tab===v?'on':''}" onclick="setTab('${v}')">${l}</button>`).join('');
  const sel=document.getElementById('axisSel');
  sel.innerHTML=SUBMITTED.map(s=>`<option value="${s.id}" ${s.id===ST.axis?'selected':''}>${esc(s.sname)}</option>`).join('');
@@ -441,11 +453,11 @@ function viewMoney(){
  const lows=METRICS.filter(m=>metricRank(m)===SUBMITTED.length).map(m=>m.title);
  let h=sampleWarn();
  h+=`<div class="hero">
-  <h2>数字は、大きい／小さいより「なぜその額か」</h2>
-  <p class="lead">会費・予算規模・繰越金・積立金を、提出された${SUBMITTED.length}校で横に並べました。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。資料が届いていない学校は、その指標だけ計算から外しています。</p>
+  <h2>予算を比較する</h2>
+  <p class="lead">会費・予算規模（歳出合計）・繰越金・積立金・特別委員会費・イベント費を、提出された${SUBMITTED.length}校で横に並べました。会費を上げる・下げるための比較ではなく、お金の使い方や貯め方の違いを知るための資料です。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。資料が届いていない学校や、その科目自体がない学校は、その指標だけ計算から外しています。</p>
   <div class="statrow">
    <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
-   <div class="stat"><b>${METRICS.length}</b><span>くらべた数字</span></div>
+   <div class="stat"><b>${METRICS.length}</b><span>くらべた予算項目</span></div>
    <div class="stat hl"><b>${highs.length+lows.length}</b><span>${esc(A.sname)}が最大・最小</span></div>
    <div class="stat"><b>${PENDING.length}</b><span>これからの学校</span></div>
   </div>
@@ -454,8 +466,8 @@ function viewMoney(){
    <div class="aih">${I.spark} 9校を見わたすと ／ ${esc(A.sname)}の目線</div>
    <div class="airow"><span class="aitag uniq">市内で最も大きい</span><div class="aitx">${highs.length?`<b>${esc(highs.join('／'))}</b>。理由を説明できるなら強み、できないなら見直しの入口です。`:'市内で最大の項目はありません。'}</div></div>
    <div class="airow"><span class="aitag mix">市内で最も小さい</span><div class="aitx">${lows.length?`<b>${esc(lows.join('／'))}</b>。少なくて回っているなら、他校が省ける根拠になります。`:'市内で最小の項目はありません。'}</div></div>
-   <div class="airow"><span class="aitag common">読み方</span><div class="aitx">数字は単独では意味を持ちません。会費は繰越金と、予算規模は家庭数と、費目の数は担い手の人数とセットで見てください。</div></div>
-   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます。</div>
+   <div class="airow"><span class="aitag common">読み方</span><div class="aitx">数字は単独では意味を持ちません。会費は繰越金や積立金と、予算規模は家庭数とセットで見てください。会費は基本的に据え置く前提で、支出・繰越・積立の使い方の違いを比較しています。</div></div>
+   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。特別委員会費・イベント費は学校ごとに科目名がバラバラなため、それぞれ「その他委員会活動費」「フェスタ／イベント／サマー／夏祭を含む科目」をまとめて計算しています。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます。</div>
  </div>`;
  h+=METRICS.map(metricCard).join('');
  return h;
