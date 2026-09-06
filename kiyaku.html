@@ -249,7 +249,7 @@ table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
 .part{font-size:12px;color:var(--ink2);font-weight:600}
 .phd{font-size:12px;color:var(--ink3)}
 .prole{font-size:11px;color:#a8672a;background:#fbf0e2;border-radius:9px;padding:1px 8px}
-.ptext{font-size:13.5px;line-height:1.85;color:var(--ink2)}
+.ptext{font-size:13.5px;line-height:1.85;color:var(--ink2);white-space:pre-wrap}
 .pgrp{border-radius:11px;padding:9px 12px 4px;margin-bottom:11px;border:1px solid var(--line)}
 .pgrp.kai{background:#f6fbf8;border-color:#dcece4}
 .pgrp.sai{background:#fdf9f3;border-color:#f0e2cd}
@@ -290,7 +290,7 @@ table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
 .diexh{font-size:11.5px;color:var(--ink3);margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .direc{font-size:10.5px;color:#2f7a62;background:#e6efe9;border-radius:6px;padding:1px 7px}
 .diex2{font-size:10.5px;color:var(--ink3);background:#efeade;border-radius:6px;padding:1px 7px}
-.diext{font-size:12.5px;line-height:1.9}
+.diext{font-size:12.5px;line-height:1.9;white-space:pre-wrap}
 .dinote{font-size:11.5px;color:#8a7a5c;background:#fbf7ee;border-radius:7px;padding:7px 10px;margin-top:7px}
 .dicmp{margin-top:8px;display:flex;flex-direction:column;gap:5px}
 .dicmp1{display:flex;align-items:center;gap:8px;font-size:12.5px;background:#faf8f3;border-radius:8px;padding:8px 11px}
@@ -322,7 +322,7 @@ table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
 .hart{font-family:"Zen Maru Gothic";font-size:12.5px;font-weight:700;color:var(--ink2)}
 .hsrc{font-size:11.5px;color:var(--ink3);margin-left:auto}
 .hnew{font-size:11px;color:#8a6d2f;background:#fbf3e2;border-radius:6px;padding:2px 8px;margin-left:auto}
-.hbody{font-size:14px;line-height:2.05;margin-top:9px;background:#fbfaf6;border-left:3px solid var(--line2);border-radius:0 9px 9px 0;padding:13px 15px}
+.hbody{font-size:14px;line-height:2.05;margin-top:9px;background:#fbfaf6;border-left:3px solid var(--line2);border-radius:0 9px 9px 0;padding:13px 15px;white-space:pre-wrap}
 </style></head>
 <body>
 <div class="hd"><div class="hd-in">
@@ -503,7 +503,7 @@ function submittedCount(tp){const set=new Set();tp.stances.forEach(s=>s.schools.
 
 /* ============ 描画 ============ */
 function renderNav(){
- const items=[['all','すべての定め'],['dia','うちの学校を診断'],['yoi','よい条文'],['hina','ひな形'],['pdf','会則・細則PDF'],['status','提出状況']];
+ const items=[['all','すべての定め'],['dia','他校と比較'],['yoi','注目の条文'],['hina','ひな形'],['pdf','会則・細則PDF'],['status','提出状況']];
  document.getElementById('nav').innerHTML=items.map(([v,l])=>`<button class="navbtn ${ST.tab===v?'on':''}" onclick="setTab('${v}')">${l}</button>`).join('');
  const sel=document.getElementById('axisSel');
  sel.innerHTML=SUBMITTED.map(s=>`<option value="${s.id}" ${s.id===ST.axis?'selected':''}>${esc(s.sname)}</option>`).join('');
@@ -978,7 +978,7 @@ function viewDia(){
  let h=`<div class="hero"><h2>${esc(A.name)}の会則・細則を、9校の中に置いてみる</h2>
   <p class="lead">いま選んでいる<b>${esc(A.sname)}</b>について、
   「他校にあって自校にない定め」「自校だけの定め」「多数派と違う書き方をしている定め」を並べました。
-  右上の目線を変えると、別の学校の診断になります。</p>
+  右上の目線を変えると、別の学校との比較になります。</p>
   <div class="statrow">
    <div class="stat hl"><b>${d.lack.length}</b><span>ない定め</span></div>
    <div class="stat"><b>${d.diff.length}</b><span>多数派と違う</span></div>
@@ -1014,7 +1014,7 @@ function viewDia(){
      .map(x=>{const s=SMAP[x];return s?`<span class="bdg" title="${esc(s.name)}">${esc(s.badge)}</span>`:''}).join('');
    return itemLine(t,`<div class="dichips">定めている学校：${chips}</div>`
      +(p?`<div class="diex"><div class="diexh">${esc(SMAP[p.id]?SMAP[p.id].name:'')}　${esc(p.doc)}　${esc(p.art)}
-          ${rec.length&&p.id===rec[0].sid&&p.art===rec[0].art?`<span class="direc">よい条文で推薦</span>`:`<span class="diex2">他校の書き方の一例</span>`}</div>
+          ${rec.length&&p.id===rec[0].sid&&p.art===rec[0].art?`<span class="direc">注目の条文で紹介</span>`:`<span class="diex2">他校の書き方の一例</span>`}</div>
           <div class="diext">${esc(p.text)}</div></div>`:''));
  }).join('');
 
@@ -1055,7 +1055,7 @@ function viewDia(){
  return h;
 }
 
-/* ---------------- よい条文 ---------------- */
+/* ---------------- 注目の条文 ---------------- */
 const YST={ax:'',q:'',open:{}};
 function setYax(v){YST.ax=v;render()}
 function setYq(v){YST.q=v;renderY(true)}
@@ -1077,12 +1077,12 @@ function viewYoi(){
   <b>負担が軽い</b>（引き受ける人の負担を実際に減らしている）の3つの軸で選びました。
   それぞれ「なぜ良いか」と「どう使うか」を添えています。条文はそのまま持ち帰れます。</p>
   <div class="statrow">
-   <div class="stat"><b>${YOI.length}</b><span>推薦した条文</span></div>
+   <div class="stat"><b>${YOI.length}</b><span>集めた条文</span></div>
    ${YAX.map(a=>`<div class="stat"><b>${YOI.filter(y=>y.ax===a.name).length}</b><span>${esc(a.name)}</span></div>`).join('')}
    <div class="stat hl"><b>${mine.length}</b><span>${esc(A.sname)}の条文</span></div>
   </div></div>`;
- if(mine.length) h+=`<div class="aibox"><div class="aih">${I.spark} ${esc(A.sname)}の条文が推薦に入っています</div>
-   <div class="airow"><span class="aitag uniq">推薦</span><div class="aitx">${esc(mine.map(y=>y.title).join('／'))}</div></div></div>`;
+ if(mine.length) h+=`<div class="aibox"><div class="aih">${I.spark} ${esc(A.sname)}の条文が入っています</div>
+   <div class="airow"><span class="aitag uniq">注目</span><div class="aitx">${esc(mine.map(y=>y.title).join('／'))}</div></div></div>`;
  h+=`<div class="allbar">
    <input id="yq" class="allq" type="search" placeholder="条文の中を検索（例：委任状、免除、返金）" value="${esc(YST.q)}" oninput="setYq(this.value)">
    <div class="chips"><button class="chip ${!YST.ax?'on':''}" onclick="setYax('')">すべて</button>`
