@@ -305,7 +305,8 @@ function buildFin(fin){
   FIN[id]=FIN[id]||{}; FIN[id][y]=FIN[id][y]||{};
   const rec={yosan:N(r['予算額']),kessan:N(r['決算額']),note:S(r['摘要']),kbn:S(r['区分']),dai:S(r['大科目'])};
   (FIN[id][y][k]=FIN[id][y][k]||[]).push(rec);
-  if(rec.kbn==='積立'){TSUMI[id]=(TSUMI[id]||0)+(rec.kessan||0)}
+  /* 積立金の残高は名寄せ科目『積立金現在額』の行だけを拾う（毎年の積立額と混ざらないように） */
+  if(k==='積立金現在額'&&y==='R8'){TSUMI[id]=(TSUMI[id]||0)+(rec.yosan!=null?rec.yosan:(rec.kessan||0))}
  });
 }
 /* 集計値（＝収入合計・予備費など）は「名寄せ科目」明細と二重計上しないよう、
@@ -332,9 +333,13 @@ const carryover=(id,y)=>{const a=yosan(id,y,'前年度繰越金');return a!=null
      元気がひとつずつ判断したもので、確定的な確認ではなく推定を含みます
    ・積立金の現在額（tsumitate）は、各校の積立金台帳・決算書に記載された
      最新の残高で、基準日は学校ごとに異なります（学校ごとの注記参照）
-   ・スナップショット：2026-09時点。集計元の予算・決算資料が更新された
-     場合は、このオブジェクトを作り直してください（06_会計_元数値には
-     まだ反映されていません）
+   ・私市小（kis）の積立金現在額のみ、予算書・決算書の原本には残高の記載が
+     見当たらず、交野市PTA協議会「実態共有ボード」の回答（周年記念行事積立金
+     残高＝R7会計報告時点）を出典としています。他校とは出典が異なる点に注意
+   ・このオブジェクトは「06_会計_元数値」にまだ同等の行が無かった時点の
+     暫定値です。同シートに「広報委員会費」「積立金現在額」等の名寄せ科目で
+     行が追加された後は、下のCALCがシート側の値を優先して使い、このオブジェクトは
+     シートに値が無い場合だけのフォールバックになります（値の二重管理を避けるため）
    ============================================================ */
 const KYOUTSUU={
  mir:{koho:30000,  gakunen:null,   chiku:150000, sonota:null,   teirei:800000, tanpatsu:30000,  gakko:null,   jido:450000, tsumitate:null},
@@ -345,34 +350,54 @@ const KYOUTSUU={
  aki:{koho:5000,   gakunen:null,   chiku:26000,  sonota:33000,  teirei:245000, tanpatsu:600000, gakko:null,   jido:null,   tsumitate:679430},
  hsi:{koho:null,   gakunen:null,   chiku:null,   sonota:135000, teirei:220000, tanpatsu:150000, gakko:null,   jido:null,   tsumitate:450498},
  iwa:{koho:45000,  gakunen:83000,  chiku:80520,  sonota:3000,   teirei:70000,  tanpatsu:400000, gakko:null,   jido:105000, tsumitate:864000},
- kis:{koho:0,      gakunen:192500, chiku:154000, sonota:null,   teirei:null,   tanpatsu:null,   gakko:96250,  jido:null,   tsumitate:null},
+ kis:{koho:0,      gakunen:192500, chiku:154000, sonota:null,   teirei:null,   tanpatsu:null,   gakko:96250,  jido:null,   tsumitate:1121244},
  fuj:{koho:null,   gakunen:194000, chiku:13500,  sonota:330,    teirei:null,   tanpatsu:3000,   gakko:null,   jido:440000, tsumitate:2018321},
 };
 const kv=(id,key)=>{const o=KYOUTSUU[id]; if(!o)return null; const v=o[key]; return v==null?null:v};
 
+/* 積立金の現在額：06_会計_元数値の「積立金現在額」を優先し、無ければHTML内の暫定値 */
+const tsumitate=id=>{const v=yosan(id,'R8','積立金現在額'); return v!=null?v:kv(id,'tsumitate')};
+/* 06_会計_元数値に名寄せ科目の行がある学校はシートの値を使い、
+   まだ無い学校だけ KYOUTSUU（HTML内の暫定値）で補う */
+const sheetFirst=(id,nayose,key)=>{const v=yosan(id,'R8',nayose); return v!=null?v:kv(id,key)};
+
 const CALC={
  M01:s=>s.fee,
  M02:s=>yosan(s.id,'R8','＝支出合計'),
+ M03:s=>{const a=CALC.M02(s);return (a!=null&&s.homes)?Math.round(a/s.homes):null},
  M04:s=>{const a=CALC.M02(s),y=yosan(s.id,'R8','予備費');return (a!=null&&y!=null&&s.homes)?Math.round((a-y)/s.homes):null},
- M05:s=>carryover(s.id,'R8'),
+ M05:s=>{const k=carryover(s.id,'R8'),t=yosan(s.id,'R8','＝収入合計');return (k!=null&&t)?k/t*100:null},
+ M06:s=>{const y=yosan(s.id,'R8','予備費'),a=CALC.M02(s);return (y!=null&&a)?y/a*100:null},
+ M07:s=>{const k=kessan(s.id,'R7','＝支出合計'),b=yosan(s.id,'R7','＝当初予算額');return (k!=null&&b)?k/b*100:null},
+ M08:s=>{const k=carryover(s.id,'R8'),t=tsumitate(s.id);return (k!=null&&s.homes)?Math.round((k+(t||0))/s.homes):null},
+ M09:s=>{const m=CALC.M08(s);return (m!=null&&s.fee)?m/s.fee:null},
  B01:s=>s.feeIncome,
  B02:s=>carryover(s.id,'R8'),
- B03:s=>kv(s.id,'tsumitate'),
- B04:s=>kv(s.id,'koho'),
- B05:s=>kv(s.id,'gakunen'),
- B06:s=>kv(s.id,'chiku'),
- B07:s=>kv(s.id,'sonota'),
- B08:s=>kv(s.id,'teirei'),
- B09:s=>kv(s.id,'tanpatsu'),
- B10:s=>kv(s.id,'gakko'),
- B11:s=>kv(s.id,'jido'),
+ B03:s=>tsumitate(s.id),
+ B04:s=>sheetFirst(s.id,'広報委員会費','koho'),
+ B05:s=>sheetFirst(s.id,'学年委員会費','gakunen'),
+ B06:s=>sheetFirst(s.id,'地区活動費','chiku'),
+ B07:s=>sheetFirst(s.id,'その他委員会活動費','sonota'),
+ B08:s=>sheetFirst(s.id,'定例イベント費','teirei'),
+ B09:s=>sheetFirst(s.id,'単発イベント費','tanpatsu'),
+ B10:s=>sheetFirst(s.id,'学校寄贈費','gakko'),
+ B11:s=>sheetFirst(s.id,'児童生徒寄贈費','jido'),
 };
-const UNIT={M01:'yen',M02:'yen',M04:'yen',M05:'yen',
+/* 単位は 07_会計_指標定義 の「単位」列から決める。列が空のときだけ下の既定値を使う */
+const UNIT={M01:'yen',M02:'yen',M03:'yen',M04:'yen',M05:'pct',M06:'pct',M07:'pct',M08:'yen',M09:'year',
  B01:'yen',B02:'yen',B03:'yen',B04:'yen',B05:'yen',B06:'yen',B07:'yen',B08:'yen',B09:'yen',B10:'yen',B11:'yen'};
+function unitOf(mid,raw){
+ const u=S(raw);
+ if(u.indexOf('%')>=0)return 'pct';
+ if(u.indexOf('円')>=0)return 'yen';
+ if(u.indexOf('年')>=0)return 'year';
+ if(u.indexOf('項目')>=0)return 'item';
+ return UNIT[mid]||'yen';
+}
 
-/* この板だけで追加している指標（07_会計_指標定義には未登録）。
-   公開されているスプレッドシートの指標定義に手を入れられないため、
-   ここに直接まとめている。数字はすべて KYOUTSUU／01_学校マスタ 由来。 */
+/* 07_会計_指標定義 にまだ B01〜B11 の行が無い場合のフォールバック定義。
+   シート側に同じ指標IDの行があれば、そちらの表示名・解説・単位が優先され、
+   ここの定義は使われない（値の二重管理を避けるため）。 */
 const BOARD_METRICS_DEF=[
  {id:'B01',title:'会費収入（学校全体・年額）',
   how:'01_学校マスタ の 会費収入_R8予算',
@@ -418,10 +443,11 @@ function buildMetrics(def){
     const v=CALC[mid](s); if(v!=null) vals[s.id]=v;
     if(mid==='M04') notes[s.id]=s.how;
    });
-   return {id:mid,ch:S(r['表示名']).slice(0,0)||'',title:S(r['表示名']),unit:UNIT[mid]||'yen',
+   return {id:mid,ch:S(r['表示名']).slice(0,0)||'',title:S(r['表示名']),unit:unitOf(mid,r['単位']),
            how:S(r['計算のしかた']),ai:S(r['解説']),vals,notes};
   }).filter(m=>Object.keys(m.vals).length>=2);
- const fromBoard=BOARD_METRICS_DEF.map(b=>{
+ const done={}; fromSheet.forEach(m=>done[m.id]=1);
+ const fromBoard=BOARD_METRICS_DEF.filter(b=>!done[b.id]).map(b=>{
    const vals={};
    SUBMITTED.forEach(s=>{const v=CALC[b.id](s); if(v!=null) vals[s.id]=v});
    return {id:b.id,ch:'',title:b.title,unit:UNIT[b.id]||'yen',how:b.how,ai:b.ai,vals,notes:{}};
@@ -555,7 +581,7 @@ function viewMoney(){
    <div class="airow"><span class="aitag uniq">市内で最も大きい</span><div class="aitx">${highs.length?`<b>${esc(highs.join('／'))}</b>。理由を説明できるなら強み、できないなら見直しの入口です。`:'市内で最大の項目はありません。'}</div></div>
    <div class="airow"><span class="aitag mix">市内で最も小さい</span><div class="aitx">${lows.length?`<b>${esc(lows.join('／'))}</b>。少なくて回っているなら、他校が省ける根拠になります。`:'市内で最小の項目はありません。'}</div></div>
    <div class="airow"><span class="aitag common">読み方</span><div class="aitx">数字は単独では意味を持ちません。会費は繰越金や積立金と、予算規模は家庭数とセットで見てください。会費は基本的に据え置く前提で、支出・繰越・積立の使い方の違いを比較しています。</div></div>
-   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。定例イベント費・単発イベント費・委員会活動費の内訳・寄贈費などの分類は、各校の予算科目の中身（摘要）を踏まえてこちらで判断したものです。推定を含んでおり、機械的な名寄せや第三者による確認を経た数字ではありません。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます。</div>
+   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。定例イベント費・単発イベント費・委員会活動費の内訳・寄贈費などの分類は、各校の予算科目の中身（摘要）を踏まえてこちらで判断したものです。推定を含んでおり、機械的な名寄せや第三者による確認を経た数字ではありません。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます（一部の新指標はスプレッドシートに未反映の間だけHTML内の暫定値で補っています）。</div>
  </div>`;
  h+=closeupHTML();
  h+=METRICS.map(metricCard).join('');
