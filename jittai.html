@@ -493,7 +493,7 @@ function catColor(cat){
    EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
    実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
    食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
-const APP_VERSION='2.5';
+const APP_VERSION='2.6';
 const EXPECT_GAS='09';
 let GAS_VERSION=null;
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
@@ -1540,7 +1540,7 @@ function repBodyGroups(q,ent){
 // 数値は「同じ値の学校」をひとつにまとめ、選択式カードと同じ見た目（バー＋校数＋校名チップ）で出す。
 function repBodyNumeric(q,ent){
   const isPct=isPercentQ(q.id),pf=isPct?pctNum:pnum;
-  const fmt=n=>isPct?fmtPct(Math.round(n*10)/10):(Math.round(n).toLocaleString()+(q.unit||''));
+  const fmt=n=>isPct?fmtPct(Math.round(n*10)/10):(fmtMan(Math.round(n))+(q.unit||''));
   const nums=ent.map(e=>Object.assign({},e,{num:pf(e.v)})).filter(e=>e.num!=null);
   const rest=ent.filter(e=>pf(e.v)==null);
   if(!nums.length)return repBodyText(q,ent);
