@@ -405,9 +405,11 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
 .ropt-h{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
 .ropt-l{flex:1;font-size:13.5px;font-weight:500;word-break:break-word}
 .ropt-n{font-size:11.5px;color:var(--ink2);white-space:nowrap}
+.ropt-h2{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.ropt-h2 .ropt-h{margin-bottom:0}
 .ropt-bar{height:8px;border-radius:5px;background:var(--paper);border:1px solid var(--line);overflow:hidden;margin-bottom:7px}
 .ropt-bar i{display:block;height:100%}
-.ropt-chips{display:flex;gap:5px;flex-wrap:wrap}
+.ropt-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1 1 140px;min-width:140px}
 .rnum{display:flex;align-items:center;gap:8px;padding:3px 0}
 .rn-bar{flex:1;height:16px;background:var(--paper);border:1px solid var(--line);border-radius:5px;overflow:hidden;min-width:40px}
 .rn-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--navy2),var(--navy))}
@@ -493,7 +495,7 @@ function catColor(cat){
    EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
    実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
    食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
-const APP_VERSION='2.6';
+const APP_VERSION='2.7';
 const EXPECT_GAS='09';
 let GAS_VERSION=null;
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
@@ -1094,13 +1096,26 @@ function viewError(){
   return '<div style="max-width:520px;margin:40px auto;text-align:center;padding:0 16px"><div style="font-size:44px;margin-bottom:14px">📡</div><h2 style="font-family:\'Zen Maru Gothic\';font-size:20px;color:var(--ink);margin-bottom:10px">データを読み込めませんでした</h2><p class="muted" style="margin-bottom:6px">'+esc(msg)+'</p><p class="tiny muted" style="margin-bottom:14px">スプレッドシート（GAS）との通信に問題がある可能性があります。少し待ってから再読み込みしてください。</p><div style="background:var(--amber-soft);border:1px solid #f0d9b5;border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:12.5px;color:var(--amber-d)">⚠️ 管理者（'+esc(ERROR_NOTIFY_EMAIL)+'）へ自動でエラー通知を送信しました。<br>解消しない場合は管理者へご連絡ください。</div><button class="btn pri" onclick="reloadData()">'+I.spark+' 再読み込み</button> <button class="btn" onclick="showDiag()">🔍 接続診断</button></div>';
 }
 function viewLoading(){return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:20px"><div style="position:relative;width:56px;height:56px"><div style="position:absolute;inset:0;border-radius:50%;border:4px solid var(--amber-soft)"></div><div style="position:absolute;inset:0;border-radius:50%;border:4px solid transparent;border-top-color:var(--amber);animation:sp .8s linear infinite"></div></div><div style="font-family:\'Zen Maru Gothic\';font-size:16px;color:var(--ink2);font-weight:500">最新情報を取得しています...</div><div style="font-size:13px;color:var(--ink3)">スプレッドシートからデータを読み込み中</div></div>';}
+function fiscalYearStartTs(yid){
+  const m=/^R(\d+)$/.exec(yid);
+  if(!m)return 0;
+  const calYear=2018+parseInt(m[1],10); // 令和1年=2019年
+  return new Date(calYear,3,1,0,0,0,0).getTime(); // 4月1日始まり
+}
+function isAddedThisFiscalYear(q){
+  const t=Number(q.createdAt);
+  if(!isFinite(t)||t<1e12)return false; // 並び順として手入力された小さい数値は対象外（実際の追加日時のみ対象）
+  return t>=fiscalYearStartTs(ST.year);
+}
 function viewHome(){
   const tq=ST.questions.length;const fills=SCHOOLS.map(s=>schoolCount(s.id));const totalAns=fills.reduce((a,b)=>a+b,0);const maxA=SCHOOLS.reduce((a,s)=>a+schoolQuestions(s.id).length,0);const rate=maxA?Math.round(totalAns*100/maxA):0;
   const recent=[...ST.questions].sort((a,b)=>b.createdAt-a.createdAt).slice(0,3);const NEW=Date.now()-7*864e5;
   const need=ST.questions.map(q=>({q,u:unanswered(q.id).length,n:targetSchools(q.id).length})).filter(x=>x.u>0&&x.u<x.n).sort((a,b)=>b.u-a.u).slice(0,4);
   const todo=ST.questions.filter(q=>{const c=qCounts(q.id);return c.blank===c.n}).length;const blocks=[...new Set(SCHOOLS.map(s=>s.block))];
+  const urgent=ST.questions.filter(q=>isAddedThisFiscalYear(q)&&unanswered(q.id).length>0);
   return `<div class="hero"><h2 style="margin-bottom:8px">${YEARS.find(y=>y.id===ST.year).label} の回答状況</h2><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><span class="syncpill ${USE_API?'':'syncoff'}"><span class="syncdot"></span>${USE_API?'みんなで共有中':'プレビュー（保存なし）'}</span>${USE_API?`<button class="btn sm" onclick="reloadData()">${I.spark} 最新を取得</button><button class="btn sm" onclick="showDiag()" title="GAS接続診断" style="padding:5px 9px">🔍</button>`:''}</div><p class="muted tiny">学校カードを選ぶと、自校の概要・他校との違い・回答ができます。</p>
     <div class="statgrid"><div class="stat"><b>${SCHOOLS.length}</b><span>参加校</span></div><div class="stat"><b>${tq}</b><span>質問項目</span></div><div class="stat"><b>${cats().length}</b><span>カテゴリ</span></div><div class="stat"><b>${rate}%</b><span>全体回答率</span></div><div class="stat"><b>${todo}</b><span>未着手</span></div></div></div>
+    ${urgent.length?`<div class="alert" style="margin-bottom:16px"><div class="at">${I.bell} 至急のご回答をお願いします</div><p style="margin:0 0 10px;font-size:13.5px;line-height:1.85">現役の他校の役員さんから質問がきています。<br><b>可及的速やかに</b>、ご回答のご協力をお願いします！<br><span class="tiny muted">（そのほかの質問は、年度末頃の回答でも結構です♪）</span></p><div class="chips">${urgent.map(q=>`<span class="chip warn" onclick="openQ('${q.id}')">${esc(q.text.length>20?q.text.slice(0,20)+'…':q.text)}</span>`).join('')}</div></div>`:''}
     <div class="card"><div class="sec-h"><span class="ic">${I.home}</span>学校を選ぶ（自校の概要・他校との違い）</div>
     ${blocks.map(b=>`<div class="blockh">${esc(b)}</div><div class="schoolgrid">${SCHOOLS.filter(s=>s.block===b).map(s=>{const f=schoolCount(s.id);const tqs=schoolQuestions(s.id).length;const pc=tqs?Math.round(f*100/tqs):0;const un=tqs-f;const scc=schoolCounts(s.id);return `<div class="scard" onclick="openSchool('${s.id}')"><span class="goarrow">${I.back}</span><div class="nm">${esc(s.name)}</div><div class="pc">${pc}%</div><div class="pbar" style="margin-top:6px"><i style="width:${pc}%"></i></div><div class="ct">${un>0?`${todoLabel(scc.car,scc.blank)} →`:'全項目回答済み ✓'}</div></div>`}).join('')}</div>`).join('')}</div>
     <div style="height:16px"></div>
@@ -1532,9 +1547,9 @@ function repBodyGroups(q,ent){
   const mx=Math.max(1,...gs.map(g=>g.members.length));
   return gs.map((g,i)=>{
     const col=GCOL[i%GCOL.length];
-    return `<div class="ropt"><div class="ropt-h"><span class="ropt-l">${esc(g.label)}</span><span class="ropt-n">${g.members.length}校</span></div>`+
-      `<div class="ropt-bar"><i style="width:${Math.max(4,Math.round(g.members.length/mx*100))}%;background:${col}"></i></div>`+
-      `<div class="ropt-chips">${g.members.map(m=>schChip(m.id,{carried:m.carried})).join('')}</div>${repNotes(g.members)}</div>`;
+    return `<div class="ropt"><div class="ropt-h2"><div class="ropt-h"><span class="ropt-l">${esc(g.label)}</span><span class="ropt-n">${g.members.length}校</span></div>`+
+      `<div class="ropt-chips">${g.members.map(m=>schChip(m.id,{carried:m.carried})).join('')}</div></div>`+
+      `<div class="ropt-bar"><i style="width:${Math.max(4,Math.round(g.members.length/mx*100))}%;background:${col}"></i></div>${repNotes(g.members)}</div>`;
   }).join('');
 }
 // 数値は「同じ値の学校」をひとつにまとめ、選択式カードと同じ見た目（バー＋校数＋校名チップ）で出す。
@@ -1554,9 +1569,9 @@ function repBodyNumeric(q,ent){
   const mid=sorted.length%2?sorted[(sorted.length-1)/2]:(sorted[sorted.length/2-1]+sorted[sorted.length/2])/2;
   const rows=groups.map((g,i)=>{
     const col=GCOL[i%GCOL.length];
-    return `<div class="ropt"><div class="ropt-h"><span class="ropt-l">${esc(g.label)}</span><span class="ropt-n">${g.members.length}校</span></div>`+
-      `<div class="ropt-bar"><i style="width:${Math.max(4,Math.round(g.num/mx*100))}%;background:${col}"></i></div>`+
-      `<div class="ropt-chips">${g.members.map(m=>schChip(m.id,{carried:m.carried})).join('')}</div></div>`;
+    return `<div class="ropt"><div class="ropt-h2"><div class="ropt-h"><span class="ropt-l">${esc(g.label)}</span><span class="ropt-n">${g.members.length}校</span></div>`+
+      `<div class="ropt-chips">${g.members.map(m=>schChip(m.id,{carried:m.carried})).join('')}</div></div>`+
+      `<div class="ropt-bar"><i style="width:${Math.max(4,Math.round(g.num/mx*100))}%;background:${col}"></i></div></div>`;
   }).join('');
   const other=rest.length?`<div class="rc-un">数値以外の回答：${rest.map(e=>schChip(e.id,{carried:e.carried})+'<span class="legnm">'+esc(e.v)+'</span>').join(' ')}</div>`:'';
   const notes=repNotes(ent);
