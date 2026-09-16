@@ -718,8 +718,8 @@ function pdfCard(sc){
 }
 
 /* ---- 提出状況 ---- */
-const DOCKINDS=['会則','細則等','決算書','決算明細','予算書','総会資料','事業計画','事業報告','その他'];
-const KIND_NEED={'会則':1,'細則等':1,'決算書':1,'予算書':1,'総会資料':1};
+const DOCKINDS=['決算書','決算明細','予算書','総会資料','事業計画','事業報告','その他'];
+const KIND_NEED={'決算書':1,'予算書':1,'総会資料':1};
 function ledgerBySchool(){
  const m={}; SCHOOLS.forEach(s=>m[s.id]={});
  LEDGER.forEach(r=>{const id=CODE2ID[S(r['校コード'])];if(!id||!m[id])return;
@@ -735,7 +735,7 @@ function viewStatus(){
   if(!real.length) missing.push([s,k+(a.length?'（参考資料のみ）':'')]);
  }));
  let h=`<div class="hero"><h2>だれが何を出していて、何が足りないか</h2>
-  <p class="lead">「02_ファイル台帳」から作っています。必須は<b>会則・細則等・決算書・予算書・総会資料</b>の5点としています。</p>
+  <p class="lead">「02_ファイル台帳」から作っています。必須は<b>決算書・予算書・総会資料</b>の3点としています。</p>
   <div class="statrow">
    <div class="stat"><b>${SUBMITTED.length}</b><span>提出のあった学校</span></div>
    <div class="stat"><b>${files}</b><span>登録ファイル数</span></div>
