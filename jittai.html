@@ -19,7 +19,7 @@
   https://script.google.com/macros/s/AKfycbwHHo_hU66Wcs0rEyCOPchFwG4kNJaNQG6Vbw3tGDlRTDY_SQHcOS8IdUNFMbSNj9ll/exec
   ↑ 下の方にある定数 API_URL と同じ値です。GASを別のプロジェクトに
   作り直した場合は、両方を新しいデプロイURLに書き換えてください。
-  このHTMLが前提としているGAS側のバージョン（EXPECT_GAS）は "09" です。
+  このHTMLが前提としているGAS側のバージョン（EXPECT_GAS）は "10" です。
 
 【ファイル構成】
   ・このファイル（board.html）　　　　… 画面表示・入力・集計ロジック一式
@@ -499,8 +499,8 @@ function catColor(cat){
    EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
    実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
    食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
-const APP_VERSION='2.7';
-const EXPECT_GAS='09';
+const APP_VERSION='2.8';
+const EXPECT_GAS='10';
 let GAS_VERSION=null;
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
 const TYPELABEL={numeric:'数値',categorical:'選択式',multi:'複数選択式',text:'記述',list:'一覧',contact:'連絡先',empty:'未回答'};
@@ -522,6 +522,21 @@ const USE_API=!!API_URL;
 let MEM={};const HASSTORE=!!(window.storage&&window.storage.get);
 async function gas(action,payload){const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action:action},payload||{}))});return r.json()}
 async function gasGet(params){const u=API_URL+(API_URL.indexOf('?')>=0?'&':'?')+new URLSearchParams(params).toString();const r=await fetch(u);return r.json()}
+// gasGetの失敗（通信エラー／GAS側のエラー応答）を、ユーザーに見せる前に自動で1回だけ拾い直す。
+// 「たまにエラーになるが、再読み込みすると直る」という不安定さの多くはここで吸収する。
+async function gasGetRetry(params){
+  let lastErr=null;
+  for(let i=0;i<2;i++){
+    try{
+      const d=await gasGet(params);
+      if(d&&d.ok)return d;
+      lastErr=d;
+    }catch(e){lastErr=e}
+    if(i===0)await new Promise(r=>setTimeout(r,900));
+  }
+  if(lastErr instanceof Error)throw lastErr;
+  return lastErr;
+}
 async function sGet(k){if(USE_API){try{const r=await gasGet({action:'getKV',key:k});return (r&&r.ok)?(r.value==null?null:r.value):null}catch(e){return null}}if(HASSTORE){try{const r=await window.storage.get(k,true);return r?JSON.parse(r.value):null}catch(e){return null}}return MEM[k]!==undefined?MEM[k]:null}
 async function sSet(k,v){if(USE_API){try{await gas('setKV',{key:k,value:v});return true}catch(e){return false}}if(HASSTORE){try{const r=await window.storage.set(k,JSON.stringify(v),true);return !!r}catch(e){console.error(e);return false}}MEM[k]=v;return true}
 async function reloadData(){ST.loading=true;render();await loadYear();ST.loading=false;render();toast('最新の回答を取得しました')}
@@ -743,8 +758,14 @@ async function seedIfNeeded(){
 async function loadYear(){
   if(USE_API){
     ST.loadError=null;
+    ST.prevYear=prevYearOf(ST.year);
     try{
-      const d=await gasGet({action:'get',year:ST.year});
+      // 今年度と前年度を並列取得（直列だと単純に2倍待つことになるため）。
+      // 前年度側はあくまで補助情報なので、失敗しても今年度の表示は止めない。
+      const [d,pd]=await Promise.all([
+        gasGetRetry({action:'get',year:ST.year}),
+        ST.prevYear?gasGetRetry({action:'get',year:ST.prevYear}).catch(()=>null):Promise.resolve(null)
+      ]);
       if(d&&d.ok){
         if(d.gasVersion!=null)GAS_VERSION=String(d.gasVersion);
         restoreMode();
@@ -752,10 +773,7 @@ async function loadYear(){
         ST.questions=ST.allQuestions.filter(q=>!q.hidden);
         ST.answers=d.answers||{};
         if(d.allYears&&d.allYears.length)buildYears(d.allYears);
-        // 前年度の回答も取得（更新待ち表示・他校比較の引き継ぎ用）
-        ST.prevYear=prevYearOf(ST.year);
-        if(ST.prevYear){try{const pd=await gasGet({action:'get',year:ST.prevYear});ST.prevAnswers=(pd&&pd.ok&&pd.answers)?pd.answers:{};}catch(_){ST.prevAnswers={};}}
-        else ST.prevAnswers={};
+        ST.prevAnswers=(pd&&pd.ok&&pd.answers)?pd.answers:{};
       }else{
         ST.questions=[];ST.answers={};
         ST.loadError='GASエラー: '+((d&&d.error)||'不明');
