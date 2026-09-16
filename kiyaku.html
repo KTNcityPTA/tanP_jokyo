@@ -323,9 +323,13 @@ table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
 .hsrc{font-size:11.5px;color:var(--ink3);margin-left:auto}
 .hnew{font-size:11px;color:#8a6d2f;background:#fbf3e2;border-radius:6px;padding:2px 8px;margin-left:auto}
 .hbody{font-size:14px;line-height:2.05;margin-top:9px;background:#fbfaf6;border-left:3px solid var(--line2);border-radius:0 9px 9px 0;padding:13px 15px;white-space:pre-wrap}
+.homebtn{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;text-decoration:none;transition:.15s}
+.homebtn:hover{background:rgba(255,255,255,.30);transform:translateY(-1px)}
+.homebtn:active{transform:translateY(0)}
+.homebtn svg{display:block}
 </style></head>
 <body>
-<div class="hd"><div class="hd-in">
+<div class="hd"><div class="hd-in"><a class="homebtn" href="index.html" title="３枚のボード一覧へ戻る" aria-label="ボード一覧へ戻る"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></a>
  <div class="logo"><span class="mk mincho">約</span><span>交野市PTA 会則・細則 くらべる板<span class="sub"> ／ 単Pの見直しをらくにする</span></span></div>
  <div class="axiswrap"><span class="al">目線</span><select class="axissel" id="axisSel" onchange="setAxis(this.value)"></select></div>
 </div>
