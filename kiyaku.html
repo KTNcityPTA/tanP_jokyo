@@ -612,8 +612,8 @@ function topicCard(tp,i){
 function gotoSaisoku(){ST.tab='saisoku';ST.expanded={};render();window.scrollTo(0,0);toast('細則タブに移動しました')}
 
 /* ---- PDF一覧 ---- */
-const DOCKINDS=['会則','細則等','決算書','決算明細','予算書','総会資料','事業計画','事業報告','その他'];
-const KIND_NEED={'会則':1,'細則等':1,'決算書':1,'予算書':1,'総会資料':1};  // 1=必須
+const DOCKINDS=['会則','細則等'];
+const KIND_NEED={'会則':1,'細則等':1};  // 1=必須
 function ledgerBySchool(){
  const m={}; SCHOOLS.forEach(s=>m[s.id]={});
  LEDGER.forEach(r=>{
@@ -635,7 +635,7 @@ function viewStatus(){
   });
  });
  let h=`<div class="hero"><h2>だれが何を出していて、何が足りないか</h2>
-  <p class="lead">スプレッドシートの「02_ファイル台帳」から作っています。ファイルを追加したら、台帳に行を足すだけでこの表に反映されます。必須は<b>会則・細則等・決算書・予算書・総会資料</b>の5点としています。</p>
+  <p class="lead">スプレッドシートの「02_ファイル台帳」から作っています。ファイルを追加したら、台帳に行を足すだけでこの表に反映されます。必須は<b>会則・細則等</b>の2点としています。</p>
   <div class="statrow">
    <div class="stat"><b>${SUBMITTED.length}</b><span>提出のあった学校</span></div>
    <div class="stat"><b>${files}</b><span>登録ファイル数</span></div>
