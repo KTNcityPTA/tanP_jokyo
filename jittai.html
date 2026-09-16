@@ -447,9 +447,13 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--ink2);margin:0
   body.printrep .rc-t{font-size:10.5pt}
   body.printrep .sch1.me{background:#fff !important;color:#000 !important;border:.8pt solid #000 !important;font-weight:700}
 }
+.homebtn{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;text-decoration:none;transition:.15s}
+.homebtn:hover{background:rgba(255,255,255,.30);transform:translateY(-1px)}
+.homebtn:active{transform:translateY(0)}
+.homebtn svg{display:block}
 </style></head>
 <body>
-<div class="hd"><div class="hd-in"><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div class="hd-act"><select class="yearsel" id="mySel" title="自校を選ぶと、くらべる画面で自校が強調表示されます"></select><select class="yearsel" id="yearSel"></select><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button></div></div>
+<div class="hd"><div class="hd-in"><a class="homebtn" href="index.html" title="３枚のボード一覧へ戻る" aria-label="ボード一覧へ戻る"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></a><div class="logo"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>交野市PTA 実態共有ボード</div><div class="hd-act"><select class="yearsel" id="mySel" title="自校を選ぶと、くらべる画面で自校が強調表示されます"></select><select class="yearsel" id="yearSel"></select><button class="modebtn" id="modeBtn" onclick="onModeBtn()"></button></div></div>
 <div id="pvbanner"></div><div class="nav"><div class="nav-in" id="nav"></div></div></div>
 <div class="wrap"><div class="page" id="page"></div></div><div class="toast" id="toast"></div>
 <div class="verfoot" id="verfoot"></div>
