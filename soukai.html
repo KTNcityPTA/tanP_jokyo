@@ -60,7 +60,7 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .seg button{border:none;background:none;font-family:"Zen Maru Gothic";font-size:12.5px;padding:7px 13px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}
 .seg button:last-child{border-right:none}.seg button.on{background:var(--navy);color:#fff}
 /* card */
-.tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;scroll-margin-top:96px}
 .tcard.uniq{border-color:#e7c3b3}
 .tcard-main{padding:15px 18px}
 .tcard-main.tap{cursor:pointer}.tcard-main.tap:hover{background:#fdfbf6}
@@ -193,6 +193,36 @@ h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif}
 .lackline{font-size:12px;color:#a8672a;background:#fdf7ee;border-radius:8px;padding:6px 9px;margin-top:10px}
 .howline{font-size:12px;color:var(--ink3);background:#faf7f1;border-radius:8px;padding:6px 9px;margin:8px 0 10px}
 
+/* ---- 予算を比較タブ：先頭ジャンプナビ／指標カード注記／算出根拠／その他収入一覧／セクション見出し ---- */
+.tocbar{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:16px}
+.tocgh{display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;text-align:left;font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;color:var(--navy);padding:6px 2px;cursor:pointer}
+.tocgh:hover{color:var(--navy2)}
+.tocgh .car{display:inline-block;transition:transform .15s;color:var(--ink3);font-size:13px}
+.tocgh.open .car{transform:rotate(90deg)}
+.tocgh .n{font-size:11.5px;font-weight:500;color:var(--ink3);margin-left:2px}
+.toclist{display:flex;flex-wrap:wrap;gap:6px;padding:2px 2px 6px 22px}
+.toclink{font-size:12px;font-family:"Zen Maru Gothic";color:var(--navy2);background:var(--navy-soft);border-radius:7px;padding:4px 10px;text-decoration:none;white-space:nowrap}
+.toclink:hover{background:var(--navy);color:#fff}
+.mcnote{font-size:11.5px;color:var(--ink3);margin:-2px 0 6px 84px;line-height:1.5}
+.mcnote.ax{color:var(--seal)}
+.evbtn{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:var(--paper);border-top:1px solid var(--line);cursor:pointer;font-family:"Zen Maru Gothic";font-size:12.5px;color:var(--navy2);font-weight:500}
+.evbtn:hover{background:#efe9dc}
+.evrow{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);align-items:flex-start;font-size:12.5px}
+.evrow:last-child{border-bottom:none}
+.evsch{width:100px;flex-shrink:0;font-weight:700;color:var(--navy);font-family:"Zen Maru Gothic"}
+.evbody{flex:1;color:var(--ink2);line-height:1.7}
+.evbody .en{color:var(--ink3)}
+.inclist{margin-top:10px}
+.incrow{padding:9px 0;border-bottom:1px dashed var(--line)}
+.incrow:last-child{border-bottom:none}
+.incrow.ax{background:linear-gradient(90deg,#fdf3ee,transparent);border-radius:8px;padding:9px 10px;margin:0 -10px;box-shadow:inset 3px 0 0 var(--seal)}
+.incrow .ih{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.incitem{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:2px 0 2px 32px;color:var(--ink2)}
+.incnone{font-size:12px;color:var(--ink3);padding-left:32px}
+.sechead{font-family:"Zen Maru Gothic";font-weight:700;font-size:15.5px;color:var(--navy);margin:22px 2px 10px;padding-top:6px;border-top:2px solid var(--line2)}
+.sechead:first-of-type{border-top:none;margin-top:0}
+.subnote{font-size:12.5px;color:var(--ink2);background:var(--amber-soft);border:1px solid #eacfaa;border-radius:10px;padding:9px 13px;margin:6px 0 12px}
+
 table.mx{border-collapse:collapse;font-size:13px;min-width:640px}
 table.mx th,table.mx td{border:1px solid var(--line);padding:7px 9px;text-align:center;white-space:nowrap}
 table.mx th{background:#f3efe6;font-weight:700;font-size:12px}
@@ -229,7 +259,8 @@ table.mx td.ref{color:#d98a3c;font-weight:700;background:#fdf7ee}
    ・岩船小学校 … 2023年度決算/2024年度予算・2024年度決算/2025年度予算の
                    実際の総会資料PDFから起こした本物データ
    ・他校 … 「集まるとこう見える」を体感するためのサンプル（仮）
-   ・見どころ：指標は 07_会計_指標定義 の式に従い、06_会計_元数値 からその場で計算
+   ・見どころ：予算を比較の14項目は、06_会計_元数値 の「共通科目」（元気さんの
+     手動振り分け）をその場で集計しています。HTML内の手打ち暫定値はありません。
    ============================================================ */
 
 const I={
@@ -252,14 +283,14 @@ const I={
    交野市PTA 総会資料 くらべる板
    データは Googleスプレッドシート「交野市PTA_単P比較DB」から読み込みます。
    HTMLの中にデータは持っていません。直すときはスプレッドシートを直してください。
-   指標は 07_会計_指標定義 の計算式に従い、06_会計_元数値 と 01_学校マスタ から
-   その場で計算しています（数値を持ち回っていません）。
+   会費収入は 01_学校マスタ、それ以外の予算項目は 06_会計_元数値 の「共通科目」を
+   その場で集計しています（数値を持ち回っていません）。
    ============================================================ */
 const SHEET_ID='1ZetpDElLBqk2-YlH9WC0VU8RVFb8LiY9RnhroazO-14';
 const SHEET_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/edit';
 
-let SCHOOLS=[], SUBMITTED=[], PENDING=[], SMAP={}, PDFS={}, METRICS=[], DOCS=[];
-let LEDGER=[], TODO=[], CODE2ID={}, FIN={}, TSUMI={};
+let SCHOOLS=[], SUBMITTED=[], PENDING=[], SMAP={}, PDFS={}, DOCS=[];
+let LEDGER=[], TODO=[], CODE2ID={}, CATROWS={};
 
 let __gvizN=0;
 function gviz(sheetName){
@@ -297,163 +328,258 @@ function buildSchools(mst){
  SMAP={}; SCHOOLS.forEach(s=>SMAP[s.id]=s);
  CODE2ID={}; SCHOOLS.forEach(s=>CODE2ID[s.code]=s.id);
 }
-function buildFin(fin){
- FIN={}; TSUMI={};
+/* ============================================================
+   予算を比較タブ（元気さんと合意した14項目 ＋ その他の実支出科目）
+   ・すべて 06_会計_元数値 の「共通科目」列（元気さんが各校の予算科目を
+     振り分けた列）を集計元にしています。KYOUTSUUのようなHTML内の手打ち
+     暫定値は廃止し、シートの実データだけを根拠にしています。
+   ・学校ごとの元の科目名・元の項目名・摘要（振り分けの根拠メモ）は
+     そのまま各カードの「算出根拠を見る」から確認できます。
+   ・会費収入だけは 01_学校マスタ の値（会費収入・家庭数・年会費）を使います。
+   ============================================================ */
+function buildBudget(fin){
+ CATROWS={};
  fin.forEach(r=>{
   const id=CODE2ID[S(r['校コード'])]; if(!id)return;
-  const y=S(r['年度']), k=S(r['名寄せ科目']);
-  FIN[id]=FIN[id]||{}; FIN[id][y]=FIN[id][y]||{};
-  const rec={yosan:N(r['予算額']),kessan:N(r['決算額']),note:S(r['摘要']),kbn:S(r['区分']),dai:S(r['大科目'])};
-  (FIN[id][y][k]=FIN[id][y][k]||[]).push(rec);
-  /* 積立金の残高は名寄せ科目『積立金現在額』の行だけを拾う（毎年の積立額と混ざらないように） */
-  if(k==='積立金現在額'&&y==='R8'){TSUMI[id]=(TSUMI[id]||0)+(rec.yosan!=null?rec.yosan:(rec.kessan||0))}
+  const cat=S(r['共通科目'])||S(r['名寄せ科目']); if(!cat)return;
+  const rec={year:S(r['年度']),kbn:S(r['区分']),nayose:S(r['名寄せ科目']),
+   yosan:N(r['予算額']),kessan:N(r['決算額']),
+   honka:S(r['原本の科目']),honko:S(r['原本の項目']),note:S(r['摘要'])};
+  (CATROWS[id]=CATROWS[id]||{})[cat]=(CATROWS[id][cat]||[]);
+  CATROWS[id][cat].push(rec);
  });
 }
-/* 集計値（＝収入合計・予備費など）は「名寄せ科目」明細と二重計上しないよう、
-   大科目が '名寄せ科目' の行を除いて拾う。 */
-const f=(id,y,k,which)=>{
- const a=((FIN[id]||{})[y]||{})[k]; if(!a)return null;
- const rows=a.filter(x=>x.dai!=='名寄せ科目');
- const use=rows.length?rows:a;
- const v=use.map(x=>x[which]).filter(x=>x!=null);
- return v.length?v.reduce((p,q)=>p+q,0):null;
-};
-const yosan=(id,y,k)=>f(id,y,k,'yosan');
-const kessan=(id,y,k)=>f(id,y,k,'kessan');
-
-/* 07_会計_指標定義 の式に対応する計算 */
-/* 繰越金の科目名は学校によって「前年度繰越金」「繰越金」とゆれがあるため両対応 */
-const carryover=(id,y)=>{const a=yosan(id,y,'前年度繰越金');return a!=null?a:yosan(id,y,'繰越金')};
-
-/* ============================================================
-   この板だけの追加データ（KYOUTSUU）
-   ・出典：各校PTA予算書決算書_原本抽出データ.xlsx の「共通科目／共通項目」列
-   ・R8予算額（令和8年度予算）ベースで学校ごとに合計したもの
-   ・共通科目への割り振りは、各校の予算科目の中身（摘要）を踏まえて
-     元気がひとつずつ判断したもので、確定的な確認ではなく推定を含みます
-   ・積立金の現在額（tsumitate）は、各校の積立金台帳・決算書に記載された
-     最新の残高で、基準日は学校ごとに異なります（学校ごとの注記参照）
-   ・私市小（kis）の積立金現在額のみ、予算書・決算書の原本には残高の記載が
-     見当たらず、交野市PTA協議会「実態共有ボード」の回答（周年記念行事積立金
-     残高＝R7会計報告時点）を出典としています。他校とは出典が異なる点に注意
-   ・このオブジェクトは「06_会計_元数値」にまだ同等の行が無かった時点の
-     暫定値です。同シートに「広報委員会費」「積立金現在額」等の名寄せ科目で
-     行が追加された後は、下のCALCがシート側の値を優先して使い、このオブジェクトは
-     シートに値が無い場合だけのフォールバックになります（値の二重管理を避けるため）
-   ============================================================ */
-const KYOUTSUU={
- mir:{koho:30000,  gakunen:null,   chiku:150000, sonota:null,   teirei:800000, tanpatsu:30000,  gakko:null,   jido:450000, tsumitate:null},
- ni2:{koho:300000, gakunen:100000, chiku:null,   sonota:null,   teirei:400000, tanpatsu:null,   gakko:null,   jido:null,   tsumitate:1430730},
- kra:{koho:60000,  gakunen:400000, chiku:10000,  sonota:30000,  teirei:640000, tanpatsu:550000, gakko:null,   jido:300000, tsumitate:330328},
- kzu:{koho:50000,  gakunen:30000,  chiku:140000, sonota:27000,  teirei:150000, tanpatsu:null,   gakko:100000, jido:220000, tsumitate:1121888},
- ni3:{koho:null,   gakunen:null,   chiku:null,   sonota:null,   teirei:null,   tanpatsu:null,   gakko:null,   jido:null,   tsumitate:null},
- aki:{koho:5000,   gakunen:null,   chiku:26000,  sonota:33000,  teirei:245000, tanpatsu:600000, gakko:null,   jido:null,   tsumitate:679430},
- hsi:{koho:null,   gakunen:null,   chiku:null,   sonota:135000, teirei:220000, tanpatsu:150000, gakko:null,   jido:null,   tsumitate:450498},
- iwa:{koho:45000,  gakunen:83000,  chiku:80520,  sonota:3000,   teirei:70000,  tanpatsu:400000, gakko:null,   jido:105000, tsumitate:864000},
- kis:{koho:0,      gakunen:192500, chiku:154000, sonota:null,   teirei:null,   tanpatsu:null,   gakko:96250,  jido:null,   tsumitate:1121244},
- fuj:{koho:null,   gakunen:194000, chiku:13500,  sonota:330,    teirei:null,   tanpatsu:3000,   gakko:null,   jido:440000, tsumitate:2018321},
-};
-const kv=(id,key)=>{const o=KYOUTSUU[id]; if(!o)return null; const v=o[key]; return v==null?null:v};
-
-/* 積立金の現在額：06_会計_元数値の「積立金現在額」を優先し、無ければHTML内の暫定値 */
-const tsumitate=id=>{const v=yosan(id,'R8','積立金現在額'); return v!=null?v:kv(id,'tsumitate')};
-/* 06_会計_元数値に名寄せ科目の行がある学校はシートの値を使い、
-   まだ無い学校だけ KYOUTSUU（HTML内の暫定値）で補う */
-const sheetFirst=(id,nayose,key)=>{const v=yosan(id,'R8',nayose); return v!=null?v:kv(id,key)};
-
-const CALC={
- M01:s=>s.fee,
- M02:s=>yosan(s.id,'R8','＝支出合計'),
- M03:s=>{const a=CALC.M02(s);return (a!=null&&s.homes)?Math.round(a/s.homes):null},
- M04:s=>{const a=CALC.M02(s),y=yosan(s.id,'R8','予備費');return (a!=null&&y!=null&&s.homes)?Math.round((a-y)/s.homes):null},
- M05:s=>{const k=carryover(s.id,'R8'),t=yosan(s.id,'R8','＝収入合計');return (k!=null&&t)?k/t*100:null},
- M06:s=>{const y=yosan(s.id,'R8','予備費'),a=CALC.M02(s);return (y!=null&&a)?y/a*100:null},
- M07:s=>{const k=kessan(s.id,'R7','＝支出合計'),b=yosan(s.id,'R7','＝当初予算額');return (k!=null&&b)?k/b*100:null},
- M08:s=>{const k=carryover(s.id,'R8'),t=tsumitate(s.id);return (k!=null&&s.homes)?Math.round((k+(t||0))/s.homes):null},
- M09:s=>{const m=CALC.M08(s);return (m!=null&&s.fee)?m/s.fee:null},
- B01:s=>s.feeIncome,
- B02:s=>carryover(s.id,'R8'),
- B03:s=>tsumitate(s.id),
- B04:s=>sheetFirst(s.id,'広報委員会費','koho'),
- B05:s=>sheetFirst(s.id,'学年委員会費','gakunen'),
- B06:s=>sheetFirst(s.id,'地区活動費','chiku'),
- B07:s=>sheetFirst(s.id,'その他委員会活動費','sonota'),
- B08:s=>sheetFirst(s.id,'定例イベント費','teirei'),
- B09:s=>sheetFirst(s.id,'単発イベント費','tanpatsu'),
- B10:s=>sheetFirst(s.id,'学校寄贈費','gakko'),
- B11:s=>sheetFirst(s.id,'児童生徒寄贈費','jido'),
-};
-/* 単位は 07_会計_指標定義 の「単位」列から決める。列が空のときだけ下の既定値を使う */
-const UNIT={M01:'yen',M02:'yen',M03:'yen',M04:'yen',M05:'pct',M06:'pct',M07:'pct',M08:'yen',M09:'year',
- B01:'yen',B02:'yen',B03:'yen',B04:'yen',B05:'yen',B06:'yen',B07:'yen',B08:'yen',B09:'yen',B10:'yen',B11:'yen'};
-function unitOf(mid,raw){
- const u=S(raw);
- if(u.indexOf('%')>=0)return 'pct';
- if(u.indexOf('円')>=0)return 'yen';
- if(u.indexOf('年')>=0)return 'year';
- if(u.indexOf('項目')>=0)return 'item';
- return UNIT[mid]||'yen';
+function catEvRows(id,cat,year,nayose){
+ return ((CATROWS[id]||{})[cat]||[]).filter(r=>r.year===year&&(!nayose||r.nayose===nayose));
+}
+function catSum(id,cat,year,which,nayose){
+ const rows=catEvRows(id,cat,year,nayose);
+ const v=rows.map(r=>r[which]).filter(x=>x!=null);
+ return v.length?v.reduce((a,b)=>a+b,0):null;
+}
+function expBaseVal(id){
+ const total=catSum(id,'＝支出合計','R8','yosan'); if(total==null)return null;
+ const yobi=catSum(id,'予備費','R8','yosan')||0;
+ return total-yobi;
+}
+/* 14項目に含まれない支出科目を、実データから動的に洗い出す（ハードコードしない） */
+function allExpenseCats(){
+ const AGG=new Set(['＝支出合計','＝当初予算額','＝収入合計']);
+ const USED=new Set(METRIC_DEFS.filter(m=>m.kind==='cat').map(m=>m.cat).concat(['積立金']));
+ const set=new Set();
+ SUBMITTED.forEach(s=>{
+  const cats=CATROWS[s.id]||{};
+  Object.keys(cats).forEach(cat=>{
+   if(AGG.has(cat)||USED.has(cat))return;
+   if(cats[cat].some(r=>r.year==='R8'&&r.kbn==='支出')) set.add(cat);
+  });
+ });
+ return [...set].sort((a,b)=>catTotalAll(b)-catTotalAll(a));
+}
+function catTotalAll(cat){
+ return SUBMITTED.reduce((sum,s)=>sum+(catSum(s.id,cat,'R8','yosan')||0),0);
 }
 
-/* 07_会計_指標定義 にまだ B01〜B11 の行が無い場合のフォールバック定義。
-   シート側に同じ指標IDの行があれば、そちらの表示名・解説・単位が優先され、
-   ここの定義は使われない（値の二重管理を避けるため）。 */
-const BOARD_METRICS_DEF=[
- {id:'B01',title:'会費収入（学校全体・年額）',
-  how:'01_学校マスタ の 会費収入_R8予算',
-  ai:'会費だけでは負担感は測れません。繰越金・積立金とあわせて、家庭からの年間負担の全体像として見てください。'},
- {id:'B02',title:'繰越金（R8期首時点の金額）',
-  how:'各校の予算書「前年度繰越金」R8予算額',
-  ai:'使われずに翌年へ回ったお金です。多い学校は「事業を計画的に減らしている」のか「使い切れていない」のかを話し合う入り口になります。'},
- {id:'B03',title:'積立金の現在額（基金残高）',
-  how:'各校の積立金台帳・決算書に記載された最新の残高（推定を含む）',
-  ai:'基金として積み立てている金額の残高です。基準日が学校ごとに違うため、金額の大小よりも「どのくらいの規模の基金を持っているか」の目安として見てください。'},
- {id:'B04',title:'広報委員会費',
-  how:'共通科目「広報委員会費」の合計（R8予算額）',
-  ai:'広報紙の発行など、情報発信にかけている費用です。'},
- {id:'B05',title:'学年委員会費',
-  how:'共通科目「学年委員会費」の合計（R8予算額）',
-  ai:'学年やクラスごとの活動にかけている費用です。'},
- {id:'B06',title:'地区活動費',
-  how:'共通科目「地区活動費」の合計（R8予算額）',
-  ai:'登下校の見守りなど、学校の外・地域での活動にかけている費用です。'},
- {id:'B07',title:'その他委員会活動費',
-  how:'共通科目「その他委員会活動費」の合計（R8予算額）',
-  ai:'広報・学年・地区のどれにも当てはまらない委員会活動の費用です。'},
- {id:'B08',title:'定例イベント費',
-  how:'共通科目「定例イベント費」の合計（R8予算額）',
-  ai:'毎年開催している定例行事にかけている費用です。'},
- {id:'B09',title:'単発イベント費',
-  how:'共通科目「単発イベント費」の合計（R8予算額）',
-  ai:'単発の企画やお祭りなど、その年かぎりのイベントにかけている費用です。'},
- {id:'B10',title:'学校寄贈費',
-  how:'共通科目「学校寄贈費」の合計（R8予算額）',
-  ai:'学校そのものへの寄贈・支援にあてている費用です。'},
- {id:'B11',title:'児童生徒寄贈費',
-  how:'共通科目「児童生徒寄贈費」の合計（R8予算額）',
-  ai:'図書や活動支援など、児童生徒に還元している費用です。'},
+/* ---- 指標の定義（元気さんと合意した14項目） ---- */
+const METRIC_DEFS=[
+ {id:'fee',group:'income',title:'会費収入額（学校全体・年額）',kind:'fee'},
+ {id:'carry',group:'income',title:'繰越金の額',kind:'carry'},
+ {id:'otherinc',group:'income',title:'その他の収入（繰越金・雑入以外）',kind:'incomeList'},
+ {id:'exp',group:'expense',title:'予備費を除く支出額',kind:'expTotal'},
+ {id:'koho',group:'expense',title:'広報費',kind:'cat',cat:'広報委員会費'},
+ {id:'teirei',group:'expense',title:'フェスタ等定例行事費',kind:'cat',cat:'定例イベント費'},
+ {id:'tanpatsu',group:'expense',title:'単発行事費',kind:'cat',cat:'単発イベント費'},
+ {id:'gakunen',group:'expense',title:'学年委員活動費',kind:'cat',cat:'学年委員会費'},
+ {id:'chiku',group:'expense',title:'地区委員活動費',kind:'cat',cat:'地区活動費'},
+ {id:'sonota_iin',group:'expense',title:'その他委員会活動費',kind:'cat',cat:'その他委員会活動費'},
+ {id:'yobi',group:'expense',title:'予備費',kind:'cat',cat:'予備費'},
+ {id:'gakko_kizo',group:'expense',title:'学校寄贈費',kind:'cat',cat:'学校寄贈費'},
+ {id:'jido_kizo',group:'expense',title:'児童生徒寄贈費',kind:'cat',cat:'児童生徒寄贈費'},
+ {id:'tsumitate',group:'reserve',title:'目的があっての積立金の額',kind:'reserve'},
 ];
+const GROUP_LABEL={income:'収入',expense:'支出',reserve:'積立'};
 
-function buildMetrics(def){
- const fromSheet=def.filter(r=>S(r['指標ID'])&&isTrue(r['公開'])&&CALC[S(r['指標ID'])])
-  .sort((a,b)=>(+a['表示順']||99)-(+b['表示順']||99))
-  .map(r=>{
-   const mid=S(r['指標ID']); const vals={},notes={};
-   SUBMITTED.forEach(s=>{
-    const v=CALC[mid](s); if(v!=null) vals[s.id]=v;
-    if(mid==='M04') notes[s.id]=s.how;
-   });
-   return {id:mid,ch:S(r['表示名']).slice(0,0)||'',title:S(r['表示名']),unit:unitOf(mid,r['単位']),
-           how:S(r['計算のしかた']),ai:S(r['解説']),vals,notes};
-  }).filter(m=>Object.keys(m.vals).length>=2);
- const done={}; fromSheet.forEach(m=>done[m.id]=1);
- const fromBoard=BOARD_METRICS_DEF.filter(b=>!done[b.id]).map(b=>{
-   const vals={};
-   SUBMITTED.forEach(s=>{const v=CALC[b.id](s); if(v!=null) vals[s.id]=v});
-   return {id:b.id,ch:'',title:b.title,unit:UNIT[b.id]||'yen',how:b.how,ai:b.ai,vals,notes:{}};
-  }).filter(m=>Object.keys(m.vals).length>=2);
- METRICS=fromSheet.concat(fromBoard);
+/* ---- 値の取得（学校ID -> {val,note,ev,evNote}） ---- */
+function metricVals(def){
+ const out={};
+ SUBMITTED.forEach(s=>{
+  if(def.kind==='fee'){
+   if(s.feeIncome==null)return;
+   out[s.id]={val:s.feeIncome,
+    note:(s.homes?s.homes+'世帯':'')+(s.fee?'（1世帯あたり'+yen(s.fee)+'）':''),
+    ev:null,evNote:'01_学校マスタ の「会費収入_R8予算」「会員家庭数【採用値】」「年会費_R8」を使用しています。'};
+  }else if(def.kind==='carry'){
+   const c=catSum(s.id,'繰越金','R8','yosan','前年度繰越金'); if(c==null)return;
+   const base=expBaseVal(s.id);
+   const yrs=(base&&base>0)?(c/base):null;
+   out[s.id]={val:c,note:yrs!=null?('予備費除く支出の約'+(Math.round(yrs*10)/10)+'年分'):'',
+    ev:catEvRows(s.id,'繰越金','R8','前年度繰越金')};
+  }else if(def.kind==='expTotal'){
+   const v=expBaseVal(s.id); if(v==null)return;
+   const total=catSum(s.id,'＝支出合計','R8','yosan');
+   const yobi=catSum(s.id,'予備費','R8','yosan')||0;
+   out[s.id]={val:v,note:'支出合計'+yen(total||v)+'－予備費'+yen(yobi),
+    ev:null,evNote:'支出合計（＝支出合計）から予備費を差し引いた金額です。内訳は他のカードをご覧ください。'};
+  }else if(def.kind==='cat'){
+   const v=catSum(s.id,def.cat,'R8','yosan'); if(v==null)return;
+   out[s.id]={val:v,note:'',ev:catEvRows(s.id,def.cat,'R8')};
+  }else if(def.kind==='reserve'){
+   const bal=catSum(s.id,'積立金','R8','yosan','積立金現在額');
+   const add=catSum(s.id,'積立金','R8','yosan','積立金');
+   if(bal==null&&add==null)return;
+   out[s.id]={val:bal!=null?bal:0,
+    note:(bal!=null?'':'残高の記載なし')+(add!=null?'（今年度の積立 '+yen(add)+'）':''),
+    ev:catEvRows(s.id,'積立金','R8')};
+  }
+ });
+ return out;
 }
+
+/* ---- ランキング表示 ---- */
+function rankInfo(vals){
+ const arr=Object.keys(vals).map(id=>({id,v:vals[id].val})).sort((a,b)=>b.v-a.v);
+ const i=arr.findIndex(x=>x.id===ST.axis);
+ return {rank:i<0?null:i+1,n:arr.length};
+}
+
+/* ---- 算出根拠（06_会計_元数値の該当行をそのまま出す） ---- */
+const MEV={open:{}};
+function toggleEv(id){MEV.open[id]=!MEV.open[id];render()}
+function evidenceHTML(arr){
+ const rows=arr.map(({s,v})=>{
+  if(v.evNote) return `<div class="evrow"><div class="evsch">${esc(s.badge)} ${esc(s.sname)}</div><div class="evbody">${esc(v.evNote)}</div></div>`;
+  if(!v.ev||!v.ev.length) return `<div class="evrow"><div class="evsch">${esc(s.badge)} ${esc(s.sname)}</div><div class="evbody">該当する明細行がありません。</div></div>`;
+  const inner=v.ev.map(r=>`${esc(r.honka||r.nayose)}${r.honko?'／'+esc(r.honko):''}　<b>${r.yosan!=null?esc(yen(r.yosan)):(r.kessan!=null?esc(yen(r.kessan))+'（決算）':'—')}</b>${r.note?`<span class="en">　${esc(r.note)}</span>`:''}`).join('<br>');
+  return `<div class="evrow"><div class="evsch">${esc(s.badge)} ${esc(s.sname)}</div><div class="evbody">${inner}</div></div>`;
+ }).join('');
+ return `<div class="detail">${rows}</div>`;
+}
+
+/* ---- 通常の指標カード ---- */
+function metricCard(def){
+ const vals=metricVals(def);
+ const ids=Object.keys(vals);
+ if(!ids.length)return '';
+ const {rank,n}=rankInfo(vals);
+ const arr=ids.map(id=>({s:SMAP[id],v:vals[id]})).sort((a,b)=>b.v.val-a.v.val);
+ const max=Math.max(...arr.map(x=>x.v.val),1);
+ const rankLabel=rank==null?'資料が届いていないため出せません':rank===1?n+'校で最も高い':rank===n?n+'校で最も低い':'高い方から'+rank+'番目';
+ const lack=SUBMITTED.filter(s=>!vals[s.id]);
+ const rows=arr.map(({s,v})=>{
+  const isAx=s.id===ST.axis;
+  return `<div class="nrow ${isAx?'ax':''}"><div class="nlab"><span class="bdg ${isAx?'ax':''}">${esc(s.badge)}</span><span class="nm">${esc(s.sname)}</span></div>
+   <div class="ntrack"><i style="width:${Math.max(2,Math.round(v.val/max*100))}%"></i></div>
+   <div class="nval">${esc(yen(v.val))}</div></div>
+   ${v.note?`<div class="mcnote ${isAx?'ax':''}">${esc(v.note)}</div>`:''}`;
+ }).join('');
+ const lackHTML=lack.length?`<div class="lackline">${I.info} 資料が届いていないため計算できない学校：${esc(lack.map(s=>s.sname).join('・'))}</div>`:'';
+ const open=MEV.open[def.id];
+ return `<div class="tcard" id="m-${esc(def.id)}">
+  <div class="tcard-main">
+    <div class="tmeta"><span class="chchip">${esc(GROUP_LABEL[def.group])}</span><span class="mark ${rank===1||rank===n?'uniq':'rank'}">${esc(axisSchool().sname)}は${esc(rankLabel)}</span></div>
+    <div class="ttitle">${esc(def.title)}</div>
+    ${rows}
+    ${lackHTML}
+  </div>
+  <div class="evbtn" onclick="toggleEv('${def.id}')">${open?'算出根拠を閉じる':'算出根拠を見る（06_会計_元数値より）'}<span>${open?I.up:I.down}</span></div>
+  ${open?evidenceHTML(arr):''}
+ </div>`;
+}
+
+/* ---- 積立金カード（残高＋今年度積立額を併記） ---- */
+function reserveCard(def){
+ const vals=metricVals(def);
+ const ids=Object.keys(vals);
+ if(!ids.length)return '';
+ const {rank,n}=rankInfo(vals);
+ const arr=ids.map(id=>({s:SMAP[id],v:vals[id]})).sort((a,b)=>b.v.val-a.v.val);
+ const max=Math.max(...arr.map(x=>x.v.val),1);
+ const rankLabel=rank==null?'資料が届いていないため出せません':rank===1?n+'校で最も多い':rank===n?n+'校で最も少ない':'多い方から'+rank+'番目';
+ const rows=arr.map(({s,v})=>{
+  const isAx=s.id===ST.axis;
+  return `<div class="nrow ${isAx?'ax':''}"><div class="nlab"><span class="bdg ${isAx?'ax':''}">${esc(s.badge)}</span><span class="nm">${esc(s.sname)}</span></div>
+   <div class="ntrack"><i style="width:${Math.max(2,Math.round(v.val/max*100))}%"></i></div>
+   <div class="nval">${esc(yen(v.val))}</div></div>
+   ${v.note?`<div class="mcnote ${isAx?'ax':''}">${esc(v.note)}</div>`:''}`;
+ }).join('');
+ const open=MEV.open[def.id];
+ return `<div class="tcard" id="m-${def.id}">
+  <div class="tcard-main">
+    <div class="tmeta"><span class="chchip">${esc(GROUP_LABEL[def.group])}</span><span class="mark ${rank===1||rank===n?'uniq':'rank'}">${esc(axisSchool().sname)}は${esc(rankLabel)}</span></div>
+    <div class="ttitle">${esc(def.title)}</div>
+    <div class="tai">棒グラフは積立金の残高（現在額）です。カッコ内は今年度中に積み立てた（積み立てる予定の）金額です。</div>
+    ${rows}
+  </div>
+  <div class="evbtn" onclick="toggleEv('${def.id}')">${open?'算出根拠を閉じる':'算出根拠を見る（06_会計_元数値より）'}<span>${open?I.up:I.down}</span></div>
+  ${open?evidenceHTML(arr):''}
+ </div>`;
+}
+
+/* ---- その他の収入一覧カード（繰越金・雑入以外の収入を学校ごとに内訳表示） ---- */
+function otherIncomeCard(def){
+ const rowsBySchool=SUBMITTED.map(s=>{
+  const rows=[...catEvRows(s.id,'補助金','R8'),...catEvRows(s.id,'売払金収益','R8')];
+  const total=rows.reduce((a,r)=>a+(r.yosan!=null?r.yosan:(r.kessan||0)),0);
+  return {s,rows,total};
+ });
+ if(!rowsBySchool.some(x=>x.rows.length))return '';
+ const items=rowsBySchool.slice().sort((a,b)=>b.total-a.total).map(({s,rows,total})=>{
+  const isAx=s.id===ST.axis;
+  const body=rows.length
+   ?rows.map(r=>`<div class="incitem"><span>${esc(r.honko||r.nayose)}${r.note?'（'+esc(r.note)+'）':''}</span><b>${esc(yen(r.yosan!=null?r.yosan:(r.kessan||0)))}</b></div>`).join('')
+   :`<div class="incnone">該当なし</div>`;
+  return `<div class="incrow ${isAx?'ax':''}"><div class="ih"><span class="bdg ${isAx?'ax':''}">${esc(s.badge)}</span><b>${esc(s.sname)}</b><span class="tiny muted" style="margin-left:auto">計 ${esc(yen(total))}</span></div>${body}</div>`;
+ }).join('');
+ return `<div class="tcard" id="m-${def.id}">
+  <div class="tcard-main">
+    <div class="tmeta"><span class="chchip">${esc(GROUP_LABEL[def.group])}</span></div>
+    <div class="ttitle">${esc(def.title)}</div>
+    <div class="tai">会費・繰越金・雑入以外の収入（協賛金・補助金・売却収益など）を学校ごとに並べています。無い学校は「該当なし」です。</div>
+    <div class="inclist">${items}</div>
+  </div>
+ </div>`;
+}
+
+/* ---- 先頭のジャンプナビ（収入／支出／積立の3グループ。開くと個別項目にも飛べる） ---- */
+const TOC={open:{}};
+function toggleToc(g){TOC.open[g]=!TOC.open[g];render()}
+function tocHTML(){
+ const groups=[['income','収入'],['expense','支出'],['reserve','積立']];
+ const otherCats=allExpenseCats();
+ return `<div class="tocbar">`+groups.map(([g,label])=>{
+   const open=TOC.open[g];
+   const defs=METRIC_DEFS.filter(m=>m.group===g);
+   const n=defs.length+(g==='expense'?otherCats.length:0);
+   let links=defs.map(m=>`<a class="toclink" href="#m-${m.id}">${esc(m.title)}</a>`).join('');
+   if(g==='expense'&&otherCats.length) links+=otherCats.map(c=>`<a class="toclink" href="#m-etc-${esc(c)}">${esc(c)}</a>`).join('');
+   return `<div><button class="tocgh ${open?'open':''}" onclick="toggleToc('${g}')"><span class="car">›</span>${esc(label)}<span class="n">（${n}項目）</span></button>${open?`<div class="toclist">${links}</div>`:''}</div>`;
+ }).join('')+`</div>`;
+}
+
+/* ---- 数字でくらべる ---- */
+function viewMoney(){
+ const A=axisSchool();
+ let h=sampleWarn();
+ h+=`<div class="hero">
+  <h2>予算を比較する</h2>
+  <p class="lead">会費・繰越金・積立金・委員会活動費・寄贈費など、元気さんと決めた14項目で${SUBMITTED.length}校を横に並べています。各カードの「算出根拠を見る」を開くと、06_会計_元数値でどの学校のどの科目をこの分類にまとめたか（元の科目名・元の項目名・摘要）がそのまま確認できます。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。</p>
+ </div>`;
+ h+=tocHTML();
+ h+=closeupHTML();
+ h+=`<div class="sechead" id="grp-income">収入</div>`;
+ METRIC_DEFS.filter(m=>m.group==='income').forEach(def=>{ h+= def.kind==='incomeList'?otherIncomeCard(def):metricCard(def); });
+ h+=`<div class="sechead" id="grp-expense">支出</div>`;
+ METRIC_DEFS.filter(m=>m.group==='expense').forEach(def=>{ h+=metricCard(def); });
+ const otherCats=allExpenseCats();
+ if(otherCats.length){
+  h+=`<p class="subnote">${I.info} ここから先は、上の14項目には含まれていませんが、実際に計上されている支出科目をすべて並べたものです。</p>`;
+  otherCats.forEach(cat=>{ h+=metricCard({id:'etc-'+cat,group:'expense',title:cat,kind:'cat',cat:cat}); });
+ }
+ h+=`<div class="sechead" id="grp-reserve">積立</div>`;
+ METRIC_DEFS.filter(m=>m.group==='reserve').forEach(def=>{ h+=reserveCard(def); });
+ return h;
+}
+
 function buildDocs(rows){
  /* ユーザー指示により比較対象から除外する項目 */
  const EXCLUDE=['総会の案内文','書面表決書・委任状','議事録','会員への説明姿勢'];
@@ -470,18 +596,18 @@ function fatal(msg){
  document.getElementById('page').innerHTML=
   '<div class="card" style="padding:22px"><h2 style="margin:0 0 10px">データを読み込めませんでした</h2>'
  +'<p class="lead">'+esc(msg)+'</p><p class="lead">スプレッドシートが「ウェブに公開」になっているか、'
- +'シート名（01_学校マスタ／02_ファイル台帳／06_会計_元数値／07_会計_指標定義／08_総会資料_構成）をご確認ください。</p>'
+ +'シート名（01_学校マスタ／02_ファイル台帳／06_会計_元数値／08_総会資料_構成）をご確認ください。</p>'
  +'<p><a class="pdf-btn" href="'+SHEET_URL+'" target="_blank" rel="noopener">スプレッドシートを開く</a></p></div>';
 }
 async function boot(){
  document.getElementById('page').innerHTML=
   '<div class="card" style="padding:26px;text-align:center"><p class="lead" style="margin:0">スプレッドシートから読み込んでいます…</p></div>';
  try{
-  const [mst,led,fin,def,doc,tod]=await Promise.all([
+  const [mst,led,fin,doc,tod]=await Promise.all([
    gviz('01_学校マスタ'),gviz('02_ファイル台帳'),gviz('06_会計_元数値'),
-   gviz('07_会計_指標定義'),gviz('08_総会資料_構成'),gviz('11_未確認・宿題').catch(()=>[])]);
+   gviz('08_総会資料_構成'),gviz('11_未確認・宿題').catch(()=>[])]);
   LEDGER=led; TODO=tod;
-  buildSchools(mst); buildFin(fin); buildMetrics(def); buildDocs(doc);
+  buildSchools(mst); buildBudget(fin); buildDocs(doc);
   PDFS={}; SCHOOLS.forEach(s=>PDFS[s.id]=[]);
   const WANT=['総会資料','決算書','予算書','事業計画','事業報告','決算明細'];
   LEDGER.forEach(r=>{
@@ -492,7 +618,7 @@ async function boot(){
    PDFS[id].push({kind:k,sub:S(r['小分類']),year:S(r['年度']),url:u,naka:S(r['中身'])});
   });
   if(!SCHOOLS.length) return fatal('01_学校マスタ に行がありません。');
-  if(!METRICS.length) return fatal('指標を計算できませんでした。06_会計_元数値 と 07_会計_指標定義 をご確認ください。');
+  if(!Object.keys(CATROWS).length) return fatal('会計データを計算できませんでした。06_会計_元数値 をご確認ください。');
   if(!SMAP[ST.axis]||SMAP[ST.axis].pending) ST.axis=(SUBMITTED[0]||{}).id;
   render();
  }catch(e){ fatal(e&&e.message?e.message:String(e)); }
@@ -504,15 +630,8 @@ const ST={tab:'money', axis:'iwa', expanded:{}};
 /* ============ ヘルパ ============ */
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function yen(v){return (Math.round(v)).toLocaleString()+'円'}
-function fmtVal(m,v){return m.unit==='yen'?yen(v):m.unit==='pct'?(Math.round(v*10)/10)+'%':m.unit==='year'?(Math.round(v*100)/100)+'年分':v+'項目'}
 // いま選んでいる学校（目線）
 function axisSchool(){return SMAP[ST.axis]||SUBMITTED[0]||{sname:'',name:'',id:'',real:true}}
-
-function metricRank(m){
- const arr=SUBMITTED.filter(s=>m.vals[s.id]!=null).map(s=>({id:s.id,v:m.vals[s.id]})).sort((a,b)=>b.v-a.v);
- const i=arr.findIndex(x=>x.id===ST.axis);
- return i<0?null:i+1;          // 値がない学校は順位なし（0番目と出さない）
-}
 
 /* ============================================================
    描画
@@ -557,65 +676,6 @@ function closeupHTML(){
    <div class="prow"><div class="phead"><b>保育サポート以外の補助金を受けている学校</b></div>
      <div class="ptext">岩船小学校は「交野市まちづくり市民提案型事業補助金」としてR8予算100,000円（R7決算83,164円）を受けており、地域イベント「わいわいフェスタ」の財源にあてています。他校でこの種の補助金は見当たりませんでした。</div></div>
    <div class="aimeta">${I.info} 保育サポート補助金の最低保証額は「令和8年度 保育サポート補助金 配分一覧」より。実績額は各校の予算書・決算書からで、記載のない学校は「不明」としています。</div>
- </div>`;
-}
-
-/* ---- 数字でくらべる ---- */
-function viewMoney(){
- const A=axisSchool();
- const highs=METRICS.filter(m=>metricRank(m)===1).map(m=>m.title);
- const lows=METRICS.filter(m=>metricRank(m)===SUBMITTED.length).map(m=>m.title);
- let h=sampleWarn();
- h+=`<div class="hero">
-  <h2>予算を比較する</h2>
-  <p class="lead">会費・予算規模（歳出合計）・繰越金・積立金・委員会活動費の内訳（広報／学年／地区／その他）・定例イベント費・単発イベント費・学校寄贈費・児童生徒寄贈費を、提出された${SUBMITTED.length}校で横に並べました。会費を上げる・下げるための比較ではなく、お金の使い方や貯め方の違いを知るための資料です。いま選んでいる<b>${esc(A.sname)}</b>を朱色で示しています。資料が届いていない学校や、その科目自体がない学校は、その指標だけ計算から外しています。</p>
-  <div class="statrow">
-   <div class="stat"><b>${SUBMITTED.length}</b><span>提出校</span></div>
-   <div class="stat"><b>${METRICS.length}</b><span>くらべた予算項目</span></div>
-   <div class="stat hl"><b>${highs.length+lows.length}</b><span>${esc(A.sname)}が最大・最小</span></div>
-   <div class="stat"><b>${PENDING.length}</b><span>これからの学校</span></div>
-  </div>
- </div>`;
- h+=`<div class="aibox">
-   <div class="aih">${I.spark} 9校を見わたすと ／ ${esc(A.sname)}の目線</div>
-   <div class="airow"><span class="aitag uniq">市内で最も大きい</span><div class="aitx">${highs.length?`<b>${esc(highs.join('／'))}</b>。理由を説明できるなら強み、できないなら見直しの入口です。`:'市内で最大の項目はありません。'}</div></div>
-   <div class="airow"><span class="aitag mix">市内で最も小さい</span><div class="aitx">${lows.length?`<b>${esc(lows.join('／'))}</b>。少なくて回っているなら、他校が省ける根拠になります。`:'市内で最小の項目はありません。'}</div></div>
-   <div class="airow"><span class="aitag common">読み方</span><div class="aitx">数字は単独では意味を持ちません。会費は繰越金や積立金と、予算規模は家庭数とセットで見てください。会費は基本的に据え置く前提で、支出・繰越・積立の使い方の違いを比較しています。</div></div>
-   <div class="aimeta">${I.info} 数値は各校から提出された令和8年度予算書・令和7年度決算書の実数です。定例イベント費・単発イベント費・委員会活動費の内訳・寄贈費などの分類は、各校の予算科目の中身（摘要）を踏まえてこちらで判断したものです。推定を含んでおり、機械的な名寄せや第三者による確認を経た数字ではありません。1家庭あたりの計算に使った会員家庭数は学校ごとに求め方が違うので、各行の下の注記を必ず見てください。<br>この板の内容は<a href="${SHEET_URL}" target="_blank" rel="noopener">スプレッドシート「交野市PTA_単P比較DB」</a>から読み込んでいます（一部の新指標はスプレッドシートに未反映の間だけHTML内の暫定値で補っています）。</div>
- </div>`;
- h+=closeupHTML();
- h+=METRICS.map(metricCard).join('');
- return h;
-}
-function metricCard(m){
- const rank=metricRank(m);
- const have=SUBMITTED.filter(s=>m.vals[s.id]!=null);
- const lack=SUBMITTED.filter(s=>m.vals[s.id]==null);
- const N=have.length;
- const arr=have.map(s=>({s,v:m.vals[s.id]})).sort((a,b)=>b.v-a.v);
- const max=Math.max(...arr.map(x=>x.v),1);
- const nums=arr.map(x=>x.v);
- const avg=nums.reduce((a,b)=>a+b,0)/nums.length;
- const rows=arr.map(({s,v})=>{
-  const isAx=s.id===ST.axis;
-  const note=m.notes[s.id];
-  return `<div class="nrow ${isAx?'ax':''}"><div class="nlab"><span class="bdg ${isAx?'ax':''}">${esc(s.badge)}</span><span class="nm">${esc(s.sname)}</span></div>
-   <div class="ntrack"><i style="width:${Math.max(2,Math.round(v/max*100))}%"></i></div>
-   <div class="nval">${esc(fmtVal(m,v))}</div></div>
-   ${note&&note!=='—'?`<div class="nnote ${isAx?'ax':''}">${esc(note)}</div>`:''}`;
- }).join('');
- const rankLabel=(rank==null)?'資料が届いていないため出せません':rank===1?`${N}校で最も高い`:rank===N?`${N}校で最も低い`:`高い方から${rank}番目`;
- const lackHTML=lack.length?`<div class="lackline">${I.info} 資料が届いていないため計算できない学校：${esc(lack.map(s=>s.sname).join('・'))}</div>`:'';
- return `<div class="tcard ${rank===1||rank===N?'uniq':''}">
-  <div class="tcard-main">
-    <div class="tmeta"><span class="chchip">${esc(m.ch)}</span><span class="mark ${rank===1||rank===N?'uniq':'rank'}">${esc(axisSchool().sname)}は${esc(rankLabel)}</span></div>
-    <div class="ttitle">${esc(m.title)}</div>
-    <div class="tai">${esc(m.ai)}</div>
-    <div class="howline">${I.info} 計算のしかた：${esc(m.how)}</div>
-    ${rows}
-    <div class="numstats"><div>最小<b>${esc(fmtVal(m,Math.min(...nums)))}</b></div><div>平均<b>${esc(fmtVal(m,m.unit==='item'?Math.round(avg):Math.round(avg*10)/10))}</b></div><div>最大<b>${esc(fmtVal(m,Math.max(...nums)))}</b></div><div>${esc(axisSchool().sname)}<b>${m.vals[ST.axis]!=null?esc(fmtVal(m,m.vals[ST.axis])):'—'}</b></div></div>
-    ${lackHTML}
-  </div>
  </div>`;
 }
 
