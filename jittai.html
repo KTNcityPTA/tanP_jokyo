@@ -19,7 +19,7 @@
   https://script.google.com/macros/s/AKfycbwHHo_hU66Wcs0rEyCOPchFwG4kNJaNQG6Vbw3tGDlRTDY_SQHcOS8IdUNFMbSNj9ll/exec
   ↑ 下の方にある定数 API_URL と同じ値です。GASを別のプロジェクトに
   作り直した場合は、両方を新しいデプロイURLに書き換えてください。
-  このHTMLが前提としているGAS側のバージョン（EXPECT_GAS）は "10" です。
+  このHTMLが前提としているGAS側のバージョン（EXPECT_GAS）は "11" です。
 
 【ファイル構成】
   ・このファイル（board.html）　　　　… 画面表示・入力・集計ロジック一式
@@ -499,8 +499,8 @@ function catColor(cat){
    EXPECT_GAS  : このHTMLが前提としているCode.gsの版（末尾2桁）。
    実際に動いているGASの版はサーバーから受け取り、フッターに表示します。
    食い違っていれば「GitHubへの反映漏れ」「GASの再デプロイ忘れ」がすぐ分かります。 */
-const APP_VERSION='2.8';
-const EXPECT_GAS='10';
+const APP_VERSION='2.9';
+const EXPECT_GAS='11';
 let GAS_VERSION=null;
 const TYPE_KEY={'数値':'numeric','選択式':'categorical','複数選択式':'multi','記述':'text','一覧':'list','連絡先':'contact','未回答':'empty'};
 const TYPELABEL={numeric:'数値',categorical:'選択式',multi:'複数選択式',text:'記述',list:'一覧',contact:'連絡先',empty:'未回答'};
@@ -539,7 +539,59 @@ async function gasGetRetry(params){
 }
 async function sGet(k){if(USE_API){try{const r=await gasGet({action:'getKV',key:k});return (r&&r.ok)?(r.value==null?null:r.value):null}catch(e){return null}}if(HASSTORE){try{const r=await window.storage.get(k,true);return r?JSON.parse(r.value):null}catch(e){return null}}return MEM[k]!==undefined?MEM[k]:null}
 async function sSet(k,v){if(USE_API){try{await gas('setKV',{key:k,value:v});return true}catch(e){return false}}if(HASSTORE){try{const r=await window.storage.set(k,JSON.stringify(v),true);return !!r}catch(e){console.error(e);return false}}MEM[k]=v;return true}
-async function reloadData(){ST.loading=true;render();await loadYear();ST.loading=false;render();toast('最新の回答を取得しました')}
+/* ===== 手元スナップショット =====
+   前回開いたときのデータを端末内に残しておき、次に開いたときは
+   通信を待たずに即座に画面を出します。そのうえで裏で最新を取りに行き、
+   届いたら静かに差し替えます。「開いた瞬間に使える」ようにするための仕組みで、
+   スプレッドシート側が正であることは変わりません。 */
+function snapKey(y){return 'pta_snap_'+y}
+function saveSnapshot(){
+  try{
+    localStorage.setItem(snapKey(ST.year),JSON.stringify({
+      v:3,ts:Date.now(),year:ST.year,
+      questions:ST.allQuestions,answers:ST.answers,
+      prevAnswers:ST.prevAnswers,prevYear:ST.prevYear,
+      years:YEARS,gas:GAS_VERSION
+    }));
+  }catch(e){/* 容量超過などは無視。次回は通常どおり通信で取得する */}
+}
+function hydrateFromSnapshot(){
+  try{
+    const raw=localStorage.getItem(snapKey(ST.year));
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    if(!s||s.v!==3||!s.questions||!s.questions.length)return false;
+    ST.allQuestions=normQuestions(s.questions);
+    ST.questions=ST.allQuestions.filter(q=>!q.hidden);
+    ST.answers=s.answers||{};
+    ST.prevAnswers=s.prevAnswers||{};
+    ST.prevYear=s.prevYear||prevYearOf(ST.year);
+    if(s.years&&s.years.length)YEARS=s.years;
+    if(s.gas!=null)GAS_VERSION=String(s.gas);
+    restoreMode();
+    return true;
+  }catch(e){return false}
+}
+// GAS側は通信量を減らすため空の項目を送りません。ここで元の形に戻します。
+function normQuestions(qs){
+  return (qs||[]).map(q=>({
+    id:q.id,category:q.category||'',text:q.text||'',type:q.type||'',
+    unit:q.unit||'',options:q.options||'',hint:q.hint||'',example:q.example||'',
+    target:q.target||'',hidden:!!q.hidden,createdAt:q.createdAt
+  }));
+}
+function normAnswers(a){
+  a=a||{};
+  for(const k in a){if(a[k]&&a[k].note==null)a[k].note='';}
+  return a;
+}
+// 入力中に裏の取得が終わっても、画面が描き直されて入力が消えないようにする
+function safeRerender(){
+  if(ST.loading)return;
+  if(ST.editing||ST.schoolEditing||ST.qEdit)return;
+  render({keepScroll:true});
+}
+async function reloadData(){ST.loading=true;render();await loadYear({keepOnError:true});ST.loading=false;render();toast('最新の回答を取得しました')}
 // GAS疎通チェック（デバッグ用）
 async function checkGasConnection(){
   try{
@@ -755,34 +807,43 @@ async function seedIfNeeded(){
   // スプレッドシート（GAS）が唯一の正データ。直書きシードは廃止したため何もしない。
   return;
 }
-async function loadYear(){
+async function loadYear(opt){
+  opt=opt||{};
+  // 手元に前回のデータが残っているか（残っていれば、取得に失敗しても画面を白紙にしない）
+  const hasLocal=!!(ST.allQuestions&&ST.allQuestions.length);
   if(USE_API){
     ST.loadError=null;
     ST.prevYear=prevYearOf(ST.year);
     try{
-      // 今年度と前年度を並列取得（直列だと単純に2倍待つことになるため）。
-      // 前年度側はあくまで補助情報なので、失敗しても今年度の表示は止めない。
-      const [d,pd]=await Promise.all([
-        gasGetRetry({action:'get',year:ST.year}),
-        ST.prevYear?gasGetRetry({action:'get',year:ST.prevYear}).catch(()=>null):Promise.resolve(null)
-      ]);
+      // 今年度だけを待つ。前年度は「前年度のまま」表示に使う補助情報なので、
+      // 待たずに裏で取りに行き、届いた時点で静かに反映する。
+      const d=await gasGetRetry({action:'get',year:ST.year});
       if(d&&d.ok){
         if(d.gasVersion!=null)GAS_VERSION=String(d.gasVersion);
         restoreMode();
-        ST.allQuestions=d.questions||[];
+        ST.allQuestions=normQuestions(d.questions||[]);
         ST.questions=ST.allQuestions.filter(q=>!q.hidden);
-        ST.answers=d.answers||{};
+        ST.answers=normAnswers(d.answers||{});
         if(d.allYears&&d.allYears.length)buildYears(d.allYears);
-        ST.prevAnswers=(pd&&pd.ok&&pd.answers)?pd.answers:{};
+        saveSnapshot();
+        if(ST.prevYear){
+          const py=ST.prevYear;
+          gasGetRetry({action:'get',year:py}).then(pd=>{
+            if(ST.prevYear!==py)return; // 途中で年度が切り替わっていたら捨てる
+            if(pd&&pd.ok&&pd.answers){ST.prevAnswers=normAnswers(pd.answers);saveSnapshot();safeRerender();}
+          }).catch(()=>{});
+        }else ST.prevAnswers={};
       }else{
-        ST.questions=[];ST.answers={};
-        ST.loadError='GASエラー: '+((d&&d.error)||'不明');
-        notifyErrorEmail(ST.loadError,'GASは応答しましたがエラーを返しました');
+        const msg='GASエラー: '+((d&&d.error)||'不明');
+        if(opt.keepOnError&&hasLocal){toast('最新の取得に失敗しました（前回の内容を表示しています）');}
+        else{ST.questions=[];ST.answers={};ST.loadError=msg;}
+        notifyErrorEmail(msg,'GASは応答しましたがエラーを返しました');
       }
     }catch(e){
-      ST.questions=[];ST.answers={};
-      ST.loadError='GASに接続できませんでした（'+e.message+'）';
-      notifyErrorEmail(ST.loadError,'GASへの通信自体が失敗（fetch例外）');
+      const msg='GASに接続できませんでした（'+e.message+'）';
+      if(opt.keepOnError&&hasLocal){toast('最新の取得に失敗しました（前回の内容を表示しています）');}
+      else{ST.questions=[];ST.answers={};ST.loadError=msg;}
+      notifyErrorEmail(msg,'GASへの通信自体が失敗（fetch例外）');
     }
     return;
   }
@@ -841,7 +902,7 @@ async function setAns(sid,qid,val,note){
   if(!canEdit()){toast('閲覧モードでは保存できません');return}
   const k=sid+'__'+qid,v=(val||'').trim(),n=(note||'').trim();
   if(v)ST.answers[k]={v:v,note:n,t:Date.now()};else delete ST.answers[k];
-  if(USE_API){queueSave({year:ST.year,school_id:sid,question_id:qid,value:v,note:n});return;}
+  if(USE_API){saveSnapshot();queueSave({year:ST.year,school_id:sid,question_id:qid,value:v,note:n});return;}
   await sSet('answers_'+ST.year,ST.answers);
 }
 /* ===== 質問ごとの回答対象（小学校 / 中学校） =====
@@ -1038,7 +1099,13 @@ function renderVersion(){
 function renderShell(){
   document.getElementById('pvbanner').outerHTML=(USE_API||HASSTORE)?'<div id="pvbanner"></div>':'<div id="pvbanner" class="pvbanner">プレビュー表示中 — claude.ai上では入力が保存・共有されます（プレビューでは保存されません）</div>';
   const ys=document.getElementById('yearSel');ys.innerHTML=YEARS.map(y=>`<option value="${y.id}" ${y.id===ST.year?'selected':''}>${y.label}</option>`).join('');
-  ys.onchange=async e=>{ST.year=e.target.value;navReset();ST.view='home';ST.flow=null;ST.loading=true;render();await loadYear();ST.loading=false;render()};
+  ys.onchange=async e=>{
+    ST.year=e.target.value;navReset();ST.view='home';ST.flow=null;
+    ST.allQuestions=[];ST.questions=[];ST.answers={};ST.prevAnswers={};
+    const hit=hydrateFromSnapshot();      // その年度の手元データがあれば先に出す
+    ST.loading=!hit;render();
+    await loadYear({keepOnError:true});ST.loading=false;render();
+  };
   const pg=document.getElementById('page');if(pg)pg.className='page'+(canEdit()?'':' romode')+(ST.view==='guide'?' guideview':'');
   renderVersion();
   const mb=document.getElementById('modeBtn');
@@ -2463,8 +2530,12 @@ window.addEventListener('resize',function(){
   if(h&&h.offsetHeight)document.documentElement.style.setProperty('--hdh',h.offsetHeight+'px');
 });
 (async function(){
+  // 前回の内容が端末に残っていれば、通信を待たずにその場で画面を出す。
+  const hit=hydrateFromSnapshot();
+  ST.loading=!hit;
   render();
-  await seedIfNeeded();await loadYear();
+  await seedIfNeeded();
+  await loadYear({keepOnError:true});
   ST.loading=false;
   render();
 })();
